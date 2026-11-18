@@ -1,0 +1,78 @@
+{
+ "setup": "a12",
+ "train_sets": "A11",
+ "drop_ait": false,
+ "q": 0.995,
+ "features": [
+  "LIT101.Pv",
+  "FIT101.Pv",
+  "MV101.Status",
+  "P101.Status",
+  "FIT201.Pv",
+  "AIT201.Pv",
+  "AIT202.Pv",
+  "AIT203.Pv",
+  "MV201.Status",
+  "P201.Status",
+  "P205.Status",
+  "AIT301.Pv",
+  "AIT302.Pv",
+  "AIT303.Pv",
+  "LIT301.Pv",
+  "FIT301.Pv",
+  "DPIT301.Pv",
+  "MV302.Status",
+  "MV304.Status",
+  "P301.Status",
+  "LIT401.Pv",
+  "FIT401.Pv",
+  "AIT402.Pv",
+  "FIT501.Pv",
+  "FIT502.Pv",
+  "FIT503.Pv",
+  "FIT504.Pv",
+  "AIT501.Pv",
+  "AIT502.Pv",
+  "AIT503.Pv",
+  "AIT504.Pv",
+  "PIT501.Pv",
+  "PIT503.Pv",
+  "LIT601.Pv",
+  "LIT602.Pv",
+  "FIT602.Pv",
+  "P601.Status",
+  "LSH601.Alarm"
+ ],
+ "thresholds": {
+  "IForest": {
+   "calib": 0.6456219070566959,
+   "train": 0.6236304122966898,
+   "extra": null
+  },
+  "GMM": {
+   "calib": 8067.956568603516,
+   "train": 2.6155805587768555,
+   "extra": 16
+  },
+  "AE": {
+   "calib": 5.4287269115448,
+   "train": 0.12738687545061111,
+   "extra": null
+  },
+  "WinAE": {
+   "calib": 5.115604767799378,
+   "train": 0.2574286180734634,
+   "extra": null
+  },
+  "LSTM-AE": {
+   "calib": 5.58286580324173,
+   "train": 0.35174365371465505,
+   "extra": null
+  }
+ },
+ "rules_fpr_on_calibration": 0.0,
+ "rules_disabled_after_calibration": [
+  "FIT101.Pv",
+  "FIT504.Pv"
+ ]
+}

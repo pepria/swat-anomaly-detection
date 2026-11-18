@@ -1,0 +1,72 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "SWaT anomaly event (detector -> explainer interface)",
+  "description": "One record per alarm event, produced by swatad.events.EventExporter. The detection side (person A) writes it, the RAG explanation side (person B) only reads it. Field 'ground_truth_eval_only' exists for evaluation and must never be shown to the explainer.",
+  "type": "object",
+  "required": ["schema_version", "event_id", "dataset", "model", "start", "end", "duration_s",
+               "threshold", "max_score", "max_score_ratio", "stages_involved", "top_contributors", "rule_hits"],
+  "properties": {
+    "schema_version": {"type": "string", "const": "1.0"},
+    "event_id": {"type": "string", "description": "<dataset>-<model>-<running number>"},
+    "dataset": {"type": "string", "enum": ["a12", "s2015"]},
+    "model": {"type": "string", "description": "IForest | GMM | AE | WinAE | LSTM-AE"},
+    "detector_variant": {"type": "string", "enum": ["model", "model+rules"]},
+    "start": {"type": "string", "description": "first alarmed second (ISO timestamp)"},
+    "end": {"type": "string", "description": "last alarmed second; alarms closer than 60 s are merged"},
+    "duration_s": {"type": "integer"},
+    "peak_time": {"type": "string"},
+    "threshold": {"type": "number", "description": "model score threshold (99.5% quantile of the calibration window)"},
+    "max_score": {"type": "number"},
+    "mean_score": {"type": "number"},
+    "max_score_ratio": {"type": "number", "description": "max_score / threshold; > 1 means the model itself alarmed"},
+    "triggered_by": {"type": "string", "enum": ["model", "rules", "model+rules"]},
+    "stages_involved": {"type": "array", "items": {"type": "string"}, "description": "P1..P6 of the top-3 contributors and new rule hits"},
+    "stage_names": {"type": "object"},
+    "top_contributors": {
+      "type": "array",
+      "description": "top-k model features ranked by how much their contribution increased in the first 180 s of the event compared with the 2 minutes before it",
+      "items": {
+        "type": "object",
+        "required": ["tag", "column", "stage", "kind", "contribution"],
+        "properties": {
+          "tag": {"type": "string"}, "column": {"type": "string"}, "stage": {"type": "string"},
+          "kind": {"type": "string", "enum": ["sensor", "actuator", "alarm", "state"]},
+          "description": {"type": "string"}, "unit": {"type": "string"},
+          "contribution": {"type": "number", "description": "per-feature score contribution, normalised by its mean on training data (1 = typical)"},
+          "contribution_increase": {"type": "number"},
+          "share": {"type": "number", "description": "fraction of the (increase in) total contribution"},
+          "value_at_start": {"type": "number"}, "value_min": {"type": "number"}, "value_max": {"type": "number"},
+          "normal_p01": {"type": "number"}, "normal_median": {"type": "number"}, "normal_p99": {"type": "number"},
+          "direction": {"type": "string", "enum": ["high", "low", "in-range"]},
+          "values_in_event": {"type": "array"}, "normal_values": {"type": ["array", "null"]},
+          "signal": {
+            "type": "object",
+            "description": "shape descriptors in the event window",
+            "properties": {
+              "std_ratio": {"type": "number"}, "change": {"type": "number"}, "slope_per_min": {"type": "number"},
+              "direction_changes_per_min": {"type": "number"}, "max_step": {"type": "number"},
+              "max_step_sigma": {"type": "number"}, "flat_fraction": {"type": "number"}
+            }
+          }
+        }
+      }
+    },
+    "rule_hits": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["rule", "tag"],
+        "properties": {
+          "rule": {"type": "string", "enum": ["unseen_state", "out_of_range"]},
+          "tag": {"type": "string"}, "kind": {"type": "string"}, "stage": {"type": "string"},
+          "description": {"type": "string"}, "first_seen": {"type": "string"},
+          "normal_values": {"type": "array"}, "observed_values": {"type": "array"},
+          "normal_range": {"type": "array"}, "observed_min": {"type": "number"}, "observed_max": {"type": "number"},
+          "already_active_before": {"type": "boolean", "description": "rule was already firing in the 30 s before the event (lingering, less informative)"},
+          "signal": {"type": "object"}
+        }
+      }
+    },
+    "ground_truth_eval_only": {"type": "array", "description": "overlapping labelled attacks (evaluation only)"}
+  }
+}

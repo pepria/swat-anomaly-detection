@@ -1,0 +1,73 @@
+{
+ "setup": "s2015",
+ "train_sets": "normal",
+ "drop_ait": false,
+ "q": 0.995,
+ "features": [
+  "FIT101",
+  "LIT101",
+  "MV101",
+  "P101",
+  "AIT201",
+  "AIT202",
+  "AIT203",
+  "FIT201",
+  "MV201",
+  "P203",
+  "P205",
+  "DPIT301",
+  "FIT301",
+  "LIT301",
+  "MV301",
+  "MV302",
+  "MV303",
+  "MV304",
+  "P302",
+  "AIT401",
+  "AIT402",
+  "FIT401",
+  "LIT401",
+  "AIT501",
+  "AIT502",
+  "AIT503",
+  "AIT504",
+  "FIT501",
+  "FIT502",
+  "FIT503",
+  "FIT504",
+  "PIT501",
+  "PIT502",
+  "PIT503",
+  "FIT601",
+  "P602"
+ ],
+ "thresholds": {
+  "IForest": {
+   "calib": 0.6022655020714144,
+   "train": 0.5965913793350003,
+   "extra": null
+  },
+  "GMM": {
+   "calib": 91.48711452484129,
+   "train": 4.473599553108215,
+   "extra": 16
+  },
+  "AE": {
+   "calib": 0.5018855929374695,
+   "train": 0.15020363654941127,
+   "extra": null
+  },
+  "WinAE": {
+   "calib": 0.38784530758857727,
+   "train": 0.5532197952270508,
+   "extra": null
+  },
+  "LSTM-AE": {
+   "calib": 0.9718407392501831,
+   "train": 0.9510981440544128,
+   "extra": null
+  }
+ },
+ "rules_fpr_on_calibration": 0.0,
+ "rules_disabled_after_calibration": []
+}
