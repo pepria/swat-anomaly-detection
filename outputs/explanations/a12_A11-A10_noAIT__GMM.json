@@ -1,0 +1,420 @@
+[
+ {
+  "summary": "Between 13:25:02 and 13:30:38 (337 s) the GMM detector and the rule layer flagged an anomaly in P2 (chemical dosing), P3 (ultrafiltration (UF)), P5 (reverse osmosis (RO)); peak score 160.3x the threshold. Most likely interpretation: illegal combination of actuator states (actuator manipulation).",
+  "category": "actuator_manipulation",
+  "category_label": "illegal combination of actuator states (actuator manipulation)",
+  "reasons": [
+   "top contributors are actuators: P301, MV501"
+  ],
+  "evidence": [
+   "LSLL203 (NaOCl tank low-low level switch): values [1.0] (normal [0.0, 1.0])",
+   "P301 (UF feed pump (duty)): values [2.0] (normal [1.0, 2.0])",
+   "MV501 (RO permeate valve (paired with MV502)): values [0.0, 1.0, 2.0] (normal [0.0, 1.0, 2.0])",
+   "Rule: P501 took value(s) [8.5600004196167] never seen in normal operation (normal [0.0, 10.0])."
+  ],
+  "similar_known_attacks": [
+   "A12 attack 5: Stage 5 valve manipulation (repeat)",
+   "A12 attack 1: Stage 5 valve manipulation: MV503/504 open, MV501/502 close"
+  ],
+  "pattern": "Actuator manipulation (illegal valve or pump combination)",
+  "process_context": [
+   "\nHigh-pressure pumps P501 (duty) and P502 (standby) push water through the RO membranes.\nPIT501 is the RO feed pressure (about 245 kPa in operation), PIT502 the permeate pressure and\nPIT503 the reject pressure. FIT501-FIT504 are feed, permeate, reject and recirculation flows.\nAIT501 (pH), AIT502 (ORP), AIT503 (feed conductivity) and AIT504 (permeate conductivity)\nmonitor water quality. Valves MV50"
+  ],
+  "relevant_invariants": [
+   "Constant in the steady-state part of the normal A11 data (start-up excluded): P102, P2_STATE, P202, P204, P206, P207, P208, LS201, LS202, LSL203, LSLL203, MV301, MV303, P302, P4_STATE, AIT401, P401, P402, P403, P404, UV401, LS401, P5_STATE, PIT502, P501, P502, MV501, MV502, MV503, MV504, P6_STATE, P602, P603, LSH602, LSL602, LSH603, LSL603. Any change of these tags is suspicious: standby pumps, bypass valves or alarms that should stay quiet.",
+   "When P301 is ON/open (2), DPIT301 is normally between 15.5 and 15.9; when P301 is OFF/closed (1), DPIT301 is between 2.55 and 2.67 (effect size 9.3)."
+  ],
+  "recommended_checks": [
+   "Compare commanded and actual valve/pump positions.",
+   "Check the PLC mode (auto/manual) and recent operator commands.",
+   "Check downstream flows and levels for the expected reaction."
+  ],
+  "confidence": "high",
+  "sources": [
+   "02_tag_dictionary#24",
+   "02_tag_dictionary#36",
+   "02_tag_dictionary#65",
+   "02_tag_dictionary#61",
+   "02_tag_dictionary#62",
+   "03_attack_and_fault_patterns#4",
+   "04_a12_attack_catalog#5",
+   "04_a12_attack_catalog#1",
+   "05_mined_invariants#13",
+   "05_mined_invariants#9",
+   "01_process_overview#6"
+  ],
+  "event_id": "a12-GMM-001",
+  "backend": "template"
+ },
+ {
+  "summary": "Between 14:04:54 and 14:12:00 (427 s) the GMM detector and the rule layer flagged an anomaly in P1 (raw water supply), P2 (chemical dosing); peak score 2.5x the threshold. Most likely interpretation: illegal combination of actuator states (actuator manipulation).",
+  "category": "actuator_manipulation",
+  "category_label": "illegal combination of actuator states (actuator manipulation)",
+  "reasons": [
+   "top contributors are actuators: P101, P201"
+  ],
+  "evidence": [
+   "P101 (Raw water transfer pump (duty) P1->P2): values [1.0, 2.0] (normal [1.0, 2.0])",
+   "P201 (NaCl dosing pump (duty)): values [1.0, 2.0] (normal [1.0, 2.0])",
+   "FIT201 (Flow through chemical dosing section): 0 to 2.358 m3/h vs normal 0 to 2.686 -> in-range",
+   "Rule: LIT101 left its normal range [408.182, 911.064] (observed 911.292 to 960.436)."
+  ],
+  "similar_known_attacks": [
+   "A12 attack 2: Stage 1 flow disruption: MV101 open, P101 & P102 stop",
+   "A12 attack 6: Tank overflow via LIT101 spoofing (Schneider demo attack 01)"
+  ],
+  "pattern": "Actuator manipulation (illegal valve or pump combination)",
+  "process_context": [
+   "\nRaw water enters tank T101 through motorised valve MV101. LIT101 measures the T101 level and\nFIT101 the inflow. Pumps P101 (duty) and P102 (standby) transfer raw water to stage P2. The PLC\nopens MV101 when LIT101 is low and closes it when LIT101 is high, and runs P101 when the\ndownstream UF feed tank T301 (LIT301) needs water. In normal 2026 operation LIT101 oscillates\nbetween about 480 and 830 m"
+  ],
+  "relevant_invariants": [
+   "When P201 is ON/open (2), FIT201 is normally between 2.34 and 2.39; when P201 is OFF/closed (1), FIT201 is between 0 and 0 (effect size 20.6).",
+   "When P101 is ON/open (2), FIT201 is normally between 2.34 and 2.39; when P101 is OFF/closed (1), FIT201 is between 0 and 0 (effect size 12.9)."
+  ],
+  "recommended_checks": [
+   "Compare commanded and actual valve/pump positions.",
+   "Check the PLC mode (auto/manual) and recent operator commands.",
+   "Check downstream flows and levels for the expected reaction."
+  ],
+  "confidence": "high",
+  "sources": [
+   "02_tag_dictionary#5",
+   "02_tag_dictionary#13",
+   "02_tag_dictionary#8",
+   "02_tag_dictionary#2",
+   "03_attack_and_fault_patterns#4",
+   "04_a12_attack_catalog#2",
+   "04_a12_attack_catalog#6",
+   "05_mined_invariants#4",
+   "05_mined_invariants#7",
+   "01_process_overview#2"
+  ],
+  "event_id": "a12-GMM-002",
+  "backend": "template"
+ },
+ {
+  "summary": "Between 14:45:26 and 14:49:53 (268 s) the GMM detector and the rule layer flagged an anomaly in P2 (chemical dosing), P5 (reverse osmosis (RO)), P6 (product water and UF backwash); peak score 0.1x the threshold. Most likely interpretation: activation of standby or unused equipment.",
+  "category": "standby_activation",
+  "category_label": "activation of standby or unused equipment",
+  "reasons": [
+   "normally-off pump(s) switched on: P202, P204, P206"
+  ],
+  "evidence": [
+   "P205 (NaOCl dosing pump (duty)): values [2.0] (normal [1.0, 2.0])",
+   "PIT501 (RO feed (high) pressure): 238.6 to 239.1 kPa vs normal 242.4 to 250.1 -> low",
+   "LSH601 (T601 high level switch): values [0.0, 1.0] (normal [0.0, 1.0])",
+   "Rule: P202 took value(s) [2.0] never seen in normal operation (normal [1.0]).",
+   "Rule: P204 took value(s) [2.0] never seen in normal operation (normal [1.0]).",
+   "Rule: P206 took value(s) [2.0] never seen in normal operation (normal [1.0])."
+  ],
+  "similar_known_attacks": [
+   "A12 attack 3: Florida water plant scenario: dosing pump activation & sensor spoofing",
+   "A12 attack 8: RO backwash diversion: MV302 close, MV303 open"
+  ],
+  "pattern": "Activation of standby or unused equipment",
+  "process_context": [
+   "\nWater from P1 is chemically conditioned before ultrafiltration. Dosing pumps add sodium chloride\n(NaCl, P201/P202), hydrochloric acid (HCl, P203/P204) and sodium hypochlorite (NaOCl, P205/P206);\nin each pair the first pump is duty and the second standby. P207/P208 are additional dosing\npumps (to confirm). Analysers measure conductivity (AIT201), pH (AIT202) and ORP (oxidation\nreduction potential,"
+  ],
+  "relevant_invariants": [
+   "Constant in the steady-state part of the normal A11 data (start-up excluded): P102, P2_STATE, P202, P204, P206, P207, P208, LS201, LS202, LSL203, LSLL203, MV301, MV303, P302, P4_STATE, AIT401, P401, P402, P403, P404, UV401, LS401, P5_STATE, PIT502, P501, P502, MV501, MV502, MV503, MV504, P6_STATE, P602, P603, LSH602, LSL602, LSH603, LSL603. Any change of these tags is suspicious: standby pumps, bypass valves or alarms that should stay quiet."
+  ],
+  "recommended_checks": [
+   "Check the HMI/PLC command log for who switched the equipment and whether maintenance was scheduled.",
+   "Verify physically that the standby unit is running.",
+   "If it is a dosing pump, check chemical concentrations immediately (AIT201-203)."
+  ],
+  "confidence": "medium",
+  "sources": [
+   "02_tag_dictionary#17",
+   "02_tag_dictionary#58",
+   "02_tag_dictionary#77",
+   "02_tag_dictionary#14",
+   "03_attack_and_fault_patterns#5",
+   "04_a12_attack_catalog#3",
+   "04_a12_attack_catalog#8",
+   "05_mined_invariants#13",
+   "01_process_overview#3"
+  ],
+  "event_id": "a12-GMM-003",
+  "backend": "template"
+ },
+ {
+  "summary": "Between 14:54:50 and 15:02:41 (472 s) the GMM detector and the rule layer flagged an anomaly in P1 (raw water supply); peak score 2.3x the threshold. Most likely interpretation: sensor value forced outside its normal range (spoofing or stuck sensor).",
+  "category": "spoof_out_of_range",
+  "category_label": "sensor value forced outside its normal range (spoofing or stuck sensor)",
+  "reasons": [
+   "LIT101 outside normal range and flat (74% of steps unchanged)"
+  ],
+  "evidence": [
+   "FIT101 (Raw water inflow to T101): 0 to 3.888 m3/h vs normal 0 to 5.942 -> high",
+   "LIT101 (Raw water tank T101 level): 400 to 980.8 mm vs normal 494 to 833.6 -> low",
+   "MV101 (Raw water inlet valve to T101): values [0.0, 1.0, 2.0] (normal [0.0, 1.0, 2.0])",
+   "Rule: LIT101 left its normal range [408.182, 911.064] (observed 400.0 to 980.769)."
+  ],
+  "similar_known_attacks": [
+   "A12 attack 4: Tank overflow via LIT101 spoofing (Schneider demo attack 01)",
+   "A12 attack 2: Stage 1 flow disruption: MV101 open, P101 & P102 stop"
+  ],
+  "pattern": "Sensor spoofing with an out-of-range constant value",
+  "process_context": [
+   "\nRaw water enters tank T101 through motorised valve MV101. LIT101 measures the T101 level and\nFIT101 the inflow. Pumps P101 (duty) and P102 (standby) transfer raw water to stage P2. The PLC\nopens MV101 when LIT101 is low and closes it when LIT101 is high, and runs P101 when the\ndownstream UF feed tank T301 (LIT301) needs water. In normal 2026 operation LIT101 oscillates\nbetween about 480 and 830 m"
+  ],
+  "relevant_invariants": [
+   "When MV101 is ON/open (2), FIT101 is normally between 2.56 and 2.58; when MV101 is OFF/closed (1), FIT101 is between 0 and 0 (effect size 27.5)."
+  ],
+  "recommended_checks": [
+   "Compare the reading with physically related tags (flows, connected tank levels, pump states).",
+   "Inspect the transmitter locally and check PLC register writes.",
+   "Put the affected control loop in manual if the value drives an actuator."
+  ],
+  "confidence": "high",
+  "sources": [
+   "02_tag_dictionary#3",
+   "02_tag_dictionary#2",
+   "02_tag_dictionary#4",
+   "03_attack_and_fault_patterns#1",
+   "04_a12_attack_catalog#4",
+   "04_a12_attack_catalog#2",
+   "05_mined_invariants#1",
+   "01_process_overview#2"
+  ],
+  "event_id": "a12-GMM-004",
+  "backend": "template"
+ },
+ {
+  "summary": "Between 15:04:55 and 15:10:35 (341 s) the GMM detector and the rule layer flagged an anomaly in P2 (chemical dosing), P4 (dechlorination (UV + NaHSO3)), P5 (reverse osmosis (RO)); peak score 148.5x the threshold. Most likely interpretation: sensor value forced outside its normal range (spoofing or stuck sensor).",
+  "category": "spoof_out_of_range",
+  "category_label": "sensor value forced outside its normal range (spoofing or stuck sensor)",
+  "reasons": [
+   "FIT504 outside normal range and flat (78% of steps unchanged)"
+  ],
+  "evidence": [
+   "LSLL203 (NaOCl tank low-low level switch): values [1.0] (normal [0.0, 1.0])",
+   "MV501 (RO permeate valve (paired with MV502)): values [0.0, 1.0, 2.0] (normal [0.0, 1.0, 2.0])",
+   "P401 (RO feed pump (duty)): values [1.0, 2.0] (normal [1.0, 2.0])",
+   "Rule: P501 took value(s) [8.760000228881836] never seen in normal operation (normal [0.0, 10.0]).",
+   "Rule: FIT504 left its normal range [-0.012, 0.07] (observed 0.07 to 0.072)."
+  ],
+  "similar_known_attacks": [
+   "A12 attack 1: Stage 5 valve manipulation: MV503/504 open, MV501/502 close",
+   "A12 attack 4: Tank overflow via LIT101 spoofing (Schneider demo attack 01)"
+  ],
+  "pattern": "Sensor spoofing with an out-of-range constant value",
+  "process_context": [
+   "\nHigh-pressure pumps P501 (duty) and P502 (standby) push water through the RO membranes.\nPIT501 is the RO feed pressure (about 245 kPa in operation), PIT502 the permeate pressure and\nPIT503 the reject pressure. FIT501-FIT504 are feed, permeate, reject and recirculation flows.\nAIT501 (pH), AIT502 (ORP), AIT503 (feed conductivity) and AIT504 (permeate conductivity)\nmonitor water quality. Valves MV50"
+  ],
+  "relevant_invariants": [
+   "Constant in the steady-state part of the normal A11 data (start-up excluded): P102, P2_STATE, P202, P204, P206, P207, P208, LS201, LS202, LSL203, LSLL203, MV301, MV303, P302, P4_STATE, AIT401, P401, P402, P403, P404, UV401, LS401, P5_STATE, PIT502, P501, P502, MV501, MV502, MV503, MV504, P6_STATE, P602, P603, LSH602, LSL602, LSH603, LSL603. Any change of these tags is suspicious: standby pumps, bypass valves or alarms that should stay quiet.",
+   "In normal operation these groups are identical more than 99.9% of the time: P201, P203; P401, P403, UV401; MV501, MV502; MV503, MV504. If one member of a group differs from the others, an actuator was operated individually (manual command or attack)."
+  ],
+  "recommended_checks": [
+   "Compare the reading with physically related tags (flows, connected tank levels, pump states).",
+   "Inspect the transmitter locally and check PLC register writes.",
+   "Put the affected control loop in manual if the value drives an actuator."
+  ],
+  "confidence": "high",
+  "sources": [
+   "02_tag_dictionary#24",
+   "02_tag_dictionary#65",
+   "02_tag_dictionary#43",
+   "02_tag_dictionary#61",
+   "02_tag_dictionary#62",
+   "03_attack_and_fault_patterns#1",
+   "04_a12_attack_catalog#1",
+   "04_a12_attack_catalog#4",
+   "05_mined_invariants#13",
+   "05_mined_invariants#12",
+   "01_process_overview#6"
+  ],
+  "event_id": "a12-GMM-005",
+  "backend": "template"
+ },
+ {
+  "summary": "Between 15:25:19 and 15:30:02 (284 s) the GMM detector and the rule layer flagged an anomaly in P1 (raw water supply), P2 (chemical dosing), P5 (reverse osmosis (RO)); peak score 0.5x the threshold. Most likely interpretation: activation of standby or unused equipment.",
+  "category": "standby_activation",
+  "category_label": "activation of standby or unused equipment",
+  "reasons": [
+   "normally-off pump(s) switched on: P102"
+  ],
+  "evidence": [
+   "FIT201 (Flow through chemical dosing section): 0 to 2.715 m3/h vs normal 0 to 2.686 -> high",
+   "P101 (Raw water transfer pump (duty) P1->P2): values [2.0] (normal [1.0, 2.0])",
+   "PIT501 (RO feed (high) pressure): 237.2 to 237.8 kPa vs normal 242.4 to 250.1 -> low",
+   "Rule: P102 took value(s) [2.0] never seen in normal operation (normal [1.0])."
+  ],
+  "similar_known_attacks": [
+   "A12 attack 2: Stage 1 flow disruption: MV101 open, P101 & P102 stop",
+   "A12 attack 7: Stage 2 parallel pump override: MV201 open, P101 & P102 run"
+  ],
+  "pattern": "Activation of standby or unused equipment",
+  "process_context": [
+   "\nRaw water enters tank T101 through motorised valve MV101. LIT101 measures the T101 level and\nFIT101 the inflow. Pumps P101 (duty) and P102 (standby) transfer raw water to stage P2. The PLC\nopens MV101 when LIT101 is low and closes it when LIT101 is high, and runs P101 when the\ndownstream UF feed tank T301 (LIT301) needs water. In normal 2026 operation LIT101 oscillates\nbetween about 480 and 830 m"
+  ],
+  "relevant_invariants": [
+   "When P101 is ON/open (2), FIT201 is normally between 2.34 and 2.39; when P101 is OFF/closed (1), FIT201 is between 0 and 0 (effect size 12.9).",
+   "When P201 is ON/open (2), FIT201 is normally between 2.34 and 2.39; when P201 is OFF/closed (1), FIT201 is between 0 and 0 (effect size 20.6)."
+  ],
+  "recommended_checks": [
+   "Check the HMI/PLC command log for who switched the equipment and whether maintenance was scheduled.",
+   "Verify physically that the standby unit is running.",
+   "If it is a dosing pump, check chemical concentrations immediately (AIT201-203)."
+  ],
+  "confidence": "medium",
+  "sources": [
+   "02_tag_dictionary#8",
+   "02_tag_dictionary#5",
+   "02_tag_dictionary#58",
+   "02_tag_dictionary#6",
+   "03_attack_and_fault_patterns#5",
+   "04_a12_attack_catalog#2",
+   "04_a12_attack_catalog#7",
+   "05_mined_invariants#7",
+   "05_mined_invariants#4",
+   "01_process_overview#2"
+  ],
+  "event_id": "a12-GMM-006",
+  "backend": "template"
+ },
+ {
+  "summary": "Between 15:45:01 and 15:53:25 (505 s) the GMM detector and the rule layer flagged an anomaly in P3 (ultrafiltration (UF)), P6 (product water and UF backwash); peak score 2.1x the threshold. Most likely interpretation: activation of standby or unused equipment.",
+  "category": "standby_activation",
+  "category_label": "activation of standby or unused equipment",
+  "reasons": [
+   "normally-off pump(s) switched on: P602"
+  ],
+  "evidence": [
+   "P601 (Product water pump (to T101 / WaDi)): values [1.0, 2.0] (normal [1.0, 2.0])",
+   "FIT602 (Product water outflow): 0.6688 to 2.666 m3/h vs normal 0.4503 to 2.856 -> in-range",
+   "P301 (UF feed pump (duty)): values [1.0, 2.0] (normal [1.0, 2.0])",
+   "Rule: P3_STATE took value(s) [9.0, 10.0, 12.0, 14.0, 15.0, 16.0] never seen in normal operation (normal [2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 99.0]).",
+   "Rule: MV301 took value(s) [0.0, 2.0] never seen in normal operation (normal [1.0]).",
+   "Rule: MV303 took value(s) [0.0, 2.0] never seen in normal operation (normal [1.0]).",
+   "Rule: P602 took value(s) [2.0] never seen in normal operation (normal [1.0]).",
+   "Rule: DPIT301 left its normal range [-0.256, 19.239] (observed 19.291 to 20.555).",
+   "Rule: FIT601 left its normal range [-0.001, 0.003] (observed 0.004 to 1.784)."
+  ],
+  "similar_known_attacks": [
+   "A12 attack 8: RO backwash diversion: MV302 close, MV303 open",
+   "A12 attack 3: Florida water plant scenario: dosing pump activation & sensor spoofing"
+  ],
+  "pattern": "Activation of standby or unused equipment",
+  "process_context": [
+   "\nRO permeate is stored in tank T601 (level LIT601); T602 (LIT602) is the backwash water tank.\nP601 sends product water out (back to the raw water tank or, in CrossOver mode, to WaDi), P602\nfeeds the UF backwash, P603 is a spare pump. FIT601 is the backwash flow (almost always 0 in\n2026) and FIT602 a product flow with pulse-like behaviour. LSH601/LSL601 etc. are high/low level\nswitches. Spoofing LI"
+  ],
+  "relevant_invariants": [
+   "When P601 is ON/open (2), FIT602 is normally between 2.73 and 2.92; when P601 is OFF/closed (1), FIT602 is between 0.782 and 0.942 (effect size 11.8).",
+   "When P301 is ON/open (2), DPIT301 is normally between 15.5 and 15.9; when P301 is OFF/closed (1), DPIT301 is between 2.55 and 2.67 (effect size 9.3)."
+  ],
+  "recommended_checks": [
+   "Check the HMI/PLC command log for who switched the equipment and whether maintenance was scheduled.",
+   "Verify physically that the standby unit is running.",
+   "If it is a dosing pump, check chemical concentrations immediately (AIT201-203)."
+  ],
+  "confidence": "high",
+  "sources": [
+   "02_tag_dictionary#74",
+   "02_tag_dictionary#73",
+   "02_tag_dictionary#36",
+   "02_tag_dictionary#25",
+   "03_attack_and_fault_patterns#5",
+   "04_a12_attack_catalog#8",
+   "04_a12_attack_catalog#3",
+   "05_mined_invariants#8",
+   "05_mined_invariants#9",
+   "01_process_overview#7"
+  ],
+  "event_id": "a12-GMM-007",
+  "backend": "template"
+ },
+ {
+  "summary": "Between 16:09:52 and 16:15:02 (311 s) the GMM detector and the rule layer flagged an anomaly in P2 (chemical dosing), P3 (ultrafiltration (UF)); peak score 21.2x the threshold. Most likely interpretation: sensor value forced outside its normal range (spoofing or stuck sensor).",
+  "category": "spoof_out_of_range",
+  "category_label": "sensor value forced outside its normal range (spoofing or stuck sensor)",
+  "reasons": [
+   "DPIT301 outside normal range and flat (99% of steps unchanged)"
+  ],
+  "evidence": [
+   "P205 (NaOCl dosing pump (duty)): values [1.0, 2.0] (normal [1.0, 2.0])",
+   "P201 (NaCl dosing pump (duty)): values [1.0, 2.0] (normal [1.0, 2.0])",
+   "P301 (UF feed pump (duty)): values [1.0] (normal [1.0, 2.0])",
+   "Rule: DPIT301 left its normal range [-0.256, 19.239] (observed 45.0 to 45.0)."
+  ],
+  "similar_known_attacks": [
+   "A12 attack 9: Forced backwash trigger via DPIT301 spoofing (Ensign pre-UAT attack 1)",
+   "A12 attack 3: Florida water plant scenario: dosing pump activation & sensor spoofing"
+  ],
+  "pattern": "Sensor spoofing with an out-of-range constant value",
+  "process_context": [
+   "\nWater from P1 is chemically conditioned before ultrafiltration. Dosing pumps add sodium chloride\n(NaCl, P201/P202), hydrochloric acid (HCl, P203/P204) and sodium hypochlorite (NaOCl, P205/P206);\nin each pair the first pump is duty and the second standby. P207/P208 are additional dosing\npumps (to confirm). Analysers measure conductivity (AIT201), pH (AIT202) and ORP (oxidation\nreduction potential,"
+  ],
+  "relevant_invariants": [
+   "When P301 is ON/open (2), DPIT301 is normally between 15.5 and 15.9; when P301 is OFF/closed (1), DPIT301 is between 2.55 and 2.67 (effect size 9.3).",
+   "When P301 is ON/open (2), FIT301 is normally between 1.76 and 1.79; when P301 is OFF/closed (1), FIT301 is between 0 and 0.000256 (effect size 14.1)."
+  ],
+  "recommended_checks": [
+   "Compare the reading with physically related tags (flows, connected tank levels, pump states).",
+   "Inspect the transmitter locally and check PLC register writes.",
+   "Put the affected control loop in manual if the value drives an actuator."
+  ],
+  "confidence": "high",
+  "sources": [
+   "02_tag_dictionary#17",
+   "02_tag_dictionary#13",
+   "02_tag_dictionary#36",
+   "02_tag_dictionary#31",
+   "03_attack_and_fault_patterns#1",
+   "04_a12_attack_catalog#9",
+   "04_a12_attack_catalog#3",
+   "05_mined_invariants#9",
+   "05_mined_invariants#6",
+   "01_process_overview#3"
+  ],
+  "event_id": "a12-GMM-008",
+  "backend": "template"
+ },
+ {
+  "summary": "Between 16:35:38 and 16:39:52 (255 s) the GMM detector and the rule layer flagged an anomaly in P1 (raw water supply), P2 (chemical dosing), P6 (product water and UF backwash); peak score 0.4x the threshold. Most likely interpretation: oscillating / multi-value sensor values (spoofing or noise).",
+  "category": "oscillation",
+  "category_label": "oscillating / multi-value sensor values (spoofing or noise)",
+  "reasons": [
+   "LIT601 jumps back and forth (32.24 direction changes/min, steps up to 5.09 sigma)"
+  ],
+  "evidence": [
+   "P101 (Raw water transfer pump (duty) P1->P2): values [1.0, 2.0] (normal [1.0, 2.0])",
+   "P601 (Product water pump (to T101 / WaDi)): values [1.0] (normal [1.0, 2.0])",
+   "MV201 (Valve from dosing section to UF feed tank T301): values [0.0, 1.0, 2.0] (normal [0.0, 1.0, 2.0])",
+   "Rule: LIT601 left its normal range [-54.505, 735.036] (observed 800.0 to 1000.0)."
+  ],
+  "similar_known_attacks": [
+   "A12 attack 10: Multi-value level oscillation: LIT601 spoofing (Ensign pre-UAT attack 3)",
+   "A12 attack 7: Stage 2 parallel pump override: MV201 open, P101 & P102 run"
+  ],
+  "pattern": "Oscillating or multi-value spoofing",
+  "process_context": [
+   "\nRaw water enters tank T101 through motorised valve MV101. LIT101 measures the T101 level and\nFIT101 the inflow. Pumps P101 (duty) and P102 (standby) transfer raw water to stage P2. The PLC\nopens MV101 when LIT101 is low and closes it when LIT101 is high, and runs P101 when the\ndownstream UF feed tank T301 (LIT301) needs water. In normal 2026 operation LIT101 oscillates\nbetween about 480 and 830 m"
+  ],
+  "relevant_invariants": [
+   "When P601 is ON/open (2), FIT602 is normally between 2.73 and 2.92; when P601 is OFF/closed (1), FIT602 is between 0.782 and 0.942 (effect size 11.8).",
+   "When MV201 is ON/open (2), FIT201 is normally between 2.34 and 2.39; when MV201 is OFF/closed (1), FIT201 is between 0 and 0 (effect size 16.4)."
+  ],
+  "recommended_checks": [
+   "Check whether the rate of change is physically possible for the tank/process.",
+   "Inspect wiring, grounding and PLC tag writes."
+  ],
+  "confidence": "medium",
+  "sources": [
+   "02_tag_dictionary#5",
+   "02_tag_dictionary#74",
+   "02_tag_dictionary#12",
+   "02_tag_dictionary#70",
+   "03_attack_and_fault_patterns#3",
+   "04_a12_attack_catalog#10",
+   "04_a12_attack_catalog#7",
+   "05_mined_invariants#8",
+   "05_mined_invariants#5",
+   "01_process_overview#2"
+  ],
+  "event_id": "a12-GMM-009",
+  "backend": "template"
+ }
+]

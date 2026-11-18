@@ -1,0 +1,6 @@
+data/
+__pycache__/
+*.pyc
+outputs/runs/*/contrib_*.npy
+outputs/runs/*/*.parquet
+.ipynb_checkpoints/

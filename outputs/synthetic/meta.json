@@ -1,0 +1,10 @@
+{
+ "train_sets": "A11+A10",
+ "drop_ait": true,
+ "realisations": [
+  0,
+  1,
+  2
+ ],
+ "n_injections": 40
+}
