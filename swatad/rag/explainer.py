@@ -196,7 +196,7 @@ class ClaudeBackend:
 
     def __init__(self, model: str = "claude-opus-5-5"):
         import anthropic  # imported lazily so the package stays optional
-        self.client = anthropic.Anthropic()
+        self.client = anthropic.Anthropic(timeout=180.0, max_retries=2)
         self.model = model
 
     def generate(self, ev, category, reasons, retrieved):
@@ -204,10 +204,9 @@ class ClaudeBackend:
         prompt = (f"Anomaly event:\n```json\n{json.dumps(ev, indent=1)}\n```\n\n"
                   f"Rule-based pre-classification: {category} ({'; '.join(reasons)})\n\n"
                   f"Knowledge base excerpts:\n{ctx}")
-        resp = self.client.beta.messages.create(
+        resp = self.client.messages.create(
             model=self.model, max_tokens=16000,
             thinking={"type": "adaptive"},
-            betas=["server-side-fallback-2026-07-01"], fallbacks="default",
             system=self.SYSTEM, messages=[{"role": "user", "content": prompt}])
         if resp.stop_reason == "refusal":
             raise RuntimeError("the model declined to answer")

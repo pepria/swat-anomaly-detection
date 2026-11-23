@@ -10,6 +10,7 @@ Writes
     outputs/explanations/<run>__<model>_eval.csv  explanation quality per detected attack
 """
 import json
+import os
 import re
 import sys
 from pathlib import Path
@@ -35,7 +36,13 @@ name = f"{run}__{model}"
 print(f"{len(events)} anomaly events")
 
 E = Explainer()
-expl = [E.explain(ev) for ev in events]
+_saved = C.OUT_DIR / "explanations" / f"{name}.json"
+if os.environ.get("REUSE_EXPL") and _saved.exists():   # skip repeated LLM calls
+    expl = json.loads(_saved.read_text())
+    expl = [dict(x, markdown="") for x in expl]
+    print("reusing saved explanations")
+else:
+    expl = [E.explain(ev) for ev in events]
 md = [f"# Explanations: {run}, detector {model} (+rules)\n",
       f"Backend: {E.backend.name}. {len(events)} events. Ground-truth lines are added for evaluation "
       "only; the explainer never sees them.\n"]
@@ -66,7 +73,7 @@ if meta["setup"] == "a12":
     rows = []
     catalog = {c.title.split(":")[0].replace("A12 attack ", ""): c.chunk_id
                for c in E.retriever.chunks if c.source.startswith("04_")}
-    E_loo = {aid: Explainer(exclude_chunks=[cid]) for aid, cid in catalog.items()}
+    E_loo = {aid: Explainer(backend="template", exclude_chunks=[cid]) for aid, cid in catalog.items()}
     seen = set()
     for ev, x in zip(events, expl):
         for g in ev.get("ground_truth_eval_only", []):
