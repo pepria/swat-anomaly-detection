@@ -117,6 +117,9 @@ def classify(ev: dict) -> tuple[str, list[str]]:
     return "multivariate", reasons
 
 
+CATALOG_TAG_BOOST = float(os.environ.get("SWAT_CATALOG_BOOST", 0.6))
+
+
 def build_query(ev: dict, category: str) -> tuple[str, list[str]]:
     tags = [t["tag"] for t in ev["top_contributors"][:3]]
     tags += [r["tag"].split(".")[0] for r in ev.get("rule_hits", []) if not r.get("already_active_before")]
@@ -263,7 +266,10 @@ class Explainer:
         add(R.search(CATEGORIES[category][1] + " " + query, tags, k=2 + len(ex),
                      sources=["03_attack_and_fault_patterns.md"])[:1])
         # 3) known incidents, 4) physical invariants, 5) process description
-        add([x for x in R.search(query, tags, k=2 + len(ex), sources=["04_a12_attack_catalog.md"])
+        # (the catalog is searched with a stronger tag boost: the attacked tags are the most
+        # reliable evidence, while the wording of the query is biased by the guessed category)
+        add([x for x in R.search(query, tags, k=2 + len(ex), sources=["04_a12_attack_catalog.md"],
+                                 tag_boost=CATALOG_TAG_BOOST)
              if x[0].chunk_id not in ex][:2])
         add([x for x in R.search(query, tags, k=2, sources=["05_mined_invariants.md"]) if x[1] > 0.05][:2])
         add(R.search(query, tags, k=1, sources=["01_process_overview.md"]))
