@@ -117,6 +117,59 @@ def classify(ev: dict) -> tuple[str, list[str]]:
     return "multivariate", reasons
 
 
+WEAK_CATEGORIES = {"drift_or_inrange", "out_of_range_excursion"}
+_LEVELS = ["low", "medium", "high"]
+
+
+def calibrate_confidence(ev: dict, category: str, reasons: list[str], raw: str) -> tuple[str, list[str]]:
+    """Cap the backend's self-reported confidence by how much evidence the event itself carries.
+
+    Counts simple, checkable facts (no ground truth, no attack times):
+      + score well above the threshold (>= 2x) / - barely above it (< 1.5x)
+      + at least one rule violation that is new (not already active before the event)
+      + one tag clearly dominates the model contribution (share >= 0.4)
+      + the classifier found a specific signature (not the drift / generic out-of-range fallback)
+      - a "spoofed value" signature that rests only on marginal range violations (< 5 % of the range)
+      - very short event (< 60 s)
+      - most rule hits were already active before the event (lingering earlier anomaly)
+    score >= 3 -> up to 'high', 1-2 -> up to 'medium', <= 0 -> 'low'. The result is
+    min(backend confidence, cap): calibration can lower a confidence, never raise it.
+    """
+    pts, why = 0, []
+    ratio = ev.get("max_score_ratio", 0)
+    if ratio >= 2:
+        pts += 1; why.append(f"+1 score {ratio:.1f}x the threshold")
+    elif ratio < 1.5:
+        pts -= 1; why.append(f"-1 score only {ratio:.1f}x the threshold")
+    hits = ev.get("rule_hits", [])
+    new = [r for r in hits if not r.get("already_active_before")]
+    if new:
+        pts += 1; why.append(f"+1 {len(new)} new rule violation(s)")
+    if hits and len(new) <= len(hits) / 2:
+        pts -= 1; why.append("-1 most rule violations were already active before the event")
+    oor = [r for r in new if r.get("rule") == "out_of_range"]
+
+    def _excess(r):
+        lo, hi = r["normal_range"]
+        return max(r["observed_max"] - hi, lo - r["observed_min"], 0) / max(hi - lo, 1e-9)
+    marginal = bool(oor) and all(_excess(r) < 0.05 for r in oor)
+    top = ev.get("top_contributors", [])
+    if top and top[0].get("share", 0) >= 0.4:
+        pts += 1; why.append(f"+1 {top[0]['tag']} dominates the contribution ({top[0]['share']:.0%})")
+    if category == "spoof_out_of_range" and marginal:
+        pts -= 1; why.append("-1 the 'spoofed value' only exceeds its range marginally (< 5% of the range)")
+    elif reasons and category not in WEAK_CATEGORIES:
+        pts += 1; why.append("+1 specific signature found")
+    if ev.get("duration_s", 999) < 60:
+        pts -= 1; why.append(f"-1 short event ({ev['duration_s']} s)")
+    cap = "high" if pts >= 3 else "medium" if pts >= 1 else "low"
+    i = min(_LEVELS.index(raw) if raw in _LEVELS else 1, _LEVELS.index(cap))
+    return _LEVELS[i], why + [f"evidence score {pts} -> cap {cap}"]
+
+
+CATALOG_TAG_BOOST = float(os.environ.get("SWAT_CATALOG_BOOST", 0.6))
+
+
 def build_query(ev: dict, category: str) -> tuple[str, list[str]]:
     tags = [t["tag"] for t in ev["top_contributors"][:3]]
     tags += [r["tag"].split(".")[0] for r in ev.get("rule_hits", []) if not r.get("already_active_before")]
@@ -263,7 +316,10 @@ class Explainer:
         add(R.search(CATEGORIES[category][1] + " " + query, tags, k=2 + len(ex),
                      sources=["03_attack_and_fault_patterns.md"])[:1])
         # 3) known incidents, 4) physical invariants, 5) process description
-        add([x for x in R.search(query, tags, k=2 + len(ex), sources=["04_a12_attack_catalog.md"])
+        # (the catalog is searched with a stronger tag boost: the attacked tags are the most
+        # reliable evidence, while the wording of the query is biased by the guessed category)
+        add([x for x in R.search(query, tags, k=2 + len(ex), sources=["04_a12_attack_catalog.md"],
+                                 tag_boost=CATALOG_TAG_BOOST)
              if x[0].chunk_id not in ex][:2])
         add([x for x in R.search(query, tags, k=2, sources=["05_mined_invariants.md"]) if x[1] > 0.05][:2])
         add(R.search(query, tags, k=1, sources=["01_process_overview.md"]))
@@ -276,6 +332,9 @@ class Explainer:
         query, tags = build_query(ev_in, category)
         retrieved = self.retrieve(query, tags, category)
         ex = self.backend.generate(ev_in, category, reasons, retrieved)
+        ex["confidence_raw"] = ex.get("confidence")
+        ex["confidence"], ex["confidence_reasons"] = calibrate_confidence(
+            ev_in, category, reasons, str(ex.get("confidence", "medium")).lower())
         ex["event_id"] = ev["event_id"]
         ex["backend"] = self.backend.name
         ex["markdown"] = to_markdown(ev, ex)

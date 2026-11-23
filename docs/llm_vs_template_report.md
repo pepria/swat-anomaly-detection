@@ -42,7 +42,7 @@ Summary: the LLM is better in 9 events (the advantage is small in events 0 and 2
   - `4.5`: a time difference computed by the LLM itself (15:00:30 to 15:04:55).
   - `-568`, `-2.39`, `-1010`: ranges "561–568", "2.34–2.39" and "794–1010" in the text, read as negative numbers by my number extractor.
 - **Knowledge base content**: "Oldsmar", mentioned by the LLM, is in `04_a12_attack_catalog.md` (description of attack 3); it is not outside knowledge.
-- **Pump names in event 3**: "P202 (NaCl), P204 (HCl), P206 (NaOCl)" come from `tags.py` / `02_tag_dictionary.md`. **Those two files contained known errors** (P207/P208 and P603 did not match the official PDF), and the LLM faithfully inherits errors from the knowledge base. These were corrected in a later commit.
+- **Pump names in event 3**: "P202 (NaCl), P204 (HCl), P206 (NaOCl)" come from `tags.py` / `02_tag_dictionary.md`. **Those two files contained known errors** (P207/P208 and P603 did not match the official PDF), and the LLM faithfully inherits errors from the knowledge base. These were corrected in a later commit. After the correction the LLM was rerun (together with the tag-boosted catalog retrieval of the `tag-based-retrieval` branch): no event changed its conclusion. The only visible difference is that P207/P208 are now treated as "other always-off dosing pumps whose state should be checked", instead of "additional dosing pumps (?)". The correction makes the knowledge base more accurate but does not change the evaluation metrics.
 - **Self-correction by the LLM**: it repeatedly points out that the event data disagrees with the dictionary ranges (e.g. the `normal_p99` of FIT101 differs from the dictionary maximum) and lowers its confidence accordingly. The template cannot do that.
 
 ## 4. Problems
@@ -101,3 +101,66 @@ Method: copy the knowledge base and change "Time in data: 13:24:50 to 13:30:30 (
 3. **The weak spot of event 5 remains**: the LLM writes "no close known attack" and still does not find attack 5. The reason is that retrieval did not give it the attack 5 chunk, regardless of times.
 4. **The label of event 1 is more conservative**: it keeps the classifier's `out_of_range_excursion` and adds "possibly stage 1 actuator manipulation", a bit weaker than the plain "actuator manipulation" of the run with times, but the mechanism explanation (MV101 open, P101 stopped, T101 overflow) is still there.
 5. Only 10 events and one run, and the LLM is random, so these are directional conclusions, not statistically significant ones.
+
+## 8. Follow-up: tag-boosted catalog retrieval
+
+Problem (sections 4.2 and 7): for event 5 the retriever returned the chunks of attacks 4 and 9 instead of attack 5, so the LLM said "no known attack matches". Two causes: (a) ranges such as `MV501-504` in the catalog were only read as `MV501`; (b) the wording of the query carries the guessed category (here "sensor spoofing"), which pulled the search towards spoofing attacks.
+
+Change (branch `tag-based-retrieval`, `swatad/rag/retriever.py` and `explainer.py`):
+1. Ranges (`MV501-504`, `P201-P206`) and slash lists (`MV503/504`) are expanded into single tags when chunks are indexed.
+2. The attack catalog is searched with a stronger tag boost (`SWAT_CATALOG_BOOST`, default 0.6, was 0.15), so the attacked tags weigh more than the wording of the query. Boosts of 0.15, 0.3, 0.6 and 1.0 were tried; 0.6 and 1.0 gave the same result.
+
+Results (WinAE + rules, template backend, 10 attacks):
+
+| Metric | Before | After |
+|---|---|---|
+| Correct known attack in the top 2 | 0.8 | **0.9** (attack 5 fixed) |
+| Leave-one-out: top-1 has the same category | 0.5 | **0.4** |
+| Tag in top 3 / top 3 or rules / category correct | 0.7 / 0.9 / 0.7 | unchanged |
+
+LLM rerun with the new retrieval (no attack times in the catalog, corrected tags):
+- **Event 5** is now explained as actuator manipulation in P5 (MV501 changing state, P501 at an unseen speed), related to the known attacks 1 and 5, and the "sensor spoofing" pre-classification is called weakly supported. Confidence rose from low to medium.
+- The other 9 events keep the same retrieved attacks and conclusions. Confidence: high 5 / medium 4 / low 1 (before: high 5 / medium 3 / low 2).
+- Event 6 still misses attack 6, as expected: the detector does not localise it.
+
+Notes:
+- **Trade-off**: tag matching favours attacks that hit the same tags, which helps for repeated attacks (attack 5 repeats attack 1) but not for new ones. In leave-one-out, attack 5 became correct, but attacks 4 and 9 became wrong: with attack 4 removed, the attack that also targets LIT101 is attack 2 (actuator manipulation), which has a different category.
+- With only 10 attacks, 0.1 is one attack, so the changes are directional. The boost was chosen on the same 10 attacks, so there is a risk of overfitting.
+- The "correct known attack" check in `scripts/export_and_explain.py` required the text to start with `A12 attack N:`, which undercounted Claude's wording (0.7 instead of 0.9). It now matches `A12 attack N` as a word in the first two entries.
+
+## 9. Follow-up: confidence calibration
+
+Problem (section 4.3): the LLM said "high" in 8 of 10 events, partly because of the time match, and the template said "high" for event 5, where its category was wrong.
+
+Change (branch `confidence-calibration`, `calibrate_confidence` in `swatad/rag/explainer.py`): the confidence reported by either backend is capped by an evidence score computed from facts in the event only (no ground truth, no attack times). It can lower a confidence, never raise it, and the reasons are saved in `confidence_reasons` (raw value in `confidence_raw`).
+
+| Fact | Points |
+|---|---|
+| score >= 2x the threshold / < 1.5x | +1 / -1 |
+| at least one new rule violation | +1 |
+| most rule violations were already active before the event | -1 |
+| one tag has >= 40% of the model contribution | +1 |
+| the classifier found a specific signature (not the drift / generic out-of-range fallback) | +1 |
+| a "spoofed value" signature that rests only on marginal range violations (< 5% of the range) | -1 instead of +1 |
+| event shorter than 60 s | -1 |
+
+Score >= 3 allows "high", 1-2 "medium", <= 0 "low".
+
+Result on the 10 events (LLM run, template run):
+
+| Event | Ground truth | Template | LLM |
+|---|---|---|---|
+| 0 | attack 1 | high -> high | medium -> medium |
+| 2 | false alarm | low -> low | low -> low |
+| 3, 4, 6, 9 | attacks 3, 3+4, 6+7, 10 | medium, medium, medium, medium (unchanged) | high -> medium |
+| 5 | attacks 4+5 | **high -> medium** (its category was wrong) | medium -> medium |
+| 7 | attack 8 | high -> high | medium -> medium |
+| 8 | attack 9 | high -> high | high -> high |
+
+- LLM "high" drops from 5 events to 1 (event 8: score 45 kPa for 340 s, pump off, strong physical inconsistency). The 4 events where the LLM said high but the evidence score is only 2 are now "medium"; among them event 6 is the one where the explanation misses attack 6.
+- The wrong high of the template (event 5) becomes medium.
+- Among the events that have a ground truth, the share of correct explanations (category right and the attacked tag in the top 3 or rule hits) is, for the LLM, 5 of 8 at "medium" and 1 of 1 at "high".
+
+Caveats:
+- The marginal-exceedance rule was added after seeing event 5, so it is not independent of the data. Its principle is simple (a spoofed value should not be 2% beyond the limit), but it should be checked on another dataset.
+- With 10 events, the thresholds are a reasonable default, not a fitted calibration. The calibrated LLM is now conservative: it says "medium" even in events 3, 4 and 9 where it was right.
