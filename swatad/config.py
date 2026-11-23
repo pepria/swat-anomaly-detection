@@ -16,7 +16,7 @@ PROJECT_DIR = Path(__file__).resolve().parents[1]
 RAW_DIR = Path(os.environ.get("SWAT_RAW_DIR", "/mnt/project-files"))
 WORK_DIR = Path(os.environ.get("SWAT_WORK_DIR", PROJECT_DIR / "data"))
 OUT_DIR = PROJECT_DIR / "outputs"
-KB_DIR = PROJECT_DIR / "knowledge_base"
+KB_DIR = Path(os.environ.get("SWAT_KB_DIR", PROJECT_DIR / "knowledge_base"))
 
 A11_ZIP = RAW_DIR / "SWaT.A11_OTDataset_Feb_26.zip"
 A10_CSV = RAW_DIR / "SWaT.A10_Dec 2023 Historian Data.csv"

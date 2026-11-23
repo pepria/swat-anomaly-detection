@@ -83,12 +83,12 @@ Values observed in normal operation: 1 (100%).
 P206 never changes in normal operation; any change is suspicious (standby or unused equipment activated).
 
 ## P207 (P207.Status)
-Tag P207 belongs to stage P2 (chemical dosing). Type: actuator. Meaning: Additional dosing pump (?). Unit: status.
+Tag P207 belongs to stage P2 (chemical dosing). Type: actuator. Meaning: NaOCl dosing pump for UF cleaning (duty). Unit: status.
 Values observed in normal operation: 1 (100%).
 P207 never changes in normal operation; any change is suspicious (standby or unused equipment activated).
 
 ## P208 (P208.Status)
-Tag P208 belongs to stage P2 (chemical dosing). Type: actuator. Meaning: Additional dosing pump (?). Unit: status.
+Tag P208 belongs to stage P2 (chemical dosing). Type: actuator. Meaning: NaOCl dosing pump for UF cleaning (standby). Unit: status.
 Values observed in normal operation: 1 (100%).
 P208 never changes in normal operation; any change is suspicious (standby or unused equipment activated).
 
@@ -117,17 +117,17 @@ Tag P3_STATE belongs to stage P3 (ultrafiltration (UF)). Type: state. Meaning: P
 Values observed in normal operation: 2 (0%), 3 (0%), 4 (1%), 5 (0%), 6 (0%), 7 (58%), 99 (40%).
 
 ## AIT301 (AIT301.Pv)
-Tag AIT301 belongs to stage P3 (ultrafiltration (UF)). Type: sensor. Meaning: UF feed water pH (?). Unit: pH.
+Tag AIT301 belongs to stage P3 (ultrafiltration (UF)). Type: sensor. Meaning: UF feed water pH (inferred, not in the official equipment list). Unit: pH.
 Normal range 7.71 to 8.28 pH, median 8.07, min 7.18, max 8.32, std 0.106.
 Water-quality analyser: drifts from day to day and week to week; a moderate shift alone is weak evidence of an attack.
 
 ## AIT302 (AIT302.Pv)
-Tag AIT302 belongs to stage P3 (ultrafiltration (UF)). Type: sensor. Meaning: UF feed water ORP (?). Unit: mV.
+Tag AIT302 belongs to stage P3 (ultrafiltration (UF)). Type: sensor. Meaning: UF feed water ORP (inferred, not in the official equipment list). Unit: mV.
 Normal range 111 to 204 mV, median 130, min 110, max 238, std 19.
 Water-quality analyser: drifts from day to day and week to week; a moderate shift alone is weak evidence of an attack.
 
 ## AIT303 (AIT303.Pv)
-Tag AIT303 belongs to stage P3 (ultrafiltration (UF)). Type: sensor. Meaning: UF feed water conductivity (?). Unit: uS/cm.
+Tag AIT303 belongs to stage P3 (ultrafiltration (UF)). Type: sensor. Meaning: UF feed water conductivity (inferred, not in the official equipment list). Unit: uS/cm.
 Normal range 18.9 to 29.3 uS/cm, median 23, min 17.8, max 35.8, std 1.88.
 Water-quality analyser: drifts from day to day and week to week; a moderate shift alone is weak evidence of an attack.
 
@@ -180,11 +180,11 @@ Tag LIT401 belongs to stage P4 (dechlorination (UV + NaHSO3)). Type: sensor. Mea
 Normal range 788 to 1e+03 mm, median 895, min 783, max 1e+03, std 62.5.
 
 ## FIT401 (FIT401.Pv)
-Tag FIT401 belongs to stage P4 (dechlorination (UV + NaHSO3)). Type: sensor. Meaning: Flow to UV dechlorinator. Unit: m3/h.
+Tag FIT401 belongs to stage P4 (dechlorination (UV + NaHSO3)). Type: sensor. Meaning: RO feed flow (after UV dechlorination). Unit: m3/h.
 Normal range 1.01 to 1.04 m3/h, median 1.03, min 1, max 1.05, std 0.0087.
 
 ## AIT401 (AIT401.Pv)
-Tag AIT401 belongs to stage P4 (dechlorination (UV + NaHSO3)). Type: sensor. Meaning: Hardness analyser (constant 0 in 2026, not connected?). Unit: ppm.
+Tag AIT401 belongs to stage P4 (dechlorination (UV + NaHSO3)). Type: sensor. Meaning: Hardness monitor (constant 0 in 2026, probably not connected). Unit: ppm.
 Normal range 0 to 0 ppm, median 0, min 0, max 0, std 0.
 AIT401 is constant in normal operation (sensor probably not connected).
 Water-quality analyser: drifts from day to day and week to week; a moderate shift alone is weak evidence of an attack.
@@ -340,7 +340,7 @@ Tag FIT602 belongs to stage P6 (product water and UF backwash). Type: sensor. Me
 Normal range 0.771 to 2.92 m3/h, median 0.848, min 0.748, max 2.97, std 0.78.
 
 ## P601 (P601.Status)
-Tag P601 belongs to stage P6 (product water and UF backwash). Type: actuator. Meaning: Product water pump (to T101 / WaDi). Unit: status.
+Tag P601 belongs to stage P6 (product water and UF backwash). Type: actuator. Meaning: RO permeate transfer pump (from T601). Unit: status.
 Values observed in normal operation: 1 (81%), 2 (19%).
 
 ## P602 (P602.Status)
@@ -349,7 +349,7 @@ Values observed in normal operation: 1 (100%).
 P602 never changes in normal operation; any change is suspicious (standby or unused equipment activated).
 
 ## P603 (P603.Status)
-Tag P603 belongs to stage P6 (product water and UF backwash). Type: actuator. Meaning: Spare pump. Unit: status.
+Tag P603 belongs to stage P6 (product water and UF backwash). Type: actuator. Meaning: CIP (clean-in-place) pump for UF/RO cleaning, draws from the CIP tank. Unit: status.
 Values observed in normal operation: 1 (100%).
 P603 never changes in normal operation; any change is suspicious (standby or unused equipment activated).
 
@@ -372,11 +372,11 @@ Values observed in normal operation: 0 (100%).
 LSL602 never changes in normal operation; any change is suspicious (standby or unused equipment activated).
 
 ## LSH603 (LSH603.Alarm)
-Tag LSH603 belongs to stage P6 (product water and UF backwash). Type: alarm. Meaning: T603 high level switch. Unit: alarm.
+Tag LSH603 belongs to stage P6 (product water and UF backwash). Type: alarm. Meaning: CIP tank high level switch. Unit: alarm.
 Values observed in normal operation: 0 (100%).
 LSH603 never changes in normal operation; any change is suspicious (standby or unused equipment activated).
 
 ## LSL603 (LSL603.Alarm)
-Tag LSL603 belongs to stage P6 (product water and UF backwash). Type: alarm. Meaning: T603 low level switch. Unit: alarm.
+Tag LSL603 belongs to stage P6 (product water and UF backwash). Type: alarm. Meaning: CIP tank low level switch. Unit: alarm.
 Values observed in normal operation: 1 (100%).
 LSL603 never changes in normal operation; any change is suspicious (standby or unused equipment activated).
