@@ -98,7 +98,7 @@ if meta["setup"] == "a12":
                 "predicted_category": x["category"], "true_category": GT_CAT[aid],
                 "category_correct": x["category"] == GT_CAT[aid],
                 "known_attack_top2": "; ".join(x["similar_known_attacks"]),
-                "known_attack_correct": any(s.startswith(f"A12 attack {aid}:") for s in x["similar_known_attacks"]),
+                "known_attack_correct": any(re.match(rf"A12 attack {aid}\b", s) for s in x["similar_known_attacks"][:2]),
                 "loo_top1_same_category": loo_same,
             })
     ev_df = pd.DataFrame(rows).sort_values("attack_id", key=lambda s: s.astype(int))
