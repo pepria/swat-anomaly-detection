@@ -19,6 +19,22 @@ from .. import config as C
 TAG_RE = re.compile(r"\b(?:LIT|FIT|AIT|DPIT|PIT|MV|P|UV|LS|LSH|LSL|LSLL)\d{3}\b")
 
 
+RANGE_RE = re.compile(r"\b([A-Z]+)(\d{3})\s*-\s*(?:\1)?(\d{3})\b")      # MV501-504, P201-P206
+SLASH_RE = re.compile(r"\b([A-Z]+)(\d{3})((?:/\d{3})+)\b")                # MV503/504, P101/102
+
+
+def extract_tags(text: str) -> set:
+    """Tag names in a text, with ranges ('MV501-504') and slash lists ('MV503/504') expanded."""
+    tags = set(TAG_RE.findall(text))
+    for m in RANGE_RE.finditer(text):
+        a, b = int(m.group(2)), int(m.group(3))
+        if 0 <= b - a <= 12:
+            tags |= {f"{m.group(1)}{i}" for i in range(a, b + 1)}
+    for m in SLASH_RE.finditer(text):
+        tags |= {f"{m.group(1)}{n}" for n in [m.group(2)] + m.group(3).strip("/").split("/")}
+    return tags
+
+
 @dataclass
 class Chunk:
     chunk_id: str
@@ -36,7 +52,7 @@ def load_chunks(kb_dir: Path = C.KB_DIR) -> list[Chunk]:
             title, _, body = p.partition("\n")
             text = f"{title}\n{body}".strip()
             chunks.append(Chunk(f"{f.stem}#{i}", f.name, title.strip(), text,
-                                set(TAG_RE.findall(text))))
+                                extract_tags(text)))
     return chunks
 
 
@@ -49,17 +65,19 @@ class Retriever:
         self.M = self.vec.fit_transform([c.text for c in self.chunks])
         self.tag_boost = tag_boost
 
-    def score(self, query: str, tags: list[str]) -> np.ndarray:
+    def score(self, query: str, tags: list[str], tag_boost: float | None = None) -> np.ndarray:
         q = self.vec.transform([query])
         s = (self.M @ q.T).toarray().ravel()
         tags = set(tags)
         if tags:
-            s += self.tag_boost * np.array([len(c.tags & tags) / len(tags) for c in self.chunks])
+            boost = self.tag_boost if tag_boost is None else tag_boost
+            s += boost * np.array([len(c.tags & tags) / len(tags) for c in self.chunks])
         return s
 
     def search(self, query: str, tags: list[str] = (), k: int = 6,
-               sources: list[str] | None = None) -> list[tuple[Chunk, float]]:
-        s = self.score(query, list(tags))
+               sources: list[str] | None = None, tag_boost: float | None = None
+               ) -> list[tuple[Chunk, float]]:
+        s = self.score(query, list(tags), tag_boost)
         order = np.argsort(-s)
         out = []
         for i in order:
