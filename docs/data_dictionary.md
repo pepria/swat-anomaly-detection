@@ -1,153 +1,156 @@
-# 数据字典：SWaT 原始 CSV 的每一个字段
+# Data dictionary: every field of the raw SWaT CSV
 
-数据来源：SWaT.A10/A11/A12 的 Historian CSV（每秒一行，87 列）。含义主要来自官方《SWaT equipment list & glossary.pdf》，
-仓库 `swatad/rag/tags.py` 的手写说明作补充；标 (?) 的是根据数值范围推测的。「正常段」是 A12 开头 4.4 小时（第一次攻击 13:24 之前）的统计。
+(Chinese version: [data_dictionary_zh.md](data_dictionary_zh.md))
 
-## 命名规则
+Source: Historian CSVs of SWaT.A10 / A11 / A12 (one row per second, 87 columns). Meanings come mainly from the official
+*SWaT equipment list & glossary.pdf*, supplemented by the hand-written descriptions in `swatad/rag/tags.py`. Entries marked (?) are inferred
+from the value ranges. "Normal segment" means the first 4.4 hours of A12 (before the first attack at 13:24); the value ranges are computed on it.
 
-- 点号前是**位号**：`字母 + 阶段数字 + 序号`，第一位数字就是所在阶段（1 到 6）。
-- 点号后是**字段类型**：`.Pv`（Process Value，传感器读数）、`.Status`（执行器状态）、`.Alarm`（报警/开关量）、`.Speed`（变频转速）。以 `_STATE` 结尾的是 PLC 状态机步骤。
-- 字母含义：LIT 液位、FIT 流量、AIT 水质分析仪、DPIT 压差、PIT 压力、MV 电动阀、P 泵、UV 紫外、LS/LSH/LSL/LSLL 液位或压力开关（H 高、L 低、LL 低低）。
-- 执行器 `.Status` 的编码：**1 = 停/关，2 = 运行/开，0 = 阀门正在动作（过渡）**。
+## Naming rules
 
-## 时间列
+- The part before the dot is the **tag**: `letters + stage digit + index`. The first digit is the stage (1 to 6).
+- The part after the dot is the **field type**: `.Pv` (process value, sensor reading), `.Status` (actuator state), `.Alarm` (alarm / switch), `.Speed` (variable-frequency drive speed). Names ending in `_STATE` are PLC state-machine steps.
+- Letters: LIT level, FIT flow, AIT water-quality analyser, DPIT differential pressure, PIT pressure, MV motorised valve, P pump, UV ultraviolet, LS/LSH/LSL/LSLL level or pressure switch (H high, L low, LL low-low).
+- Actuator `.Status` encoding: **1 = off/closed, 2 = on/open, 0 = valve in transition**.
 
-| 字段 | 含义 |
+## Time column
+
+| Field | Meaning |
 |---|---|
-| `t_stamp` | 记录时间，格式 `11-Mar-2026 09:00:00`，每秒一行。A10 只精确到分钟，代码按行序补出秒。 |
+| `t_stamp` | Record time, format `11-Mar-2026 09:00:00`, one row per second. A10 is only accurate to the minute; the code rebuilds the seconds from the row order. |
 
-## P1 原水供应
+## P1 Raw water supply
 
-| 字段 | 含义 | 单位 / 编码 | A12 正常段取值 |
+| Field | Meaning | Unit / encoding | A12 normal-segment values |
 |---|---|---|---|
-| `P1_STATE` | P1 阶段 PLC 状态机的当前步骤编号 | 编码 1-3 | 正常段的值 1, 2, 3 |
-| `LIT101.Pv` | 原水箱 T101 液位（超声波，1.8 m³ 水箱） | mm | 正常段 486.9 – 830.4（均值 728.6） |
-| `FIT101.Pv` | 进入 T101 的原水流量（电磁流量计） | m³/h | 正常段 0 – 3.92（均值 0.466） |
-| `MV101.Status` | T101 进水电动阀 | 0 过渡/1 关/2 开 | 正常段的值 0, 1, 2 |
-| `P101.Status` | 原水输送泵（主用，P1→P2） | 1 停/2 运行 | 正常段的值 1, 2 |
-| `P102.Status` | 原水输送泵（备用） | 1 停/2 运行 | 正常段的值 1；**仅攻击时才出现：**2 |
+| `P1_STATE` | Current step of the P1 PLC state machine | codes 1-3 | values 1, 2, 3 |
+| `LIT101.Pv` | Raw water tank T101 level (ultrasonic, 1.8 m³ tank) | mm | 486.9 – 830.4 (mean 728.6) |
+| `FIT101.Pv` | Raw water flow into T101 (electromagnetic) | m³/h | 0 – 3.92 (mean 0.466) |
+| `MV101.Status` | T101 inlet motorised valve | 0 moving / 1 closed / 2 open | values 0, 1, 2 |
+| `P101.Status` | Raw water transfer pump (duty, P1→P2) | 1 off / 2 on | values 1, 2 |
+| `P102.Status` | Raw water transfer pump (standby) | 1 off / 2 on | value 1; **only seen during attacks:** 2 |
 
-## P2 化学加药
+## P2 Chemical dosing
 
-| 字段 | 含义 | 单位 / 编码 | A12 正常段取值 |
+| Field | Meaning | Unit / encoding | A12 normal-segment values |
 |---|---|---|---|
-| `P2_STATE` | P2 阶段（化学加药）PLC 状态机步骤 | 编码 1-2 | 正常段的值 1, 2 |
-| `FIT201.Pv` | 流向 UF 进水箱的流量（经加药段） | m³/h | 正常段 0 – 2.378（均值 0.9594） |
-| `AIT201.Pv` | 电导率分析仪（加 NaCl 后） | µS/cm | 正常段 52.55 – 118.3（均值 87.55） |
-| `AIT202.Pv` | pH 分析仪（HCl 加药） | pH | 正常段 8.273 – 11.06（均值 10.32） |
-| `AIT203.Pv` | ORP 氧化还原电位分析仪（NaOCl 加药） | mV | 正常段 103.5 – 451.7（均值 127.8） |
-| `MV201.Status` | 原水箱到 UF 进水箱 T301 的出口阀 | 0 过渡/1 关/2 开 | 正常段的值 0, 1, 2 |
-| `P201.Status` | NaCl 加药泵（主用） | 1 停/2 运行 | 正常段的值 1, 2 |
-| `P202.Status` | NaCl 加药泵（备用） | 1 停/2 运行 | 正常段的值 1；**仅攻击时才出现：**2 |
-| `P203.Status` | HCl 加药泵（主用） | 1 停/2 运行 | 正常段的值 1, 2 |
-| `P204.Status` | HCl 加药泵（备用） | 1 停/2 运行 | 正常段的值 1；**仅攻击时才出现：**2 |
-| `P205.Status` | NaOCl 加药泵（主用，游离氯 FAC） | 1 停/2 运行 | 正常段的值 1, 2 |
-| `P206.Status` | NaOCl 加药泵（备用） | 1 停/2 运行 | 正常段的值 1；**仅攻击时才出现：**2 |
-| `P207.Status` | NaOCl 加药泵（UF 清洗用，65 L/h）[官方清单] | 1 停/2 运行 | 正常段的值 1 |
-| `P208.Status` | NaOCl 加药泵（UF 清洗用，备用）[官方清单] | 1 停/2 运行 | 正常段的值 1 |
-| `LS201.Alarm` | NaCl 箱低液位开关 | 0/1 开关量 | 正常段的值 0 |
-| `LS202.Alarm` | HCl 箱低液位开关 | 0/1 开关量 | 正常段的值 0 |
-| `LSL203.Alarm` | NaOCl 箱低液位开关 | 0/1 开关量 | 正常段的值 0 |
-| `LSLL203.Alarm` | NaOCl 箱低低液位开关 | 0/1 开关量 | 正常段的值 0, 1 |
+| `P2_STATE` | Step of the P2 (chemical dosing) PLC state machine | codes 1-2 | values 1, 2 |
+| `FIT201.Pv` | Flow towards the UF feed tank (through the dosing section) | m³/h | 0 – 2.378 (mean 0.9594) |
+| `AIT201.Pv` | Conductivity analyser (after NaCl dosing) | µS/cm | 52.55 – 118.3 (mean 87.55) |
+| `AIT202.Pv` | pH analyser (HCl dosing) | pH | 8.273 – 11.06 (mean 10.32) |
+| `AIT203.Pv` | ORP (redox potential) analyser (NaOCl dosing) | mV | 103.5 – 451.7 (mean 127.8) |
+| `MV201.Status` | Outlet valve from the raw water tank to UF feed tank T301 | 0 moving / 1 closed / 2 open | values 0, 1, 2 |
+| `P201.Status` | NaCl dosing pump (duty) | 1 off / 2 on | values 1, 2 |
+| `P202.Status` | NaCl dosing pump (standby) | 1 off / 2 on | value 1; **only seen during attacks:** 2 |
+| `P203.Status` | HCl dosing pump (duty) | 1 off / 2 on | values 1, 2 |
+| `P204.Status` | HCl dosing pump (standby) | 1 off / 2 on | value 1; **only seen during attacks:** 2 |
+| `P205.Status` | NaOCl dosing pump (duty, free available chlorine FAC) | 1 off / 2 on | values 1, 2 |
+| `P206.Status` | NaOCl dosing pump (standby) | 1 off / 2 on | value 1; **only seen during attacks:** 2 |
+| `P207.Status` | NaOCl dosing pump for UF cleaning (65 L/h) [official list] | 1 off / 2 on | value 1 |
+| `P208.Status` | NaOCl dosing pump for UF cleaning, second unit [official list] | 1 off / 2 on | value 1 |
+| `LS201.Alarm` | NaCl tank low level switch | 0/1 switch | value 0 |
+| `LS202.Alarm` | HCl tank low level switch | 0/1 switch | value 0 |
+| `LSL203.Alarm` | NaOCl tank low level switch | 0/1 switch | value 0 |
+| `LSLL203.Alarm` | NaOCl tank low-low level switch | 0/1 switch | values 0, 1 |
 
-## P3 超滤 UF
+## P3 Ultrafiltration (UF)
 
-| 字段 | 含义 | 单位 / 编码 | A12 正常段取值 |
+| Field | Meaning | Unit / encoding | A12 normal-segment values |
 |---|---|---|---|
-| `P3_STATE` | P3 阶段（超滤 UF）PLC 状态机步骤，取值很多（最大到 99） | 编码 | 正常段 1 – 99（均值 43.18） |
-| `AIT301.Pv` | UF 阶段水质，量程像 pH（官方清单未列，推测） | pH(?) | 正常段 7.66 – 8.44（均值 8.186） |
-| `AIT302.Pv` | UF 阶段水质，量程像 ORP（官方清单未列，推测） | mV(?) | 正常段 114 – 196（均值 142.7） |
-| `AIT303.Pv` | UF 阶段水质，量程像电导率（官方清单未列，推测） | µS/cm(?) | 正常段 28.62 – 37.13（均值 32.63） |
-| `LIT301.Pv` | UF 进水箱 T301 液位 | mm | 正常段 654.3 – 1013（均值 920.2） |
-| `FIT301.Pv` | UF 进水流量 | m³/h | 正常段 0 – 2.127（均值 1.025） |
-| `DPIT301.Pv` | UF 膜两侧压差（过高会触发反冲洗） | kPa | 正常段 2.964 – 16.59（均值 10.49） |
-| `MV301.Status` | UF 反冲洗阀 1 | 0 过渡/1 关/2 开 | 正常段的值 1；**仅攻击时才出现：**0, 2 |
-| `MV302.Status` | UF 反冲洗阀 2（出口到脱氯水箱 T401） | 0 过渡/1 关/2 开 | 正常段的值 0, 1, 2 |
-| `MV303.Status` | UF 反冲洗阀 3（反冲洗排水） | 0 过渡/1 关/2 开 | 正常段的值 1；**仅攻击时才出现：**0, 2 |
-| `MV304.Status` | UF 反冲洗阀 4（排放） | 0 过渡/1 关/2 开 | 正常段的值 0, 1, 2 |
-| `P301.Status` | UF 进水泵（主用） | 1 停/2 运行 | 正常段的值 1, 2 |
-| `P302.Status` | UF 进水泵（备用） | 1 停/2 运行 | 正常段的值 1 |
-| `PSH301.Alarm` | UF 高压开关（2026 年数据全是 Bad Input） | 0/1 开关量 | 全是 Bad Input（空） |
-| `DPSH301.Alarm` | UF 压差高开关（2026 年数据全是 Bad Input） | 0/1 开关量 | 全是 Bad Input（空） |
+| `P3_STATE` | Step of the P3 (UF) PLC state machine, many values (up to 99) | codes | 1 – 99 (mean 43.18) |
+| `AIT301.Pv` | UF-stage water quality, range looks like pH (not in the official list, inferred) | pH(?) | 7.66 – 8.44 (mean 8.186) |
+| `AIT302.Pv` | UF-stage water quality, range looks like ORP (not in the official list, inferred) | mV(?) | 114 – 196 (mean 142.7) |
+| `AIT303.Pv` | UF-stage water quality, range looks like conductivity (not in the official list, inferred) | µS/cm(?) | 28.62 – 37.13 (mean 32.63) |
+| `LIT301.Pv` | UF feed tank T301 level | mm | 654.3 – 1013 (mean 920.2) |
+| `FIT301.Pv` | UF feed flow | m³/h | 0 – 2.127 (mean 1.025) |
+| `DPIT301.Pv` | Differential pressure across the UF membrane (too high triggers a backwash) | kPa | 2.964 – 16.59 (mean 10.49) |
+| `MV301.Status` | UF backwash valve 1 | 0 moving / 1 closed / 2 open | value 1; **only seen during attacks:** 0, 2 |
+| `MV302.Status` | UF backwash valve 2 (outlet to dechlorination tank T401) | 0 moving / 1 closed / 2 open | values 0, 1, 2 |
+| `MV303.Status` | UF backwash valve 3 (backwash drain) | 0 moving / 1 closed / 2 open | value 1; **only seen during attacks:** 0, 2 |
+| `MV304.Status` | UF backwash valve 4 (drain) | 0 moving / 1 closed / 2 open | values 0, 1, 2 |
+| `P301.Status` | UF feed pump (duty) | 1 off / 2 on | values 1, 2 |
+| `P302.Status` | UF feed pump (standby) | 1 off / 2 on | value 1 |
+| `PSH301.Alarm` | UF high pressure switch (all Bad Input in the 2026 data) | 0/1 switch | all Bad Input (empty) |
+| `DPSH301.Alarm` | UF differential pressure high switch (all Bad Input in the 2026 data) | 0/1 switch | all Bad Input (empty) |
 
-## P4 脱氯
+## P4 Dechlorination
 
-| 字段 | 含义 | 单位 / 编码 | A12 正常段取值 |
+| Field | Meaning | Unit / encoding | A12 normal-segment values |
 |---|---|---|---|
-| `P4_STATE` | P4 阶段（脱氯）PLC 状态机步骤 | 编码 1-4 | 正常段的值 1, 2, 3, 4 |
-| `LIT401.Pv` | RO 进水箱 T401 液位 | mm | 正常段 783.6 – 1007（均值 895.9） |
-| `FIT401.Pv` | RO 进水（脱氯段）流量 | m³/h | 正常段 0 – 1.058（均值 1.017） |
-| `AIT401.Pv` | 硬度监测仪（0-10 ppm）。2026 年数据恒为 0，应该没接 | ppm | 正常段的值 0 |
-| `AIT402.Pv` | ORP 分析仪（控制 NaHSO3 加药） | mV | 正常段 133.2 – 204.2（均值 142.8） |
-| `P401.Status` | RO 进水泵（主用） | 1 停/2 运行 | 正常段的值 1, 2 |
-| `P402.Status` | RO 进水泵（备用） | 1 停/2 运行 | 正常段的值 1 |
-| `P403.Status` | NaHSO3 加药泵（主用） | 1 停/2 运行 | 正常段的值 1, 2 |
-| `P404.Status` | NaHSO3 加药泵（备用） | 1 停/2 运行 | 正常段的值 1 |
-| `UV401.Status` | 紫外线脱氯装置（去除余氯） | 1 关/2 开 | 正常段的值 1, 2 |
-| `LS401.Alarm` | NaHSO3 箱低液位开关 | 0/1 开关量 | 正常段的值 0 |
+| `P4_STATE` | Step of the P4 (dechlorination) PLC state machine | codes 1-4 | values 1, 2, 3, 4 |
+| `LIT401.Pv` | RO feed tank T401 level | mm | 783.6 – 1007 (mean 895.9) |
+| `FIT401.Pv` | RO feed flow (after UV dechlorination) | m³/h | 0 – 1.058 (mean 1.017) |
+| `AIT401.Pv` | Hardness monitor (0-10 ppm). Constant 0 in the 2026 data, probably not connected | ppm | value 0 |
+| `AIT402.Pv` | ORP analyser (controls NaHSO3 dosing) | mV | 133.2 – 204.2 (mean 142.8) |
+| `P401.Status` | RO feed pump (duty) | 1 off / 2 on | values 1, 2 |
+| `P402.Status` | RO feed pump (standby) | 1 off / 2 on | value 1 |
+| `P403.Status` | NaHSO3 dosing pump (duty) | 1 off / 2 on | values 1, 2 |
+| `P404.Status` | NaHSO3 dosing pump (standby) | 1 off / 2 on | value 1 |
+| `UV401.Status` | UV dechlorinator (removes residual chlorine) | 1 off / 2 on | values 1, 2 |
+| `LS401.Alarm` | NaHSO3 tank low level switch | 0/1 switch | value 0 |
 
-## P5 反渗透 RO
+## P5 Reverse osmosis (RO)
 
-| 字段 | 含义 | 单位 / 编码 | A12 正常段取值 |
+| Field | Meaning | Unit / encoding | A12 normal-segment values |
 |---|---|---|---|
-| `P5_STATE` | P5 阶段（反渗透 RO）PLC 状态机步骤（1-12） | 编码 | 正常段 1 – 12（均值 11.62） |
-| `FIT501.Pv` | RO 进水流量 | m³/h | 正常段 0.002307 – 1.064（均值 1.024） |
-| `FIT502.Pv` | RO 产水（渗透）流量 | m³/h | 正常段 0.001793 – 0.9639（均值 0.7276） |
-| `FIT503.Pv` | RO 浓水（排放）流量 | m³/h | 正常段 0.001408 – 0.2221（均值 0.2094） |
-| `FIT504.Pv` | RO 回流（再循环）流量 | m³/h | 正常段 0 – 0.06546（均值 0.06211） |
-| `AIT501.Pv` | RO 进水 pH | pH | 正常段 8.81 – 9.472（均值 9.353） |
-| `AIT502.Pv` | RO 进水 ORP | mV | 正常段 226.3 – 305.6（均值 236.5） |
-| `AIT503.Pv` | RO 进水电导率（量程至 1000 µS/cm） | µS/cm | 正常段 162 – 189.4（均值 177.6） |
-| `AIT504.Pv` | RO 产水电导率（量程 0.02-20 µS/cm） | µS/cm | 正常段 16.11 – 121.7（均值 20.33） |
-| `PIT501.Pv` | 高压泵之后的 RO 进水压力（量程 0-10 bar） | kPa | 正常段 6.809 – 248.1（均值 235） |
-| `PIT502.Pv` | RO 产水压力 | kPa | 正常段 0 – 3.092（均值 0.003239） |
-| `PIT503.Pv` | RO 浓水压力 | kPa | 正常段 4.55 – 208.3（均值 196.2） |
-| `P501.Status` | RO 高压泵（主用，带变频 VSD） | 1 停/2 运行 | 正常段的值 1, 2 |
-| `P501.Speed` | RO 高压泵 P501 的变频转速读数，实际只出现 0 / 8.56 / 8.76 / 10.0，官方未给单位 | 数值，单位未知 | 正常段的值 0, 10；**仅攻击时才出现：**8.56, 8.76 |
-| `P502.Status` | RO 高压泵（备用） | 1 停/2 运行 | 正常段的值 1 |
-| `P502.Speed` | 备用高压泵 P502 的变频转速，恒为 0 | 数值，单位未知 | 正常段的值 0 |
-| `MV501.Status` | RO 产水阀（与 MV502 成对动作） | 0 过渡/1 关/2 开 | 正常段的值 0, 1, 2 |
-| `MV502.Status` | RO 产水阀（与 MV501 成对动作） | 0 过渡/1 关/2 开 | 正常段的值 0, 1, 2 |
-| `MV503.Status` | RO 浓水/冲洗阀（与 MV504 成对动作） | 0 过渡/1 关/2 开 | 正常段的值 0, 1, 2 |
-| `MV504.Status` | RO 浓水/冲洗阀（与 MV503 成对动作） | 0 过渡/1 关/2 开 | 正常段的值 0, 1, 2 |
-| `PSH501.Alarm` | 高压泵之后的高压开关（2026 年数据全是 Bad Input） | 0/1 开关量 | 全是 Bad Input（空） |
-| `PSL501.Alarm` | 高压泵之前的低压开关（2026 年数据全是 Bad Input） | 0/1 开关量 | 全是 Bad Input（空） |
+| `P5_STATE` | Step of the P5 (RO) PLC state machine (1-12) | codes | 1 – 12 (mean 11.62) |
+| `FIT501.Pv` | RO feed flow | m³/h | 0.002307 – 1.064 (mean 1.024) |
+| `FIT502.Pv` | RO permeate flow | m³/h | 0.001793 – 0.9639 (mean 0.7276) |
+| `FIT503.Pv` | RO reject (concentrate) flow | m³/h | 0.001408 – 0.2221 (mean 0.2094) |
+| `FIT504.Pv` | RO recirculation flow | m³/h | 0 – 0.06546 (mean 0.06211) |
+| `AIT501.Pv` | RO feed pH | pH | 8.81 – 9.472 (mean 9.353) |
+| `AIT502.Pv` | RO feed ORP | mV | 226.3 – 305.6 (mean 236.5) |
+| `AIT503.Pv` | RO feed conductivity (range up to 1000 µS/cm) | µS/cm | 162 – 189.4 (mean 177.6) |
+| `AIT504.Pv` | RO permeate conductivity (range 0.02-20 µS/cm) | µS/cm | 16.11 – 121.7 (mean 20.33) |
+| `PIT501.Pv` | RO feed pressure after the high-pressure pump (range 0-10 bar) | kPa | 6.809 – 248.1 (mean 235) |
+| `PIT502.Pv` | RO permeate pressure | kPa | 0 – 3.092 (mean 0.003239) |
+| `PIT503.Pv` | RO reject (concentrate) pressure | kPa | 4.55 – 208.3 (mean 196.2) |
+| `P501.Status` | RO high-pressure pump (duty, with VSD) | 1 off / 2 on | values 1, 2 |
+| `P501.Speed` | VSD speed reading of P501; only 0 / 8.56 / 8.76 / 10.0 occur, the official list gives no unit | number, unit unknown | values 0, 10; **only seen during attacks:** 8.56, 8.76 |
+| `P502.Status` | RO high-pressure pump (standby) | 1 off / 2 on | value 1 |
+| `P502.Speed` | VSD speed of the standby pump P502, always 0 | number, unit unknown | value 0 |
+| `MV501.Status` | RO permeate valve (moves together with MV502) | 0 moving / 1 closed / 2 open | values 0, 1, 2 |
+| `MV502.Status` | RO permeate valve (moves together with MV501) | 0 moving / 1 closed / 2 open | values 0, 1, 2 |
+| `MV503.Status` | RO reject/flush valve (moves together with MV504) | 0 moving / 1 closed / 2 open | values 0, 1, 2 |
+| `MV504.Status` | RO reject/flush valve (moves together with MV503) | 0 moving / 1 closed / 2 open | values 0, 1, 2 |
+| `PSH501.Alarm` | High pressure switch after the high-pressure pump (all Bad Input in the 2026 data) | 0/1 switch | all Bad Input (empty) |
+| `PSL501.Alarm` | Low pressure switch before the high-pressure pump (all Bad Input in the 2026 data) | 0/1 switch | all Bad Input (empty) |
 
-## P6 产水与 UF 反冲洗
+## P6 Product water and UF backwash
 
-| 字段 | 含义 | 单位 / 编码 | A12 正常段取值 |
+| Field | Meaning | Unit / encoding | A12 normal-segment values |
 |---|---|---|---|
-| `P6_STATE` | P6 阶段 PLC 状态机步骤 | 编码 1-2 | 正常段的值 1, 2 |
-| `LIT601.Pv` | RO 产水箱 T601 液位（1.2 m³） | mm | 正常段 60.05 – 619.7（均值 445.9） |
-| `LIT602.Pv` | UF 反冲洗水箱 T602 液位 | mm | 正常段 548.5 – 571.1（均值 563.5） |
-| `FIT601.Pv` | UF 反冲洗流量，几乎恒为 0 | m³/h | 正常段的值 0, 6.40759e-05, 0.000128152 |
-| `FIT602.Pv` | 产水输出流量（脉冲状） | m³/h | 正常段 0.7679 – 2.999（均值 1.194） |
-| `P601.Status` | RO 产水输送泵（送回原水箱或 WaDi） | 1 停/2 运行 | 正常段的值 1, 2 |
-| `P602.Status` | UF 反冲洗泵 | 1 停/2 运行 | 正常段的值 1；**仅攻击时才出现：**2 |
-| `P603.Status` | CIP 清洗泵（原清单：CIP 泵，不是备用泵）[官方清单] | 1 停/2 运行 | 正常段的值 1 |
-| `LSH601.Alarm` | 产水箱 T601 高液位开关 | 0/1 开关量 | 正常段的值 0, 1 |
-| `LSL601.Alarm` | 产水箱 T601 低液位开关 | 0/1 开关量 | 正常段的值 0, 1 |
-| `LSH602.Alarm` | 反冲洗水箱 T602 高液位开关（A12 恒为 1） | 0/1 开关量 | 正常段的值 1 |
-| `LSL602.Alarm` | 反冲洗水箱 T602 低液位开关（A12 恒为 0） | 0/1 开关量 | 正常段的值 0 |
-| `LSH603.Alarm` | CIP 清洗箱高液位开关（A12 恒为 0） | 0/1 开关量 | 正常段的值 0 |
-| `LSL603.Alarm` | CIP 清洗箱低液位开关（A12 恒为 1） | 0/1 开关量 | 正常段的值 1 |
+| `P6_STATE` | Step of the P6 PLC state machine | codes 1-2 | values 1, 2 |
+| `LIT601.Pv` | RO permeate tank T601 level (1.2 m³) | mm | 60.05 – 619.7 (mean 445.9) |
+| `LIT602.Pv` | UF backwash tank T602 level | mm | 548.5 – 571.1 (mean 563.5) |
+| `FIT601.Pv` | UF backwash flow, almost always 0 | m³/h | values 0, 6.40759e-05, 0.000128152 |
+| `FIT602.Pv` | Product water outflow (pulse-like) | m³/h | 0.7679 – 2.999 (mean 1.194) |
+| `P601.Status` | RO permeate transfer pump (sends water back to the raw water tank or to WaDi) | 1 off / 2 on | values 1, 2 |
+| `P602.Status` | UF backwash pump | 1 off / 2 on | value 1; **only seen during attacks:** 2 |
+| `P603.Status` | CIP (clean-in-place) pump, not a standby pump [official list] | 1 off / 2 on | value 1 |
+| `LSH601.Alarm` | T601 high level switch | 0/1 switch | values 0, 1 |
+| `LSL601.Alarm` | T601 low level switch | 0/1 switch | values 0, 1 |
+| `LSH602.Alarm` | T602 high level switch (always 1 in A12) | 0/1 switch | value 1 |
+| `LSL602.Alarm` | T602 low level switch (always 0 in A12) | 0/1 switch | value 0 |
+| `LSH603.Alarm` | CIP tank high level switch (always 0 in A12) | 0/1 switch | value 0 |
+| `LSL603.Alarm` | CIP tank low level switch (always 1 in A12) | 0/1 switch | value 1 |
 
-## 项目额外加的辅助列（不是原始数据，以下划线开头）
+## Helper columns added by the project (not raw data, prefixed with an underscore)
 
-| 字段 | 含义 |
+| Field | Meaning |
 |---|---|
-| `_label` | 0/1，该秒是否处于攻击中（来自标签文件，正常数据全为 0） |
-| `_attack_id` | 攻击编号，"0" 表示正常 |
-| `_gap` | 1 表示这一行原来有缺失值（Bad Input），已向前填充，并把前后各约 15 秒也标上，训练时排除 |
-| `_warmup` | 1 表示早上启动阶段（PIT501 超过 200 kPa 之前再加 15 分钟），训练时排除 |
-| `_day` | 该行所属日期，用于按天划分 |
-| `_mode` | 只有 A10 有：`closed`（前 5 小时闭环）或 `cross`（之后与 WaDi 交换水的 CrossOver 模式） |
+| `_label` | 0/1, whether this second is inside an attack (from the label file; all 0 for normal data) |
+| `_attack_id` | Attack number, "0" means normal |
+| `_gap` | 1 means this row had a missing value (Bad Input) that was forward-filled; about 15 s before and after are flagged too and excluded from training |
+| `_warmup` | 1 means the morning start-up phase (until PIT501 exceeds 200 kPa, plus 15 minutes); excluded from training |
+| `_day` | Date of the row, used to split by day |
+| `_mode` | A10 only: `closed` (first 5 hours, closed loop) or `cross` (afterwards, CrossOver mode exchanging water with WaDi) |
 
-## 读数据时要小心的几点
+## Things to watch out for when reading the data
 
-1. **4 列整列无效**：`PSH301.Alarm`、`DPSH301.Alarm`、`PSH501.Alarm`、`PSL501.Alarm` 在 2026 年所有文件里全是 `Bad Input`，代码直接丢掉，所以实际可用 **82 个数值列**。
-2. **大量列是常数**：例如 `AIT401.Pv` 恒 0，备用泵 P102/P202/P204/P206/P302/P402/P404/P502 以及平时不运行的 P207/P208（UF 清洗加药）、P603（CIP 清洗泵）在正常段恒为 1（停），所以这些泵一旦变成 2 就是强异常信号（规则层 `unseen_state` 抓的就是这个）。
-3. **有些开关量恒为 1**（如 `LSH602`、`LSL603`），说明这些开关的极性是反的或传感器常态就是 1，不要按"1=报警"理解。
-4. **重复列**：P201 与 P203、P401/P403/UV401、MV501 与 MV502、MV503 与 MV504 在 A11 里完全同步，代码只保留每组的第一个。
-5. **水质 AIT 会漂移**：不同日期、不同周的 AIT 读数会整体偏移，所以最佳配置里 AIT 整体被去掉（`noAIT`）。
-6. **`_STATE` 的具体含义官方文档没给**，只能当作"PLC 当前阶段的步骤编号"来用。
+1. **4 columns are entirely invalid**: `PSH301.Alarm`, `DPSH301.Alarm`, `PSH501.Alarm`, `PSL501.Alarm` are all `Bad Input` in every 2026 file. The code drops them, so **82 numeric columns** remain usable.
+2. **Many columns are constant**: for example `AIT401.Pv` is always 0, and the standby pumps P102/P202/P204/P206/P302/P402/P404/P502, plus the pumps that normally do not run, P207/P208 (UF-cleaning dosing) and P603 (CIP pump), stay at 1 (off) in the normal segment. Any of them switching to 2 is therefore a strong anomaly signal (this is what the `unseen_state` rule catches).
+3. **Some switches are constantly 1** (e.g. `LSH602`, `LSL603`). Their polarity is inverted or the sensor rests at 1; do not read them as "1 = alarm".
+4. **Duplicate columns**: P201 and P203, P401/P403/UV401, MV501 and MV502, MV503 and MV504 are perfectly synchronous in A11. The code keeps only the first of each group.
+5. **Water-quality AIT readings drift**: the readings shift as a whole between days and weeks, which is why the best configuration drops all AIT columns (`noAIT`).
+6. **The meaning of each `_STATE` value is not documented officially.** Treat it only as "the step number the PLC is currently in".

@@ -1,101 +1,103 @@
-# LLM 后端与模板后端的解释对比
+# LLM backend vs template backend: comparison of the explanations
 
-- 检测器：窗口自编码器（WinAE）加规则层，训练集 A11+A10（去掉 AIT），测试集 A12。共 10 个告警事件，对应 11 次攻击，其中 1 个是误报。
-- LLM 后端：Claude `claude-opus-5-5`，自适应 thinking，每个事件调用一次。
-- 模板后端：`TemplateBackend`，无 LLM。
-- 原始输出：`outputs/explanations/a12_A11-A10_noAIT__WinAE.{md,json}`（LLM），`template_...`（模板）。
+(Chinese version: [llm_vs_template_report_zh.md](llm_vs_template_report_zh.md))
 
-## 1. 结论
+- Detector: windowed autoencoder (WinAE) plus rule layer, trained on A11+A10 (AIT columns dropped), tested on A12. 10 alarm events covering 11 attacks; 1 event is a false alarm.
+- LLM backend: Claude `claude-opus-5-5`, adaptive thinking, one call per event.
+- Template backend: `TemplateBackend`, no LLM.
+- Raw outputs: `outputs/explanations/a12_A11-A10_noAIT__WinAE.{md,json}` (LLM), `template_...` (template).
 
-1. **评估表上的 5 个指标两个后端完全一样**（0.7 / 0.9 / 0.7 / 0.8 / 0.5）。原因：这些指标看的是检测器给的位号、`classify()` 的类别和检索出的已知攻击，两个后端共用同一份。它们**没有衡量 LLM 写的文字**，不能用来说 LLM 更准。
-2. **文字质量上 LLM 明显更好**：能说明攻击机制，能反驳错误的预分类，会承认证据弱。模板把 10 条里的 2 条判错类别，而且其中 1 条给了"高"置信度。
-3. **数字没有编造**：我把 LLM 文字里的数字逐个与事件 JSON 和知识库对照，容差 1%。剩下 9 个没对上的都是百分比换算、区间端点或相减得到的值，没发现凭空出现的数。
-4. **有一个评估有效性问题**：LLM 大量靠知识库里的**攻击时间表**来匹配答案（见第 4 节），真实部署时没有这个信息。
-5. **LLM 的短板来自检索，而不是它自己**：攻击 5、攻击 6 没被说出来，是因为对应的目录片段没被检索到。
+## 1. Conclusions
 
-## 2. 逐条对比
+1. **The 5 metrics in the evaluation table are identical for both backends** (0.7 / 0.9 / 0.7 / 0.8 / 0.5). They look at the tags chosen by the detector, the category from `classify()` and the retrieved known attacks, which both backends share. They **do not measure the text the LLM writes**, so they cannot be used to claim the LLM is more accurate.
+2. **The LLM is clearly better in text quality**: it explains the attack mechanism, rejects wrong pre-classifications and admits weak evidence. The template gets the category wrong in 2 of 10 events, and gives "high" confidence in one of them.
+3. **No numbers were invented**: every number in the LLM text was compared with the event JSON and the knowledge base (tolerance 1%). The 9 numbers that did not match are percentage conversions, range end-points or differences; none came from nowhere.
+4. **There is an evaluation-validity issue**: the LLM often matched the answer using the **attack schedule** in the knowledge base (section 4.1). That information would not exist in a real deployment.
+5. **The LLM's weak spots come from retrieval, not from the LLM**: attacks 5 and 6 were not mentioned because their catalog entries were not retrieved.
 
-"真值"是评估用的标签，解释器看不到。类别对错是我读文字后的判断。
+## 2. Event by event
 
-| # | 时间 | 真值 | 模板类别 / 置信度 | LLM 的判断 / 置信度 | 谁更好 |
+"Ground truth" is the label used only for evaluation; the explainer never sees it. Whether a category is right is my own judgement after reading the text.
+
+| # | Time | Ground truth | Template category / confidence | LLM verdict / confidence | Better |
 |---|---|---|---|---|---|
-| 0 | 13:25–13:32 | 攻击 1：阀门操纵 | 执行器操纵，高 | 执行器操纵，高。指出 P501 异常是攻击末尾的副作用，并说明其他贡献项偏差微弱 | LLM（更具体） |
-| 1 | 14:05–14:12 | 攻击 2：MV101 开、P101 停 | **超出范围，中（类别错）** | 执行器操纵，说明 T101 会满溢；明确排除"传感器欺骗"（LIT101 不平坦，且与流量一致） | **LLM** |
-| 2 | 14:19–14:20 | 误报 | 漂移，低 | 低置信度，判断为 UF 空闲期、罐位回升，大概率正常；写明峰值只比阈值高 2.2% | LLM（更适合误报场景） |
-| 3 | 14:45–14:51 | 攻击 3：加药泵启动 | 备用设备启动，中 | 备用设备启动，高。点出 P202/P204/P206 状态变为 2，并说明排第一的 LSH601 取值落在正常范围内，作用不明 | LLM |
-| 4 | 14:54–15:02 | 攻击 3 余波加攻击 4 | 传感器欺骗，中 | 传感器欺骗，高。LIT101 起始恒为 400 mm（平坦比例 0.74），后来升到 981 mm；与 MV101 一起解释了溢出风险 | LLM |
-| 5 | 15:04–15:12 | 攻击 4 余波加攻击 5：阀门操纵 | **传感器欺骗，高（类别错，且过度自信）** | 低置信度，判为 P5 执行器异常或运行状态变化，明确指出"传感器欺骗预分类存疑"，因为 FIT504 只超限 0.070→0.072 且方差正常 | **LLM**（但没提到攻击 5） |
-| 6 | 15:25–15:31 | 攻击 6 加攻击 7 | 备用设备启动，中 | 识别出 P102 启动，匹配攻击 7；说明 LIT301/LIT401 虽上升但仍在正常范围。**没发现攻击 6** | 持平（两者都漏攻击 6） |
-| 7 | 15:45–15:54 | 攻击 8：反洗转移 | 备用设备启动，高 | 把事件拆成两段：MV303 偏离固定位置（对应攻击 8），随后的完整反洗是系统对 DPIT301 过高的反应，不是备用泵攻击 | LLM（但标签仍沿用"备用设备启动"，与正文有出入） |
-| 8 | 16:09–16:16 | 攻击 9：DPIT301 欺骗 | 传感器欺骗，高 | 传感器欺骗，高。给出物理一致性论证：泵停、FIT301≈0 时 DPIT301 应约 2.6 kPa，不可能是 45 kPa | LLM |
-| 9 | 16:35–16:39 | 攻击 10：LIT601 振荡 | 振荡，中 | 振荡，高。每分钟方向变化约 32 次，单步 800 mm，水箱液位不可能这么变 | LLM |
+| 0 | 13:25–13:32 | Attack 1: valve manipulation | actuator manipulation, high | actuator manipulation, high. Notes the P501 anomaly as a side effect near the end of the attack and that the other contributors deviate only weakly | LLM (more specific) |
+| 1 | 14:05–14:12 | Attack 2: MV101 open, P101 stopped | **out of range, medium (wrong category)** | actuator manipulation; explains that T101 overfills; explicitly rules out "sensor spoofing" (LIT101 is not flat and agrees with the flows) | **LLM** |
+| 2 | 14:19–14:20 | false alarm | drift, low | low confidence; judged to be a UF idle phase with the tank refilling, probably benign; states the peak is only 2.2% above the threshold | LLM (better for false alarms) |
+| 3 | 14:45–14:51 | Attack 3: dosing pumps started | standby activation, medium | standby activation, high. Names P202/P204/P206 switching to 2, and notes that the top contributor LSH601 only takes values seen in normal operation, so its role is unclear | LLM |
+| 4 | 14:54–15:02 | tail of attack 3 plus attack 4 | sensor spoofing, medium | sensor spoofing, high. LIT101 starts at a flat 400 mm (flat fraction 0.74), later rises to 981 mm; links it with MV101 to explain the overflow risk | LLM |
+| 5 | 15:04–15:12 | tail of attack 4 plus attack 5: valve manipulation | **sensor spoofing, high (wrong category and overconfident)** | low confidence; judged P5 actuator or operating-state change, and says the "sensor spoofing" pre-classification is doubtful because FIT504 only exceeds the limit by 0.070→0.072 with normal variance | **LLM** (but attack 5 not named) |
+| 6 | 15:25–15:31 | attack 6 plus attack 7 | standby activation, medium | recognises P102 starting and matches attack 7; notes that LIT301/LIT401 rise but stay in range. **Attack 6 not found** | tie (both miss attack 6) |
+| 7 | 15:45–15:54 | Attack 8: backwash diversion | standby activation, high | splits the event in two: MV303 leaving its fixed position (attack 8), then a full backwash that is the plant reacting to high DPIT301, not a standby-pump attack | LLM (but the label still says "standby activation", which does not fit the text) |
+| 8 | 16:09–16:16 | Attack 9: DPIT301 spoofing | sensor spoofing, high | sensor spoofing, high. Gives a physical consistency argument: with the pump off and FIT301≈0, DPIT301 should be about 2.6 kPa, not 45 kPa | LLM |
+| 9 | 16:35–16:39 | Attack 10: LIT601 oscillation | oscillation, medium | oscillation, high. About 32 direction changes per minute, single steps of 800 mm; a tank level cannot change like that | LLM |
 
-汇总：9 条 LLM 更好（其中事件 0、2 的优势较小，事件 7 带标签瑕疵），1 条持平（事件 6）。没有一条模板更好。
+Summary: the LLM is better in 9 events (the advantage is small in events 0 and 2, and event 7 has a label flaw), 1 is a tie (event 6). The template is better in none.
 
-## 3. 事实核查
+## 3. Fact check
 
-- **数字**：用容差 1% 对照事件 JSON 和知识库。LLM 文字里没有凭空出现的数字。没对上的 9 个数是：
-  - `6.2`、`1.1`：贡献份额，由 0.062、0.011 换算成百分比。
-  - `38`、`74`：平坦比例，由 0.38、0.743 换算成百分比。
-  - `4.5`：LLM 自己算的时间差（15:00:30 到 15:04:55）。
-  - `-568`、`-2.39`、`-1010`：正文里的区间 "561–568"、"2.34–2.39"、"794–1010"，被我的数字提取器当成了负数。
-- **知识库内容**：LLM 提到的 "Oldsmar" 在 `04_a12_attack_catalog.md` 里有（攻击 3 的描述），不是它的外部知识。
-- **事件 3 的泵名称**："P202 (NaCl)、P204 (HCl)、P206 (NaOCl)"出自 `tags.py`/`02_tag_dictionary.md`。**这两处本身有已知错误**（P207/P208、P603 的描述与官方 PDF 不符），LLM 会忠实地继承知识库里的错误。
-- **LLM 的自我矫正**：它多次指出事件数据与词典范围不一致（如 FIT101 的 `normal_p99` 与词典最大值不同），并降低了对应结论的把握，这是模板做不到的。
+- **Numbers**: compared with the event JSON and the knowledge base with a 1% tolerance. The LLM text contains no number out of thin air. The 9 values that did not match are:
+  - `6.2`, `1.1`: contribution shares, converted from 0.062 and 0.011 to percentages.
+  - `38`, `74`: flat fractions, converted from 0.38 and 0.743 to percentages.
+  - `4.5`: a time difference computed by the LLM itself (15:00:30 to 15:04:55).
+  - `-568`, `-2.39`, `-1010`: ranges "561–568", "2.34–2.39" and "794–1010" in the text, read as negative numbers by my number extractor.
+- **Knowledge base content**: "Oldsmar", mentioned by the LLM, is in `04_a12_attack_catalog.md` (description of attack 3); it is not outside knowledge.
+- **Pump names in event 3**: "P202 (NaCl), P204 (HCl), P206 (NaOCl)" come from `tags.py` / `02_tag_dictionary.md`. **Those two files contained known errors** (P207/P208 and P603 did not match the official PDF), and the LLM faithfully inherits errors from the knowledge base. These were corrected in a later commit.
+- **Self-correction by the LLM**: it repeatedly points out that the event data disagrees with the dictionary ranges (e.g. the `normal_p99` of FIT101 differs from the dictionary maximum) and lowers its confidence accordingly. The template cannot do that.
 
-## 4. 问题
+## 4. Problems
 
-### 4.1 靠时间戳匹配答案（评估有效性）
+### 4.1 Matching the answer by timestamp (evaluation validity)
 
-10 条里有 8 条（0、1、3、4、6、7、8、9）的解释或"相似攻击"字段明确引用了目录里的攻击时间，例如"事件起始比攻击 8 的 15:44:50 晚 11 秒"。`04_a12_attack_catalog.md` 里每个攻击都带有 A12 当天的时刻，所以 LLM 不用理解物理就能对上号。
+In 8 of the 10 events (0, 1, 3, 4, 6, 7, 8, 9) the explanation or the "similar attacks" field explicitly cites the attack time from the catalog, e.g. "the event starts 11 s after attack 8 at 15:44:50". Every attack in `04_a12_attack_catalog.md` carries its A12 clock time, so the LLM can find the match without understanding the physics.
 
-- 真实部署时没有"未来攻击的时间表"，这些匹配不可迁移。
-- 不过 LLM 并非只靠时间：事件 4（LIT101 恒 400 mm）、事件 8（物理一致性）、事件 9（振荡频率）里，数据本身的证据也很充分。
-- 建议：在给解释器的检索内容里**去掉 A12 目录里的具体时刻**（保留机制与受影响位号），再重跑一次，看 LLM 还剩多少能力。这是报告里最值得补做的一个对照实验。
+- In a real deployment there is no schedule of future attacks, so these matches do not transfer.
+- The LLM does not rely on time alone: events 4 (LIT101 constant at 400 mm), 8 (physical consistency) and 9 (oscillation frequency) also have strong evidence in the data.
+- Suggestion: **remove the clock times of the A12 catalog** from what the explainer retrieves (keep mechanism and affected tags) and rerun, to see how much ability remains. This is the most valuable control experiment; it is done in section 7.
 
-### 4.2 检索决定了 LLM 能说出什么
+### 4.2 Retrieval decides what the LLM can say
 
-- 事件 5：检索只返回攻击 4 和攻击 9 的片段，没有攻击 5（阀门操纵）。于是 LLM 如实说"没有已知攻击匹配"，其实攻击 5 就是答案。事件 0 的检索里反而有攻击 5。
-- 事件 6：没有检索到攻击 6，LLM 明确写出"攻击 6 的说明不在提供的片段中，无法评估它的贡献"。这是诚实的，但也意味着攻击 6 在 LLM 版里同样没被发现。
-- 攻击 6（范围内 LIT101 欺骗）在检测器层面就没被定位到，LLM 无法凭空补上。
+- Event 5: retrieval returned only the chunks of attacks 4 and 9, not attack 5 (valve manipulation). The LLM therefore honestly said "no known attack matches", although attack 5 is the answer. In event 0, attack 5 was retrieved.
+- Event 6: attack 6 was not retrieved. The LLM writes that attack 6 is not described in the provided excerpts and its contribution cannot be assessed. That is honest, but it means attack 6 is also missed in the LLM version.
+- Attack 6 (in-range LIT101 spoofing) is already not localised by the detector, so the LLM cannot make it up.
 
-### 4.3 置信度偏高
+### 4.3 Confidence is too high
 
-LLM 对 10 条里的 8 条给了"high"。事件 1 和事件 7 的正文里仍含不确定成分（例如前者承认 FIT101 的基线不一致）。置信度更多受时间匹配影响，而不是证据强度。
+The LLM gives "high" in 8 of 10 events. The text of events 1 and 7 still contains uncertainty (for example event 1 admits that the FIT101 baselines disagree). The confidence is driven more by the time match than by the strength of the evidence.
 
-### 4.4 其他
+### 4.4 Other
 
-- 事件 7 的 `category_label` 沿用了分类器的"备用设备启动"，正文却说"不是备用泵攻击"，标签与正文不一致。
-- 事件 4、5、6 是合并事件（含多个攻击或上一个攻击的余波），LLM 只覆盖了其中一部分，这是检测层的事件切分问题。
+- In event 7 the `category_label` keeps the classifier's "standby activation" while the text says "not a standby-pump attack".
+- Events 4, 5 and 6 are merged events (several attacks or the tail of the previous attack). The LLM covers only part of them; this is an event-segmentation issue in the detection layer.
 
-## 5. 下一步建议（按价值）
+## 5. Suggested next steps (by value)
 
-1. 去掉目录里的具体时刻，重跑 LLM，量化时间泄漏的影响。
-2. 修正 `tags.py` 与 `02_tag_dictionary.md` 里与官方 PDF 不符的描述，再重跑。
-3. 检索改进：对事件的受影响位号按位号检索攻击片段（事件 5 本来应该检到攻击 5）。
-4. 对 LLM 的置信度加规则约束，例如时间匹配不算证据，或用"证据条数与是否一致"来校准。
-5. 对 LLM 输出做自动忠实度检查（本报告的数字对照脚本可以固化进 `scripts/`）。
+1. Remove the clock times from the catalog and rerun the LLM to quantify the time leak (done, section 7).
+2. Fix the descriptions in `tags.py` and `02_tag_dictionary.md` that disagree with the official PDF, then rerun (fixed; the rerun is still to do).
+3. Improve retrieval: retrieve attack chunks by the affected tags of the event (event 5 should have retrieved attack 5).
+4. Constrain the LLM's confidence with rules, for example a time match does not count as evidence, or calibrate with the number of consistent evidence items.
+5. Run an automatic faithfulness check on the LLM output (the number comparison used here could become a script in `scripts/`).
 
-## 6. 局限
+## 6. Limitations
 
-- 只有一次运行、一个检测器（WinAE）、一个数据集；LLM 输出有随机性，没有重复。
-- 类别对错是我读文字的判断，不是自动评估。
-- 数字核查只覆盖数值，没覆盖语义是否被曲解。
+- One run, one detector (WinAE), one dataset; LLM output is random and was not repeated.
+- Whether a category is right is my own judgement of the text, not an automatic evaluation.
+- The number check only covers numbers, not whether the meaning is distorted.
 
-## 7. 补做实验：去掉知识库里的攻击时刻后重跑
+## 7. Follow-up experiment: rerun without the attack times in the knowledge base
 
-做法：复制知识库，把攻击目录里的"Time in data: 13:24:50 to 13:30:30 (341 s)"改成"Duration: 341 s"，并删掉说明时间偏移的那句。其余内容（攻击机制、受影响位号、观测效应）不变，然后重新调用 10 次 Claude。结果在 `outputs/explanations/a12_A11-A10_noAIT__WinAE.json`，带时刻的第一版在 `timed_...json`。
+Method: copy the knowledge base and change "Time in data: 13:24:50 to 13:30:30 (341 s)" in the attack catalog to "Duration: 341 s", and drop the sentence about the time offset. Everything else (attack mechanism, affected tags, observed effect) is unchanged. Then call Claude 10 times again. The result is in `outputs/explanations/a12_A11-A10_noAIT__WinAE.json`; the first run with times is in `timed_...json`.
 
-| 项目 | 带时刻 | 去掉时刻 |
+| Item | With times | Without times |
 |---|---|---|
-| 解释里引用攻击目录时间窗的事件数 | 5 个事件共 18 处 | 基本为 0 |
-| 找到的"最相似攻击"（事件 0、1、3、4、6、7、8、9） | 都对 | **都对，未变** |
-| 置信度分布 | high 8，low 2 | **high 5，medium 3，low 2** |
-| 评估表 5 个指标 | 0.7 / 0.9 / 0.7 / 0.8 / 0.5 | 同左（这些指标不测 LLM 文字） |
+| Events whose explanation cites the catalog time window | 5 events, 18 mentions | essentially 0 |
+| "Most similar attack" found (events 0, 1, 3, 4, 6, 7, 8, 9) | all correct | **all correct, unchanged** |
+| Confidence distribution | high 8, low 2 | **high 5, medium 3, low 2** |
+| 5 metrics in the evaluation table | 0.7 / 0.9 / 0.7 / 0.8 / 0.5 | same (these metrics do not measure the LLM text) |
 
-**结论：**
-1. **去掉时刻后，LLM 仍能认出同样的攻击。** 它改用数据本身的证据：事件 4 的 LIT101 恒为 400 mm 且 74% 的步长平坦，事件 8 的 DPIT301 恒为 45 kPa 而泵停流量为 0，事件 9 的 LIT601 每分钟约 32 次方向变化。所以前面第 4.1 节说的时间泄漏，没有把 LLM 的识别能力"撑起来"，它本来就有一大部分来自数据。
-2. **置信度下降了**：事件 0、1、7 从 high 降到 medium，这更符合证据强度，也说明原先的"high"有一部分来自时间匹配。
-3. **事件 5 的短板依旧**：LLM 写"没有接近的已知攻击"，仍然没发现攻击 5。原因是检索没有给它攻击 5 的片段，和有没有时刻无关。
-4. **事件 1 的标签更保守**：沿用了分类器的 `out_of_range_excursion`，并补上"可能是 Stage 1 执行器操纵"，比带时刻版的直接判"执行器操纵"弱一点，但正文机制解释（MV101 开、P101 停、T101 溢出）仍在。
-5. 样本只有 10 个事件、一次运行，LLM 有随机性，上面是方向性结论，不是统计显著的结论。
+**Conclusions:**
+1. **Without the times the LLM still recognises the same attacks.** It switches to evidence from the data itself: LIT101 constant at 400 mm with 74% flat steps in event 4, DPIT301 constant at 45 kPa with pump off and flow 0 in event 8, about 32 direction changes per minute of LIT601 in event 9. So the time leak of section 4.1 did not prop up the LLM's recognition; a large part of it comes from the data.
+2. **Confidence dropped**: events 0, 1 and 7 went from high to medium, which fits the strength of the evidence better and shows that part of the earlier "high" came from the time match.
+3. **The weak spot of event 5 remains**: the LLM writes "no close known attack" and still does not find attack 5. The reason is that retrieval did not give it the attack 5 chunk, regardless of times.
+4. **The label of event 1 is more conservative**: it keeps the classifier's `out_of_range_excursion` and adds "possibly stage 1 actuator manipulation", a bit weaker than the plain "actuator manipulation" of the run with times, but the mechanism explanation (MV101 open, P101 stopped, T101 overflow) is still there.
+5. Only 10 events and one run, and the LLM is random, so these are directional conclusions, not statistically significant ones.
