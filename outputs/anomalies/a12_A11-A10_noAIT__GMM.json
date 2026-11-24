@@ -9,19 +9,17 @@
   "end": "2026-03-11 13:30:38",
   "duration_s": 337,
   "peak_time": "2026-03-11 13:30:27",
-  "threshold": 377.1456,
-  "max_score": 60444.7344,
-  "mean_score": 10502.8747,
-  "max_score_ratio": 160.269,
+  "threshold": 377.1525,
+  "max_score": 60444.1797,
+  "mean_score": 10502.8685,
+  "max_score_ratio": 160.265,
   "triggered_by": "model+rules",
   "stages_involved": [
    "P2",
-   "P3",
    "P5"
   ],
   "stage_names": {
    "P2": "chemical dosing",
-   "P3": "ultrafiltration (UF)",
    "P5": "reverse osmosis (RO)"
   },
   "top_contributors": [
@@ -40,26 +38,8 @@
      0.0,
      1.0
     ],
-    "share": 0.756,
-    "contribution_increase": 60000.0
-   },
-   {
-    "tag": "P301",
-    "column": "P301.Status",
-    "stage": "P3",
-    "kind": "actuator",
-    "description": "UF feed pump (duty)",
-    "unit": "status",
-    "contribution": 8057.9,
-    "values_in_event": [
-     2.0
-    ],
-    "normal_values": [
-     1.0,
-     2.0
-    ],
-    "share": 0.101,
-    "contribution_increase": 8057.875
+    "share": 0.381,
+    "contribution_increase": 59999.996
    },
    {
     "tag": "MV501",
@@ -68,7 +48,7 @@
     "kind": "actuator",
     "description": "RO permeate valve (paired with MV502)",
     "unit": "status",
-    "contribution": 2621.718,
+    "contribution": 58095.602,
     "values_in_event": [
      0.0,
      1.0,
@@ -79,27 +59,53 @@
      1.0,
      2.0
     ],
-    "share": 0.033,
-    "contribution_increase": 2621.718
+    "share": 0.369,
+    "contribution_increase": 58095.602
    },
    {
-    "tag": "P401",
-    "column": "P401.Status",
-    "stage": "P4",
+    "tag": "PIT502",
+    "column": "PIT502.Pv",
+    "stage": "P5",
+    "kind": "sensor",
+    "description": "RO permeate pressure",
+    "unit": "kPa",
+    "contribution": 17422.498,
+    "value_at_start": 0.0,
+    "value_min": 0.0,
+    "value_max": 3.2679,
+    "normal_p01": 0.0,
+    "normal_median": 0.0,
+    "normal_p99": 0.1442,
+    "direction": "high",
+    "signal": {
+     "std_ratio": 0.476,
+     "change": 0.0,
+     "slope_per_min": -0.0591,
+     "direction_changes_per_min": 3.38,
+     "max_step": 0.9451,
+     "max_step_sigma": 0.72,
+     "flat_fraction": 0.848
+    },
+    "share": 0.111,
+    "contribution_increase": 17422.498
+   },
+   {
+    "tag": "P301",
+    "column": "P301.Status",
+    "stage": "P3",
     "kind": "actuator",
-    "description": "RO feed pump (duty)",
+    "description": "UF feed pump (duty)",
     "unit": "status",
-    "contribution": 2320.442,
+    "contribution": 7439.91,
     "values_in_event": [
-     1.0,
      2.0
     ],
     "normal_values": [
      1.0,
      2.0
     ],
-    "share": 0.029,
-    "contribution_increase": 2320.442
+    "share": 0.047,
+    "contribution_increase": 7439.91
    },
    {
     "tag": "P501",
@@ -108,7 +114,7 @@
     "kind": "actuator",
     "description": "RO high-pressure pump (duty)",
     "unit": "status/speed",
-    "contribution": 1570.158,
+    "contribution": 3957.017,
     "values_in_event": [
      1.0,
      2.0
@@ -117,8 +123,8 @@
      1.0,
      2.0
     ],
-    "share": 0.02,
-    "contribution_increase": 1570.158
+    "share": 0.025,
+    "contribution_increase": 3957.017
    }
   ],
   "rule_hits": [
@@ -159,10 +165,10 @@
   "end": "2026-03-11 14:12:00",
   "duration_s": 427,
   "peak_time": "2026-03-11 14:04:58",
-  "threshold": 377.1456,
-  "max_score": 932.0601,
-  "mean_score": 606.1715,
-  "max_score_ratio": 2.471,
+  "threshold": 377.1525,
+  "max_score": 928.3769,
+  "mean_score": 605.7351,
+  "max_score_ratio": 2.462,
   "triggered_by": "model+rules",
   "stages_involved": [
    "P1",
@@ -174,32 +180,13 @@
   },
   "top_contributors": [
    {
-    "tag": "P101",
-    "column": "P101.Status",
-    "stage": "P1",
-    "kind": "actuator",
-    "description": "Raw water transfer pump (duty) P1->P2",
-    "unit": "status",
-    "contribution": 658.149,
-    "values_in_event": [
-     1.0,
-     2.0
-    ],
-    "normal_values": [
-     1.0,
-     2.0
-    ],
-    "share": 0.54,
-    "contribution_increase": 658.149
-   },
-   {
     "tag": "P201",
     "column": "P201.Status",
     "stage": "P2",
     "kind": "actuator",
     "description": "NaCl dosing pump (duty)",
     "unit": "status",
-    "contribution": 203.446,
+    "contribution": 2856.607,
     "values_in_event": [
      1.0,
      2.0
@@ -208,71 +195,108 @@
      1.0,
      2.0
     ],
-    "share": 0.167,
-    "contribution_increase": 203.446
+    "share": 0.558,
+    "contribution_increase": 2856.607
    },
    {
-    "tag": "FIT201",
-    "column": "FIT201.Pv",
-    "stage": "P2",
+    "tag": "FIT101",
+    "column": "FIT101.Pv",
+    "stage": "P1",
     "kind": "sensor",
-    "description": "Flow through chemical dosing section",
+    "description": "Raw water inflow to T101",
     "unit": "m3/h",
-    "contribution": 163.968,
-    "value_at_start": 2.1019,
+    "contribution": 1360.873,
+    "value_at_start": 0.0144,
     "value_min": 0.0,
-    "value_max": 2.3584,
+    "value_max": 3.8926,
     "normal_p01": 0.0,
     "normal_median": 0.0,
-    "normal_p99": 2.6857,
-    "direction": "in-range",
+    "normal_p99": 5.9421,
+    "direction": "high",
     "signal": {
-     "std_ratio": 0.806,
-     "change": 0.2461,
-     "slope_per_min": 0.3644,
-     "direction_changes_per_min": 1.41,
-     "max_step": 0.3201,
-     "max_step_sigma": 0.25,
-     "flat_fraction": 0.815
+     "std_ratio": 0.884,
+     "change": -0.0144,
+     "slope_per_min": -0.5686,
+     "direction_changes_per_min": 5.2,
+     "max_step": 0.5791,
+     "max_step_sigma": 0.3,
+     "flat_fraction": 0.62
     },
-    "share": 0.134,
-    "contribution_increase": 163.32
+    "share": 0.266,
+    "contribution_increase": 1360.851
    },
    {
-    "tag": "P601",
-    "column": "P601.Status",
-    "stage": "P6",
+    "tag": "P101",
+    "column": "P101.Status",
+    "stage": "P1",
     "kind": "actuator",
-    "description": "Product water pump (to T101 / WaDi)",
+    "description": "Raw water transfer pump (duty) P1->P2",
     "unit": "status",
-    "contribution": 75.285,
+    "contribution": 514.472,
     "values_in_event": [
-     1.0
+     1.0,
+     2.0
     ],
     "normal_values": [
      1.0,
      2.0
     ],
-    "share": 0.062,
-    "contribution_increase": 75.285
+    "share": 0.1,
+    "contribution_increase": 514.472
    },
    {
-    "tag": "LSH601",
-    "column": "LSH601.Alarm",
-    "stage": "P6",
-    "kind": "alarm",
-    "description": "T601 high level switch",
-    "unit": "alarm",
-    "contribution": 39.705,
-    "values_in_event": [
-     1.0
-    ],
-    "normal_values": [
-     0.0,
-     1.0
-    ],
-    "share": 0.026,
-    "contribution_increase": 31.384
+    "tag": "LIT301",
+    "column": "LIT301.Pv",
+    "stage": "P3",
+    "kind": "sensor",
+    "description": "UF feed tank T301 level",
+    "unit": "mm",
+    "contribution": 142.621,
+    "value_at_start": 826.5909,
+    "value_min": 715.762,
+    "value_max": 826.5909,
+    "normal_p01": 794.2675,
+    "normal_median": 942.707,
+    "normal_p99": 1013.362,
+    "direction": "low",
+    "signal": {
+     "std_ratio": 0.463,
+     "change": -91.4429,
+     "slope_per_min": -16.1027,
+     "direction_changes_per_min": 0.98,
+     "max_step": 2.4432,
+     "max_step_sigma": 0.03,
+     "flat_fraction": 0.418
+    },
+    "share": 0.027,
+    "contribution_increase": 138.987
+   },
+   {
+    "tag": "PIT501",
+    "column": "PIT501.Pv",
+    "stage": "P5",
+    "kind": "sensor",
+    "description": "RO feed (high) pressure",
+    "unit": "kPa",
+    "contribution": 140.688,
+    "value_at_start": 239.1855,
+    "value_min": 239.1855,
+    "value_max": 240.0026,
+    "normal_p01": 242.3737,
+    "normal_median": 245.2256,
+    "normal_p99": 250.1122,
+    "direction": "in-range",
+    "signal": {
+     "std_ratio": 0.016,
+     "change": 0.7049,
+     "slope_per_min": 0.0617,
+     "direction_changes_per_min": 2.95,
+     "max_step": 0.2243,
+     "max_step_sigma": 0.02,
+     "flat_fraction": 0.892
+    },
+    "share": 0.013,
+    "contribution_increase": 68.685
    }
   ],
   "rule_hits": [
@@ -321,9 +345,9 @@
   "end": "2026-03-11 14:49:53",
   "duration_s": 268,
   "peak_time": "2026-03-11 14:45:26",
-  "threshold": 377.1456,
-  "max_score": 19.4374,
-  "mean_score": -3.4911,
+  "threshold": 377.1525,
+  "max_score": 19.4379,
+  "mean_score": -3.4902,
   "max_score_ratio": 0.052,
   "triggered_by": "rules",
   "stages_involved": [
@@ -338,31 +362,13 @@
   },
   "top_contributors": [
    {
-    "tag": "P205",
-    "column": "P205.Status",
-    "stage": "P2",
-    "kind": "actuator",
-    "description": "NaOCl dosing pump (duty)",
-    "unit": "status",
-    "contribution": 4.629,
-    "values_in_event": [
-     2.0
-    ],
-    "normal_values": [
-     1.0,
-     2.0
-    ],
-    "share": 0.217,
-    "contribution_increase": 4.629
-   },
-   {
     "tag": "PIT501",
     "column": "PIT501.Pv",
     "stage": "P5",
     "kind": "sensor",
     "description": "RO feed (high) pressure",
     "unit": "kPa",
-    "contribution": 18.176,
+    "contribution": 73.281,
     "value_at_start": 238.865,
     "value_min": 238.5766,
     "value_max": 239.1054,
@@ -379,8 +385,8 @@
      "max_step_sigma": 0.02,
      "flat_fraction": 0.88
     },
-    "share": 0.189,
-    "contribution_increase": 4.031
+    "share": 0.509,
+    "contribution_increase": 42.173
    },
    {
     "tag": "LSH601",
@@ -389,7 +395,7 @@
     "kind": "alarm",
     "description": "T601 high level switch",
     "unit": "alarm",
-    "contribution": 3.824,
+    "contribution": 16.197,
     "values_in_event": [
      0.0,
      1.0
@@ -398,8 +404,8 @@
      0.0,
      1.0
     ],
-    "share": 0.163,
-    "contribution_increase": 3.478
+    "share": 0.187,
+    "contribution_increase": 15.47
    },
    {
     "tag": "PIT503",
@@ -408,7 +414,7 @@
     "kind": "sensor",
     "description": "RO reject pressure",
     "unit": "kPa",
-    "contribution": 15.713,
+    "contribution": 11.704,
     "value_at_start": 198.667,
     "value_min": 198.5549,
     "value_max": 198.8913,
@@ -425,8 +431,35 @@
      "max_step_sigma": 0.03,
      "flat_fraction": 0.914
     },
-    "share": 0.135,
-    "contribution_increase": 2.875
+    "share": 0.138,
+    "contribution_increase": 11.446
+   },
+   {
+    "tag": "LIT101",
+    "column": "LIT101.Pv",
+    "stage": "P1",
+    "kind": "sensor",
+    "description": "Raw water tank T101 level",
+    "unit": "mm",
+    "contribution": 7.885,
+    "value_at_start": 804.603,
+    "value_min": 664.1567,
+    "value_max": 804.603,
+    "normal_p01": 493.9567,
+    "normal_median": 772.3765,
+    "normal_p99": 833.6108,
+    "direction": "in-range",
+    "signal": {
+     "std_ratio": 0.398,
+     "change": -140.4464,
+     "slope_per_min": -31.4639,
+     "direction_changes_per_min": 0.0,
+     "max_step": 2.2374,
+     "max_step_sigma": 0.02,
+     "flat_fraction": 0.311
+    },
+    "share": 0.095,
+    "contribution_increase": 7.884
    },
    {
     "tag": "FIT201",
@@ -435,7 +468,7 @@
     "kind": "sensor",
     "description": "Flow through chemical dosing section",
     "unit": "m3/h",
-    "contribution": 2.419,
+    "contribution": 2.113,
     "value_at_start": 2.1503,
     "value_min": 2.1503,
     "value_max": 2.348,
@@ -452,8 +485,8 @@
      "max_step_sigma": 0.06,
      "flat_fraction": 0.243
     },
-    "share": 0.096,
-    "contribution_increase": 2.046
+    "share": 0.025,
+    "contribution_increase": 2.034
    }
   ],
   "rule_hits": [
@@ -523,16 +556,18 @@
   "end": "2026-03-11 15:02:41",
   "duration_s": 472,
   "peak_time": "2026-03-11 14:54:59",
-  "threshold": 377.1456,
-  "max_score": 862.8647,
-  "mean_score": 332.197,
-  "max_score_ratio": 2.288,
+  "threshold": 377.1525,
+  "max_score": 859.2589,
+  "mean_score": 331.5903,
+  "max_score_ratio": 2.278,
   "triggered_by": "model+rules",
   "stages_involved": [
-   "P1"
+   "P1",
+   "P3"
   ],
   "stage_names": {
-   "P1": "raw water supply"
+   "P1": "raw water supply",
+   "P3": "ultrafiltration (UF)"
   },
   "top_contributors": [
    {
@@ -542,7 +577,7 @@
     "kind": "sensor",
     "description": "Raw water inflow to T101",
     "unit": "m3/h",
-    "contribution": 13.144,
+    "contribution": 1316.467,
     "value_at_start": 0.0,
     "value_min": 0.0,
     "value_max": 3.8882,
@@ -559,8 +594,8 @@
      "max_step_sigma": 0.3,
      "flat_fraction": 0.665
     },
-    "share": 0.369,
-    "contribution_increase": 12.86
+    "share": 0.729,
+    "contribution_increase": 1316.46
    },
    {
     "tag": "LIT101",
@@ -569,7 +604,7 @@
     "kind": "sensor",
     "description": "Raw water tank T101 level",
     "unit": "mm",
-    "contribution": 8.414,
+    "contribution": 170.935,
     "value_at_start": 400.0,
     "value_min": 400.0,
     "value_max": 980.7694,
@@ -586,8 +621,35 @@
      "max_step_sigma": 5.52,
      "flat_fraction": 0.743
     },
-    "share": 0.206,
-    "contribution_increase": 7.199
+    "share": 0.094,
+    "contribution_increase": 169.076
+   },
+   {
+    "tag": "LIT301",
+    "column": "LIT301.Pv",
+    "stage": "P3",
+    "kind": "sensor",
+    "description": "UF feed tank T301 level",
+    "unit": "mm",
+    "contribution": 247.646,
+    "value_at_start": 809.3278,
+    "value_min": 809.3278,
+    "value_max": 891.7185,
+    "normal_p01": 794.2675,
+    "normal_median": 942.707,
+    "normal_p99": 1013.362,
+    "direction": "low",
+    "signal": {
+     "std_ratio": 0.319,
+     "change": 81.7098,
+     "slope_per_min": 10.5407,
+     "direction_changes_per_min": 1.14,
+     "max_step": 1.6823,
+     "max_step_sigma": 0.02,
+     "flat_fraction": 0.539
+    },
+    "share": 0.08,
+    "contribution_increase": 145.235
    },
    {
     "tag": "MV101",
@@ -596,7 +658,7 @@
     "kind": "actuator",
     "description": "Raw water inlet valve to T101",
     "unit": "status",
-    "contribution": 5.483,
+    "contribution": 113.938,
     "values_in_event": [
      0.0,
      1.0,
@@ -607,8 +669,8 @@
      1.0,
      2.0
     ],
-    "share": 0.149,
-    "contribution_increase": 5.204
+    "share": 0.063,
+    "contribution_increase": 113.925
    },
    {
     "tag": "PIT501",
@@ -617,7 +679,7 @@
     "kind": "sensor",
     "description": "RO feed (high) pressure",
     "unit": "kPa",
-    "contribution": 24.553,
+    "contribution": 152.52,
     "value_at_start": 239.0413,
     "value_min": 238.817,
     "value_max": 239.3297,
@@ -634,35 +696,8 @@
      "max_step_sigma": 0.02,
      "flat_fraction": 0.856
     },
-    "share": 0.097,
-    "contribution_increase": 3.377
-   },
-   {
-    "tag": "FIT503",
-    "column": "FIT503.Pv",
-    "stage": "P5",
-    "kind": "sensor",
-    "description": "RO reject flow",
-    "unit": "m3/h",
-    "contribution": 32.209,
-    "value_at_start": 0.2159,
-    "value_min": 0.2143,
-    "value_max": 0.2171,
-    "normal_p01": 0.2219,
-    "normal_median": 0.2548,
-    "normal_p99": 0.2611,
-    "direction": "low",
-    "signal": {
-     "std_ratio": 0.05,
-     "change": -0.0006,
-     "slope_per_min": -0.0,
-     "direction_changes_per_min": 7.5,
-     "max_step": 0.0023,
-     "max_step_sigma": 0.14,
-     "flat_fraction": 0.783
-    },
-    "share": 0.071,
-    "contribution_increase": 2.465
+    "share": 0.026,
+    "contribution_increase": 46.408
    }
   ],
   "rule_hits": [
@@ -718,40 +753,20 @@
   "end": "2026-03-11 15:10:35",
   "duration_s": 341,
   "peak_time": "2026-03-11 15:10:17",
-  "threshold": 377.1456,
-  "max_score": 56012.9238,
-  "mean_score": 10141.543,
-  "max_score_ratio": 148.518,
+  "threshold": 377.1525,
+  "max_score": 56013.4277,
+  "mean_score": 10141.5311,
+  "max_score_ratio": 148.517,
   "triggered_by": "model+rules",
   "stages_involved": [
    "P2",
-   "P4",
    "P5"
   ],
   "stage_names": {
    "P2": "chemical dosing",
-   "P4": "dechlorination (UV + NaHSO3)",
    "P5": "reverse osmosis (RO)"
   },
   "top_contributors": [
-   {
-    "tag": "LSLL203",
-    "column": "LSLL203.Alarm",
-    "stage": "P2",
-    "kind": "alarm",
-    "description": "NaOCl tank low-low level switch",
-    "unit": "alarm",
-    "contribution": 43425.414,
-    "values_in_event": [
-     1.0
-    ],
-    "normal_values": [
-     0.0,
-     1.0
-    ],
-    "share": 0.573,
-    "contribution_increase": 43425.414
-   },
    {
     "tag": "MV501",
     "column": "MV501.Status",
@@ -759,7 +774,7 @@
     "kind": "actuator",
     "description": "RO permeate valve (paired with MV502)",
     "unit": "status",
-    "contribution": 19125.305,
+    "contribution": 57679.559,
     "values_in_event": [
      0.0,
      1.0,
@@ -770,8 +785,53 @@
      1.0,
      2.0
     ],
-    "share": 0.252,
-    "contribution_increase": 19125.305
+    "share": 0.429,
+    "contribution_increase": 57679.559
+   },
+   {
+    "tag": "LSLL203",
+    "column": "LSLL203.Alarm",
+    "stage": "P2",
+    "kind": "alarm",
+    "description": "NaOCl tank low-low level switch",
+    "unit": "alarm",
+    "contribution": 43425.797,
+    "values_in_event": [
+     1.0
+    ],
+    "normal_values": [
+     0.0,
+     1.0
+    ],
+    "share": 0.323,
+    "contribution_increase": 43425.773
+   },
+   {
+    "tag": "PIT502",
+    "column": "PIT502.Pv",
+    "stage": "P5",
+    "kind": "sensor",
+    "description": "RO permeate pressure",
+    "unit": "kPa",
+    "contribution": 16445.297,
+    "value_at_start": 0.0,
+    "value_min": 0.0,
+    "value_max": 3.412,
+    "normal_p01": 0.0,
+    "normal_median": 0.0,
+    "normal_p99": 0.1442,
+    "direction": "in-range",
+    "signal": {
+     "std_ratio": 1.132,
+     "change": 0.0,
+     "slope_per_min": -0.6115,
+     "direction_changes_per_min": 4.05,
+     "max_step": 0.8009,
+     "max_step_sigma": 0.61,
+     "flat_fraction": 0.821
+    },
+    "share": 0.122,
+    "contribution_increase": 16445.297
    },
    {
     "tag": "P401",
@@ -789,7 +849,7 @@
      1.0,
      2.0
     ],
-    "share": 0.052,
+    "share": 0.03,
     "contribution_increase": 3977.901
    },
    {
@@ -799,7 +859,7 @@
     "kind": "actuator",
     "description": "RO high-pressure pump (duty)",
     "unit": "status/speed",
-    "contribution": 2145.764,
+    "contribution": 3274.298,
     "values_in_event": [
      1.0,
      2.0
@@ -808,35 +868,8 @@
      1.0,
      2.0
     ],
-    "share": 0.028,
-    "contribution_increase": 2145.764
-   },
-   {
-    "tag": "FIT504",
-    "column": "FIT504.Pv",
-    "stage": "P5",
-    "kind": "sensor",
-    "description": "RO recirculation flow",
-    "unit": "m3/h",
-    "contribution": 1927.111,
-    "value_at_start": 0.0616,
-    "value_min": 0.0176,
-    "value_max": 0.0717,
-    "normal_p01": 0.0211,
-    "normal_median": 0.0236,
-    "normal_p99": 0.0576,
-    "direction": "high",
-    "signal": {
-     "std_ratio": 0.923,
-     "change": -0.0156,
-     "slope_per_min": -0.0011,
-     "direction_changes_per_min": 5.81,
-     "max_step": 0.0117,
-     "max_step_sigma": 1.06,
-     "flat_fraction": 0.753
-    },
-    "share": 0.025,
-    "contribution_increase": 1903.05
+    "share": 0.024,
+    "contribution_increase": 3274.298
    }
   ],
   "rule_hits": [
@@ -908,20 +941,22 @@
   "end": "2026-03-11 15:30:02",
   "duration_s": 284,
   "peak_time": "2026-03-11 15:27:30",
-  "threshold": 377.1456,
-  "max_score": 196.2954,
-  "mean_score": 178.2153,
-  "max_score_ratio": 0.52,
+  "threshold": 377.1525,
+  "max_score": 196.311,
+  "mean_score": 178.2235,
+  "max_score_ratio": 0.521,
   "triggered_by": "rules",
   "stages_involved": [
    "P1",
    "P2",
-   "P5"
+   "P3",
+   "P4"
   ],
   "stage_names": {
    "P1": "raw water supply",
    "P2": "chemical dosing",
-   "P5": "reverse osmosis (RO)"
+   "P3": "ultrafiltration (UF)",
+   "P4": "dechlorination (UV + NaHSO3)"
   },
   "top_contributors": [
    {
@@ -931,7 +966,7 @@
     "kind": "sensor",
     "description": "Flow through chemical dosing section",
     "unit": "m3/h",
-    "contribution": 65.489,
+    "contribution": 74.488,
     "value_at_start": 0.0,
     "value_min": 0.0,
     "value_max": 2.7146,
@@ -948,80 +983,8 @@
      "max_step_sigma": 0.3,
      "flat_fraction": 0.382
     },
-    "share": 0.504,
-    "contribution_increase": 65.471
-   },
-   {
-    "tag": "P101",
-    "column": "P101.Status",
-    "stage": "P1",
-    "kind": "actuator",
-    "description": "Raw water transfer pump (duty) P1->P2",
-    "unit": "status",
-    "contribution": 27.491,
-    "values_in_event": [
-     2.0
-    ],
-    "normal_values": [
-     1.0,
-     2.0
-    ],
-    "share": 0.21,
-    "contribution_increase": 27.238
-   },
-   {
-    "tag": "PIT501",
-    "column": "PIT501.Pv",
-    "stage": "P5",
-    "kind": "sensor",
-    "description": "RO feed (high) pressure",
-    "unit": "kPa",
-    "contribution": 31.901,
-    "value_at_start": 237.5032,
-    "value_min": 237.1828,
-    "value_max": 237.7756,
-    "normal_p01": 242.3737,
-    "normal_median": 245.2256,
-    "normal_p99": 250.1122,
-    "direction": "low",
-    "signal": {
-     "std_ratio": 0.013,
-     "change": 0.2724,
-     "slope_per_min": 0.0499,
-     "direction_changes_per_min": 3.17,
-     "max_step": 0.1923,
-     "max_step_sigma": 0.02,
-     "flat_fraction": 0.855
-    },
-    "share": 0.071,
-    "contribution_increase": 9.162
-   },
-   {
-    "tag": "PIT503",
-    "column": "PIT503.Pv",
-    "stage": "P5",
-    "kind": "sensor",
-    "description": "RO reject pressure",
-    "unit": "kPa",
-    "contribution": 35.224,
-    "value_at_start": 196.1516,
-    "value_min": 195.8472,
-    "value_max": 196.392,
-    "normal_p01": 202.3199,
-    "normal_median": 206.1651,
-    "normal_p99": 211.9489,
-    "direction": "low",
-    "signal": {
-     "std_ratio": 0.01,
-     "change": 0.0961,
-     "slope_per_min": 0.0293,
-     "direction_changes_per_min": 2.96,
-     "max_step": 0.1602,
-     "max_step_sigma": 0.02,
-     "flat_fraction": 0.883
-    },
-    "share": 0.057,
-    "contribution_increase": 7.44
+    "share": 0.273,
+    "contribution_increase": 74.444
    },
    {
     "tag": "LIT401",
@@ -1030,7 +993,7 @@
     "kind": "sensor",
     "description": "RO feed tank T401 level",
     "unit": "mm",
-    "contribution": 7.042,
+    "contribution": 50.722,
     "value_at_start": 812.484,
     "value_min": 812.484,
     "value_max": 852.9351,
@@ -1047,8 +1010,80 @@
      "max_step_sigma": 0.01,
      "flat_fraction": 0.081
     },
-    "share": 0.051,
-    "contribution_increase": 6.67
+    "share": 0.186,
+    "contribution_increase": 50.722
+   },
+   {
+    "tag": "LIT301",
+    "column": "LIT301.Pv",
+    "stage": "P3",
+    "kind": "sensor",
+    "description": "UF feed tank T301 level",
+    "unit": "mm",
+    "contribution": 35.748,
+    "value_at_start": 918.114,
+    "value_min": 913.2675,
+    "value_max": 980.638,
+    "normal_p01": 794.2675,
+    "normal_median": 942.707,
+    "normal_p99": 1013.362,
+    "direction": "in-range",
+    "signal": {
+     "std_ratio": 0.268,
+     "change": 62.524,
+     "slope_per_min": 14.6945,
+     "direction_changes_per_min": 0.63,
+     "max_step": 1.7624,
+     "max_step_sigma": 0.02,
+     "flat_fraction": 0.445
+    },
+    "share": 0.129,
+    "contribution_increase": 35.29
+   },
+   {
+    "tag": "PIT501",
+    "column": "PIT501.Pv",
+    "stage": "P5",
+    "kind": "sensor",
+    "description": "RO feed (high) pressure",
+    "unit": "kPa",
+    "contribution": 44.044,
+    "value_at_start": 237.5032,
+    "value_min": 237.1828,
+    "value_max": 237.7756,
+    "normal_p01": 242.3737,
+    "normal_median": 245.2256,
+    "normal_p99": 250.1122,
+    "direction": "low",
+    "signal": {
+     "std_ratio": 0.013,
+     "change": 0.2724,
+     "slope_per_min": 0.0499,
+     "direction_changes_per_min": 3.17,
+     "max_step": 0.1923,
+     "max_step_sigma": 0.02,
+     "flat_fraction": 0.855
+    },
+    "share": 0.094,
+    "contribution_increase": 25.692
+   },
+   {
+    "tag": "P101",
+    "column": "P101.Status",
+    "stage": "P1",
+    "kind": "actuator",
+    "description": "Raw water transfer pump (duty) P1->P2",
+    "unit": "status",
+    "contribution": 19.823,
+    "values_in_event": [
+     2.0
+    ],
+    "normal_values": [
+     1.0,
+     2.0
+    ],
+    "share": 0.07,
+    "contribution_increase": 19.193
    }
   ],
   "rule_hits": [
@@ -1095,9 +1130,9 @@
   "end": "2026-03-11 15:53:25",
   "duration_s": 505,
   "peak_time": "2026-03-11 15:53:10",
-  "threshold": 377.1456,
-  "max_score": 782.2564,
-  "mean_score": 249.2493,
+  "threshold": 377.1525,
+  "max_score": 782.2408,
+  "mean_score": 249.1076,
   "max_score_ratio": 2.074,
   "triggered_by": "model+rules",
   "stages_involved": [
@@ -1110,13 +1145,40 @@
   },
   "top_contributors": [
    {
+    "tag": "FIT301",
+    "column": "FIT301.Pv",
+    "stage": "P3",
+    "kind": "sensor",
+    "description": "UF feed flow",
+    "unit": "m3/h",
+    "contribution": 312.464,
+    "value_at_start": 1.7827,
+    "value_min": 0.0,
+    "value_max": 2.27,
+    "normal_p01": 0.0,
+    "normal_median": 1.7856,
+    "normal_p99": 1.9894,
+    "direction": "low",
+    "signal": {
+     "std_ratio": 0.704,
+     "change": 0.2029,
+     "slope_per_min": 0.1169,
+     "direction_changes_per_min": 3.8,
+     "max_step": 0.3378,
+     "max_step_sigma": 0.38,
+     "flat_fraction": 0.587
+    },
+    "share": 0.707,
+    "contribution_increase": 312.464
+   },
+   {
     "tag": "P601",
     "column": "P601.Status",
     "stage": "P6",
     "kind": "actuator",
-    "description": "Product water pump (to T101 / WaDi)",
+    "description": "RO permeate transfer pump (from T601)",
     "unit": "status",
-    "contribution": 76.125,
+    "contribution": 42.065,
     "values_in_event": [
      1.0,
      2.0
@@ -1125,8 +1187,8 @@
      1.0,
      2.0
     ],
-    "share": 0.439,
-    "contribution_increase": 76.125
+    "share": 0.095,
+    "contribution_increase": 42.065
    },
    {
     "tag": "FIT602",
@@ -1135,7 +1197,7 @@
     "kind": "sensor",
     "description": "Product water outflow",
     "unit": "m3/h",
-    "contribution": 31.759,
+    "contribution": 26.526,
     "value_at_start": 0.8785,
     "value_min": 0.6688,
     "value_max": 2.6664,
@@ -1152,81 +1214,62 @@
      "max_step_sigma": 0.47,
      "flat_fraction": 0.077
     },
-    "share": 0.183,
-    "contribution_increase": 31.653
+    "share": 0.058,
+    "contribution_increase": 25.787
    },
    {
-    "tag": "P301",
-    "column": "P301.Status",
+    "tag": "DPIT301",
+    "column": "DPIT301.Pv",
     "stage": "P3",
-    "kind": "actuator",
-    "description": "UF feed pump (duty)",
-    "unit": "status",
-    "contribution": 11.531,
-    "values_in_event": [
-     1.0,
-     2.0
-    ],
-    "normal_values": [
-     1.0,
-     2.0
-    ],
-    "share": 0.066,
-    "contribution_increase": 11.506
-   },
-   {
-    "tag": "PIT501",
-    "column": "PIT501.Pv",
-    "stage": "P5",
     "kind": "sensor",
-    "description": "RO feed (high) pressure",
+    "description": "Differential pressure across the UF membrane (triggers backwash)",
     "unit": "kPa",
-    "contribution": 33.264,
-    "value_at_start": 238.0479,
-    "value_min": 237.1828,
-    "value_max": 238.3844,
-    "normal_p01": 242.3737,
-    "normal_median": 245.2256,
-    "normal_p99": 250.1122,
+    "contribution": 25.012,
+    "value_at_start": 15.8941,
+    "value_min": 0.0064,
+    "value_max": 20.5551,
+    "normal_p01": 2.5802,
+    "normal_median": 15.1898,
+    "normal_p99": 16.2238,
     "direction": "low",
     "signal": {
-     "std_ratio": 0.02,
-     "change": -0.4326,
-     "slope_per_min": -0.0762,
-     "direction_changes_per_min": 3.56,
-     "max_step": 0.2563,
-     "max_step_sigma": 0.02,
-     "flat_fraction": 0.871
+     "std_ratio": 0.752,
+     "change": -9.0403,
+     "slope_per_min": 0.2764,
+     "direction_changes_per_min": 2.38,
+     "max_step": 2.1448,
+     "max_step_sigma": 0.34,
+     "flat_fraction": 0.677
     },
-    "share": 0.062,
-    "contribution_increase": 10.717
+    "share": 0.042,
+    "contribution_increase": 18.628
    },
    {
-    "tag": "PIT503",
-    "column": "PIT503.Pv",
-    "stage": "P5",
+    "tag": "LIT301",
+    "column": "LIT301.Pv",
+    "stage": "P3",
     "kind": "sensor",
-    "description": "RO reject pressure",
-    "unit": "kPa",
-    "contribution": 38.717,
-    "value_at_start": 196.4721,
-    "value_min": 195.7831,
-    "value_max": 196.6323,
-    "normal_p01": 202.3199,
-    "normal_median": 206.1651,
-    "normal_p99": 211.9489,
-    "direction": "low",
+    "description": "UF feed tank T301 level",
+    "unit": "mm",
+    "contribution": 20.336,
+    "value_at_start": 853.2267,
+    "value_min": 853.2267,
+    "value_max": 1009.7171,
+    "normal_p01": 794.2675,
+    "normal_median": 942.707,
+    "normal_p99": 1013.362,
+    "direction": "high",
     "signal": {
-     "std_ratio": 0.017,
-     "change": -0.4486,
-     "slope_per_min": -0.0574,
-     "direction_changes_per_min": 4.04,
-     "max_step": 0.2403,
+     "std_ratio": 0.643,
+     "change": 127.251,
+     "slope_per_min": 17.858,
+     "direction_changes_per_min": 0.59,
+     "max_step": 2.1629,
      "max_step_sigma": 0.03,
-     "flat_fraction": 0.879
+     "flat_fraction": 0.375
     },
-    "share": 0.056,
-    "contribution_increase": 9.763
+    "share": 0.026,
+    "contribution_increase": 11.367
    }
   ],
   "rule_hits": [
@@ -1372,9 +1415,9 @@
   "end": "2026-03-11 16:15:02",
   "duration_s": 311,
   "peak_time": "2026-03-11 16:13:06",
-  "threshold": 377.1456,
-  "max_score": 7982.8308,
-  "mean_score": 5982.8326,
+  "threshold": 377.1525,
+  "max_score": 7982.813,
+  "mean_score": 5982.8126,
   "max_score_ratio": 21.166,
   "triggered_by": "model+rules",
   "stages_involved": [
@@ -1393,7 +1436,7 @@
     "kind": "actuator",
     "description": "NaOCl dosing pump (duty)",
     "unit": "status",
-    "contribution": 27264.0,
+    "contribution": 18832.0,
     "values_in_event": [
      1.0,
      2.0
@@ -1402,8 +1445,8 @@
      1.0,
      2.0
     ],
-    "share": 0.548,
-    "contribution_increase": 27259.219
+    "share": 0.47,
+    "contribution_increase": 18832.0
    },
    {
     "tag": "P201",
@@ -1412,7 +1455,7 @@
     "kind": "actuator",
     "description": "NaCl dosing pump (duty)",
     "unit": "status",
-    "contribution": 12552.0,
+    "contribution": 11576.0,
     "values_in_event": [
      1.0,
      2.0
@@ -1421,8 +1464,8 @@
      1.0,
      2.0
     ],
-    "share": 0.252,
-    "contribution_increase": 12551.97
+    "share": 0.289,
+    "contribution_increase": 11575.979
    },
    {
     "tag": "P301",
@@ -1431,7 +1474,7 @@
     "kind": "actuator",
     "description": "UF feed pump (duty)",
     "unit": "status",
-    "contribution": 8240.0,
+    "contribution": 7608.0,
     "values_in_event": [
      1.0
     ],
@@ -1439,8 +1482,35 @@
      1.0,
      2.0
     ],
-    "share": 0.166,
-    "contribution_increase": 8232.648
+    "share": 0.189,
+    "contribution_increase": 7584.973
+   },
+   {
+    "tag": "DPIT301",
+    "column": "DPIT301.Pv",
+    "stage": "P3",
+    "kind": "sensor",
+    "description": "Differential pressure across the UF membrane (triggers backwash)",
+    "unit": "kPa",
+    "contribution": 807.528,
+    "value_at_start": 45.0,
+    "value_min": 3.1372,
+    "value_max": 45.0,
+    "normal_p01": 2.5802,
+    "normal_median": 15.1898,
+    "normal_p99": 16.2238,
+    "direction": "high",
+    "signal": {
+     "std_ratio": 0.836,
+     "change": -41.8628,
+     "slope_per_min": -0.7664,
+     "direction_changes_per_min": 0.0,
+     "max_step": 41.8436,
+     "max_step_sigma": 6.65,
+     "flat_fraction": 0.99
+    },
+    "share": 0.02,
+    "contribution_increase": 796.375
    },
    {
     "tag": "FIT301",
@@ -1449,7 +1519,7 @@
     "kind": "sensor",
     "description": "UF feed flow",
     "unit": "m3/h",
-    "contribution": 518.326,
+    "contribution": 585.873,
     "value_at_start": 0.0,
     "value_min": 0.0,
     "value_max": 0.0004,
@@ -1466,27 +1536,8 @@
      "max_step_sigma": 0.0,
      "flat_fraction": 0.961
     },
-    "share": 0.01,
-    "contribution_increase": 512.617
-   },
-   {
-    "tag": "P101",
-    "column": "P101.Status",
-    "stage": "P1",
-    "kind": "actuator",
-    "description": "Raw water transfer pump (duty) P1->P2",
-    "unit": "status",
-    "contribution": 451.5,
-    "values_in_event": [
-     1.0,
-     2.0
-    ],
-    "normal_values": [
-     1.0,
-     2.0
-    ],
-    "share": 0.009,
-    "contribution_increase": 451.33
+    "share": 0.011,
+    "contribution_increase": 433.911
    }
   ],
   "rule_hits": [
@@ -1535,9 +1586,9 @@
   "end": "2026-03-11 16:39:52",
   "duration_s": 255,
   "peak_time": "2026-03-11 16:36:34",
-  "threshold": 377.1456,
-  "max_score": 163.3385,
-  "mean_score": 134.0938,
+  "threshold": 377.1525,
+  "max_score": 163.345,
+  "mean_score": 134.0949,
   "max_score_ratio": 0.433,
   "triggered_by": "rules",
   "stages_involved": [
@@ -1552,98 +1603,13 @@
   },
   "top_contributors": [
    {
-    "tag": "P101",
-    "column": "P101.Status",
-    "stage": "P1",
-    "kind": "actuator",
-    "description": "Raw water transfer pump (duty) P1->P2",
-    "unit": "status",
-    "contribution": 32.509,
-    "values_in_event": [
-     1.0,
-     2.0
-    ],
-    "normal_values": [
-     1.0,
-     2.0
-    ],
-    "share": 0.322,
-    "contribution_increase": 32.256
-   },
-   {
-    "tag": "P601",
-    "column": "P601.Status",
-    "stage": "P6",
-    "kind": "actuator",
-    "description": "Product water pump (to T101 / WaDi)",
-    "unit": "status",
-    "contribution": 13.058,
-    "values_in_event": [
-     1.0
-    ],
-    "normal_values": [
-     1.0,
-     2.0
-    ],
-    "share": 0.13,
-    "contribution_increase": 12.985
-   },
-   {
-    "tag": "MV201",
-    "column": "MV201.Status",
-    "stage": "P2",
-    "kind": "actuator",
-    "description": "Valve from dosing section to UF feed tank T301",
-    "unit": "status",
-    "contribution": 9.969,
-    "values_in_event": [
-     0.0,
-     1.0,
-     2.0
-    ],
-    "normal_values": [
-     0.0,
-     1.0,
-     2.0
-    ],
-    "share": 0.099,
-    "contribution_increase": 9.966
-   },
-   {
-    "tag": "FIT602",
-    "column": "FIT602.Pv",
-    "stage": "P6",
-    "kind": "sensor",
-    "description": "Product water outflow",
-    "unit": "m3/h",
-    "contribution": 6.872,
-    "value_at_start": 0.9264,
-    "value_min": 0.8689,
-    "value_max": 0.9618,
-    "normal_p01": 0.4503,
-    "normal_median": 0.8317,
-    "normal_p99": 2.8559,
-    "direction": "in-range",
-    "signal": {
-     "std_ratio": 0.025,
-     "change": -0.0191,
-     "slope_per_min": -0.0047,
-     "direction_changes_per_min": 26.82,
-     "max_step": 0.0223,
-     "max_step_sigma": 0.04,
-     "flat_fraction": 0.067
-    },
-    "share": 0.069,
-    "contribution_increase": 6.871
-   },
-   {
     "tag": "LIT601",
     "column": "LIT601.Pv",
     "stage": "P6",
     "kind": "sensor",
     "description": "RO permeate (product) tank T601 level",
     "unit": "mm",
-    "contribution": 7.588,
+    "contribution": 38.927,
     "value_at_start": 800.0,
     "value_min": 100.0,
     "value_max": 1000.0,
@@ -1660,8 +1626,102 @@
      "max_step_sigma": 5.09,
      "flat_fraction": 0.008
     },
-    "share": 0.065,
-    "contribution_increase": 6.518
+    "share": 0.239,
+    "contribution_increase": 36.531
+   },
+   {
+    "tag": "MV201",
+    "column": "MV201.Status",
+    "stage": "P2",
+    "kind": "actuator",
+    "description": "Valve from dosing section to UF feed tank T301",
+    "unit": "status",
+    "contribution": 18.804,
+    "values_in_event": [
+     0.0,
+     1.0,
+     2.0
+    ],
+    "normal_values": [
+     0.0,
+     1.0,
+     2.0
+    ],
+    "share": 0.123,
+    "contribution_increase": 18.804
+   },
+   {
+    "tag": "P101",
+    "column": "P101.Status",
+    "stage": "P1",
+    "kind": "actuator",
+    "description": "Raw water transfer pump (duty) P1->P2",
+    "unit": "status",
+    "contribution": 18.6,
+    "values_in_event": [
+     1.0,
+     2.0
+    ],
+    "normal_values": [
+     1.0,
+     2.0
+    ],
+    "share": 0.113,
+    "contribution_increase": 17.223
+   },
+   {
+    "tag": "FIT602",
+    "column": "FIT602.Pv",
+    "stage": "P6",
+    "kind": "sensor",
+    "description": "Product water outflow",
+    "unit": "m3/h",
+    "contribution": 11.285,
+    "value_at_start": 0.9264,
+    "value_min": 0.8689,
+    "value_max": 0.9618,
+    "normal_p01": 0.4503,
+    "normal_median": 0.8317,
+    "normal_p99": 2.8559,
+    "direction": "in-range",
+    "signal": {
+     "std_ratio": 0.025,
+     "change": -0.0191,
+     "slope_per_min": -0.0047,
+     "direction_changes_per_min": 26.82,
+     "max_step": 0.0223,
+     "max_step_sigma": 0.04,
+     "flat_fraction": 0.067
+    },
+    "share": 0.072,
+    "contribution_increase": 10.972
+   },
+   {
+    "tag": "FIT501",
+    "column": "FIT501.Pv",
+    "stage": "P5",
+    "kind": "sensor",
+    "description": "RO feed flow",
+    "unit": "m3/h",
+    "contribution": 37.061,
+    "value_at_start": 1.0733,
+    "value_min": 1.0706,
+    "value_max": 1.0777,
+    "normal_p01": 0.9701,
+    "normal_median": 1.0049,
+    "normal_p99": 1.0419,
+    "direction": "high",
+    "signal": {
+     "std_ratio": 0.026,
+     "change": 0.0044,
+     "slope_per_min": 0.0004,
+     "direction_changes_per_min": 7.06,
+     "max_step": 0.0033,
+     "max_step_sigma": 0.07,
+     "flat_fraction": 0.752
+    },
+    "share": 0.062,
+    "contribution_increase": 9.393
    }
   ],
   "rule_hits": [

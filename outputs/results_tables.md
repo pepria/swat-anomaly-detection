@@ -6,17 +6,17 @@
 |:-----------|:------------|:--------------|---------:|------:|------------:|---------------:|-----------------:|---------------------:|------------------:|-----------------:|--------:|
 | IForest    | model       | 0.751 ± 0.014 |    0.318 | 0.141 |       0.024 |          0.515 |            0.606 |                7.333 |             0.543 |          286.5   |       3 |
 | IForest    | model+rules | 0.878 ± 0.010 |    0.673 | 0.644 |       0.024 |          0.788 |            0.909 |                7.333 |             0.585 |           32.5   |       3 |
-| GMM        | model       | 0.866 ± 0.010 |    0.686 | 0.531 |       0.003 |          0.636 |            0.636 |                6.667 |             0.522 |           10     |       3 |
-| GMM        | model+rules | 0.956 ± 0.003 |    0.826 | 0.808 |       0.003 |          0.909 |            0.909 |                6.667 |             0.616 |           11.833 |       3 |
-| AE         | model       | 0.875 ± 0.006 |    0.664 | 0.561 |       0.002 |          0.636 |            0.636 |                3.333 |             0.79  |           48.5   |       3 |
-| AE         | model+rules | 0.955 ± 0.001 |    0.818 | 0.823 |       0.002 |          0.909 |            0.909 |                3.333 |             0.799 |           12.833 |       3 |
-| WinAE      | model       | 0.894 ± 0.002 |    0.58  | 0.573 |       0.001 |          0.909 |            0.909 |                2     |             0.85  |           36.167 |       3 |
-| WinAE      | model+rules | 0.946 ± 0.002 |    0.7   | 0.789 |       0.001 |          0.909 |            0.909 |                2     |             0.823 |           15.167 |       3 |
-| LSTM-AE    | model       | 0.867 ± 0.016 |    0.558 | 0.561 |       0.008 |          0.818 |            0.848 |                5.333 |             0.675 |          139     |       3 |
-| LSTM-AE    | model+rules | 0.942 ± 0.003 |    0.715 | 0.765 |       0.008 |          0.879 |            0.909 |                5.333 |             0.663 |           19.167 |       3 |
+| GMM        | model       | 0.871 ± 0.003 |    0.716 | 0.582 |       0.003 |          0.727 |            0.727 |                7     |             0.577 |            9.5   |       3 |
+| GMM        | model+rules | 0.957 ± 0.002 |    0.831 | 0.824 |       0.003 |          0.909 |            0.909 |                7     |             0.597 |           10.5   |       3 |
+| AE         | model       | 0.877 ± 0.021 |    0.665 | 0.541 |       0.003 |          0.667 |            0.727 |                6.667 |             0.612 |           70.333 |       3 |
+| AE         | model+rules | 0.949 ± 0.007 |    0.81  | 0.809 |       0.003 |          0.848 |            0.909 |                6.667 |             0.622 |           13.667 |       3 |
+| WinAE      | model       | 0.900 ± 0.010 |    0.587 | 0.571 |       0.002 |          0.909 |            0.909 |                2.333 |             0.822 |           40.667 |       3 |
+| WinAE      | model+rules | 0.947 ± 0.002 |    0.702 | 0.787 |       0.002 |          0.909 |            0.909 |                2.333 |             0.795 |           14.5   |       3 |
+| LSTM-AE    | model       | 0.867 ± 0.011 |    0.537 | 0.499 |       0.005 |          0.818 |            0.848 |                4.667 |             0.708 |          187.5   |       3 |
+| LSTM-AE    | model+rules | 0.939 ± 0.001 |    0.702 | 0.754 |       0.005 |          0.879 |            0.909 |                4.667 |             0.689 |           25.667 |       3 |
 | Rules only | rules       | 0.797         |    0.564 | 0.707 |       0     |          0.909 |            0.909 |                0     |             1     |           24     |       1 |
 
-FPR on clean normal data with the *training* threshold (no re-calibration): AE 0.661, GMM 0.969, IForest 0.107, LSTM-AE 0.0, WinAE 0.0
+FPR on clean normal data with the *training* threshold (no re-calibration): AE 0.048, GMM 0.082, IForest 0.166, LSTM-AE 0.061, WinAE 0.039
 
 ## a12_A11-A10_all
 
@@ -25,16 +25,16 @@ FPR on clean normal data with the *training* threshold (no re-calibration): AE 0
 | IForest    | model       | 0.754 ± 0.022 |    0.286 | 0.09  |       0.02  |          0.394 |            0.394 |                6.333 |             0.472 |          310.5   |       3 |
 | IForest    | model+rules | 0.884 ± 0.007 |    0.673 | 0.665 |       0.02  |          0.909 |            0.909 |                6.333 |             0.62  |           24     |       3 |
 | GMM        | model       | 0.822 ± 0.025 |    0.642 | 0.58  |       0.022 |          0.697 |            0.697 |                4     |             0.643 |           11     |       3 |
-| GMM        | model+rules | 0.897 ± 0.004 |    0.779 | 0.79  |       0.022 |          0.97  |            0.97  |                4     |             0.727 |           12.5   |       3 |
-| AE         | model       | 0.895 ± 0.013 |    0.705 | 0.603 |       0.007 |          0.939 |            0.939 |               12.333 |             0.525 |           13.167 |       3 |
-| AE         | model+rules | 0.950 ± 0.002 |    0.819 | 0.827 |       0.007 |          0.939 |            0.939 |               12.333 |             0.456 |           11.333 |       3 |
-| WinAE      | model       | 0.891 ± 0.002 |    0.561 | 0.522 |       0.001 |          0.758 |            0.758 |                2     |             0.815 |          115.667 |       3 |
-| WinAE      | model+rules | 0.940 ± 0.002 |    0.697 | 0.782 |       0.001 |          0.909 |            0.909 |                2     |             0.823 |           16     |       3 |
-| LSTM-AE    | model       | 0.858 ± 0.006 |    0.529 | 0.506 |       0.012 |          0.667 |            0.788 |                4.667 |             0.722 |           54     |       3 |
-| LSTM-AE    | model+rules | 0.927 ± 0.001 |    0.696 | 0.728 |       0.012 |          0.788 |            0.909 |                4.667 |             0.691 |           23.333 |       3 |
+| GMM        | model+rules | 0.897 ± 0.004 |    0.779 | 0.789 |       0.022 |          0.97  |            0.97  |                4     |             0.727 |           12.5   |       3 |
+| AE         | model       | 0.823 ± 0.136 |    0.623 | 0.551 |       0.014 |          0.758 |            0.818 |               15.333 |             0.432 |           13     |       3 |
+| AE         | model+rules | 0.930 ± 0.027 |    0.793 | 0.794 |       0.014 |          0.848 |            0.909 |               15.333 |             0.371 |           11.833 |       3 |
+| WinAE      | model       | 0.882 ± 0.010 |    0.567 | 0.53  |       0.003 |          0.788 |            0.818 |                2     |             0.852 |           38.833 |       3 |
+| WinAE      | model+rules | 0.941 ± 0.003 |    0.702 | 0.783 |       0.003 |          0.879 |            0.909 |                2     |             0.833 |           16.833 |       3 |
+| LSTM-AE    | model       | 0.863 ± 0.018 |    0.525 | 0.495 |       0.012 |          0.788 |            0.848 |                7     |             0.606 |          173.667 |       3 |
+| LSTM-AE    | model+rules | 0.933 ± 0.011 |    0.697 | 0.733 |       0.012 |          0.848 |            0.909 |                7     |             0.585 |           24     |       3 |
 | Rules only | rules       | 0.797         |    0.564 | 0.707 |       0     |          0.909 |            0.909 |                0     |             1     |           24     |       1 |
 
-FPR on clean normal data with the *training* threshold (no re-calibration): AE 1.0, GMM 1.0, IForest 0.122, LSTM-AE 0.001, WinAE 0.001
+FPR on clean normal data with the *training* threshold (no re-calibration): AE 0.529, GMM 1.0, IForest 0.257, LSTM-AE 0.505, WinAE 0.505
 
 ## a12_A11_noAIT
 
@@ -44,15 +44,15 @@ FPR on clean normal data with the *training* threshold (no re-calibration): AE 1
 | IForest    | model+rules | 0.910 ± 0.006 |    0.678 | 0.7   |       0.016 |          0.727 |            0.909 |                7.333 |             0.542 |           21.5   |       3 |
 | GMM        | model       | 0.828 ± 0.013 |    0.486 | 0.33  |       0.004 |          0.788 |            0.788 |                3.333 |             0.771 |           15     |       3 |
 | GMM        | model+rules | 0.935 ± 0.001 |    0.741 | 0.788 |       0.004 |          0.909 |            0.909 |                3.333 |             0.749 |            9     |       3 |
-| AE         | model       | 0.654 ± 0.071 |    0.342 | 0.244 |       0.007 |          0.333 |            0.394 |                4     |             0.559 |          256.667 |       3 |
-| AE         | model+rules | 0.893 ± 0.015 |    0.694 | 0.762 |       0.007 |          0.848 |            0.909 |                4     |             0.695 |           16     |       3 |
-| WinAE      | model       | 0.619 ± 0.043 |    0.312 | 0.351 |       0.007 |          0.485 |            0.545 |                2.667 |             0.688 |          199.5   |       3 |
-| WinAE      | model+rules | 0.850 ± 0.001 |    0.608 | 0.736 |       0.007 |          0.818 |            0.909 |                2.667 |             0.762 |           19.333 |       3 |
-| LSTM-AE    | model       | 0.762 ± 0.016 |    0.38  | 0.409 |       0.015 |          0.364 |            0.939 |                1.667 |             0.742 |          156.333 |       3 |
-| LSTM-AE    | model+rules | 0.907 ± 0.002 |    0.618 | 0.481 |       0.015 |          0.424 |            1     |                1.667 |             0.78  |           24.333 |       3 |
+| AE         | model       | 0.765 ± 0.007 |    0.443 | 0.42  |       0.007 |          0.364 |            0.636 |                4.667 |             0.615 |           64.333 |       3 |
+| AE         | model+rules | 0.911 ± 0.009 |    0.656 | 0.691 |       0.007 |          0.667 |            0.939 |                4.667 |             0.635 |           13.667 |       3 |
+| WinAE      | model       | 0.691 ± 0.135 |    0.351 | 0.398 |       0.011 |          0.545 |            0.576 |                2.333 |             0.757 |          195     |       3 |
+| WinAE      | model+rules | 0.881 ± 0.044 |    0.609 | 0.73  |       0.011 |          0.879 |            0.909 |                2.333 |             0.803 |           19.333 |       3 |
+| LSTM-AE    | model       | 0.764 ± 0.035 |    0.361 | 0.39  |       0.03  |          0.273 |            0.909 |                4.333 |             0.472 |          255     |       3 |
+| LSTM-AE    | model+rules | 0.906 ± 0.009 |    0.615 | 0.467 |       0.03  |          0.364 |            1     |                4.333 |             0.565 |           21     |       3 |
 | Rules only | rules       | 0.860         |    0.616 | 0.763 |       0     |          0.909 |            0.909 |                0     |             1     |           15     |       1 |
 
-FPR on clean normal data with the *training* threshold (no re-calibration): AE 1.0, GMM 1.0, IForest 0.082, LSTM-AE 1.0, WinAE 1.0
+FPR on clean normal data with the *training* threshold (no re-calibration): AE 0.995, GMM 0.951, IForest 0.073, LSTM-AE 1.0, WinAE 1.0
 
 ## a12_A11_all
 
@@ -62,15 +62,15 @@ FPR on clean normal data with the *training* threshold (no re-calibration): AE 1
 | IForest    | model+rules | 0.889 ± 0.004 |    0.666 | 0.701 |       0.016 |          0.758 |            0.909 |                5.667 |             0.613 |           22.333 |       3 |
 | GMM        | model       | 0.714 ± 0.042 |    0.412 | 0.354 |       0.236 |          0.788 |            0.909 |                8.333 |             0.594 |           72.833 |       3 |
 | GMM        | model+rules | 0.881 ± 0.015 |    0.69  | 0.536 |       0.236 |          0.758 |            1     |                8.333 |             0.525 |           16.667 |       3 |
-| AE         | model       | 0.514 ± 0.029 |    0.232 | 0.178 |       0.609 |          0.697 |            0.818 |               11.667 |             0.494 |           87.333 |       3 |
-| AE         | model+rules | 0.837 ± 0.011 |    0.644 | 0.37  |       0.609 |          0.697 |            1     |               11.667 |             0.433 |           12.167 |       3 |
-| WinAE      | model       | 0.585 ± 0.091 |    0.227 | 0.236 |       0.49  |          0.576 |            0.697 |                6.333 |             0.5   |          179.5   |       3 |
-| WinAE      | model+rules | 0.821 ± 0.014 |    0.589 | 0.407 |       0.49  |          0.879 |            1     |                6.333 |             0.599 |           22.333 |       3 |
-| LSTM-AE    | model       | 0.679 ± 0.008 |    0.307 | 0.255 |       0.927 |          0.152 |            0.97  |                2.333 |             0.593 |          175.667 |       3 |
-| LSTM-AE    | model+rules | 0.856 ± 0.008 |    0.582 | 0.264 |       0.927 |          0.182 |            1     |                2     |             0.685 |           98.333 |       3 |
+| AE         | model       | 0.534 ± 0.055 |    0.263 | 0.254 |       0.416 |          0.667 |            0.818 |               12.333 |             0.453 |           64.667 |       3 |
+| AE         | model+rules | 0.844 ± 0.009 |    0.65  | 0.467 |       0.416 |          0.848 |            1     |               12.333 |             0.455 |           18.333 |       3 |
+| WinAE      | model       | 0.595 ± 0.074 |    0.232 | 0.23  |       0.565 |          0.485 |            0.667 |                7     |             0.505 |           64.5   |       3 |
+| WinAE      | model+rules | 0.822 ± 0.006 |    0.583 | 0.389 |       0.565 |          0.818 |            1     |                7     |             0.568 |           25.333 |       3 |
+| LSTM-AE    | model       | 0.729 ± 0.035 |    0.358 | 0.271 |       0.764 |          0.273 |            0.97  |                7     |             0.328 |           94.833 |       3 |
+| LSTM-AE    | model+rules | 0.865 ± 0.007 |    0.592 | 0.285 |       0.764 |          0.303 |            1     |                7     |             0.339 |           64.833 |       3 |
 | Rules only | rules       | 0.860         |    0.616 | 0.763 |       0     |          0.909 |            0.909 |                0     |             1     |           15     |       1 |
 
-FPR on clean normal data with the *training* threshold (no re-calibration): AE 1.0, GMM 1.0, IForest 0.084, LSTM-AE 1.0, WinAE 1.0
+FPR on clean normal data with the *training* threshold (no re-calibration): AE 1.0, GMM 1.0, IForest 0.22, LSTM-AE 1.0, WinAE 1.0
 
 ## s2015_normal_noAIT
 
@@ -80,15 +80,15 @@ FPR on clean normal data with the *training* threshold (no re-calibration): AE 1
 | IForest    | model+rules | 0.798 ± 0.001 |    0.295 | 0.561 |       0     |          0.543 |            0.771 |              194     |             0.144 |           86     |       3 |
 | GMM        | model       | 0.930 ± 0.001 |    0.834 | 0.524 |       0.036 |          0.514 |            0.886 |              384.333 |             0.076 |          156.167 |       3 |
 | GMM        | model+rules | 0.919 ± 0.001 |    0.824 | 0.441 |       0.036 |          0.476 |            0.886 |              372.667 |             0.077 |          156.167 |       3 |
-| AE         | model       | 0.921 ± 0.004 |    0.834 | 0.68  |       0.012 |          0.61  |            0.857 |              415.667 |             0.083 |           64.5   |       3 |
-| AE         | model+rules | 0.914 ± 0.003 |    0.819 | 0.528 |       0.012 |          0.524 |            0.857 |              423.667 |             0.08  |           64.5   |       3 |
-| WinAE      | model       | 0.905 ± 0.001 |    0.81  | 0.689 |       0.004 |          0.524 |            0.819 |              222     |             0.134 |          141.833 |       3 |
-| WinAE      | model+rules | 0.901 ± 0.001 |    0.787 | 0.525 |       0.004 |          0.514 |            0.848 |              286     |             0.119 |           93.5   |       3 |
-| LSTM-AE    | model       | 0.908 ± 0.003 |    0.811 | 0.665 |       0     |          0.524 |            0.771 |              227     |             0.125 |          121.667 |       3 |
-| LSTM-AE    | model+rules | 0.903 ± 0.003 |    0.79  | 0.515 |       0     |          0.533 |            0.829 |              278.333 |             0.115 |          100.333 |       3 |
+| AE         | model       | 0.924 ± 0.004 |    0.833 | 0.678 |       0.012 |          0.619 |            0.867 |              404.333 |             0.087 |           71.167 |       3 |
+| AE         | model+rules | 0.917 ± 0.003 |    0.816 | 0.525 |       0.012 |          0.533 |            0.867 |              420.667 |             0.083 |           75     |       3 |
+| WinAE      | model       | 0.909 ± 0.002 |    0.812 | 0.699 |       0.001 |          0.524 |            0.819 |              179     |             0.16  |          213     |       3 |
+| WinAE      | model+rules | 0.903 ± 0.001 |    0.788 | 0.53  |       0.001 |          0.524 |            0.848 |              248.333 |             0.133 |          117.333 |       3 |
+| LSTM-AE    | model       | 0.907 ± 0.002 |    0.812 | 0.634 |       0     |          0.533 |            0.79  |              257.667 |             0.112 |           87.667 |       3 |
+| LSTM-AE    | model+rules | 0.903 ± 0.002 |    0.795 | 0.501 |       0     |          0.524 |            0.829 |              307     |             0.105 |           85     |       3 |
 | Rules only | rules       | 0.531         |    0.131 | 0.179 |       0     |          0.457 |            0.714 |              104     |             0.206 |          200     |       1 |
 
-FPR on clean normal data with the *training* threshold (no re-calibration): AE 0.014, GMM 0.057, IForest 0.0, LSTM-AE 0.0, WinAE 0.0
+FPR on clean normal data with the *training* threshold (no re-calibration): AE 0.006, GMM 0.027, IForest 0.0, LSTM-AE 0.0, WinAE 0.0
 
 ## s2015_normal_all
 
@@ -96,89 +96,106 @@ FPR on clean normal data with the *training* threshold (no re-calibration): AE 0
 |:-----------|:------------|:--------------|---------:|------:|------------:|---------------:|-----------------:|---------------------:|------------------:|-----------------:|--------:|
 | IForest    | model       | 0.839 ± 0.003 |    0.695 | 0.679 |       0     |          0.524 |            0.581 |              188.333 |             0.127 |          513.833 |       3 |
 | IForest    | model+rules | 0.788 ± 0.001 |    0.279 | 0.543 |       0     |          0.514 |            0.8   |              259     |             0.119 |          197.5   |       3 |
-| GMM        | model       | 0.858 ± 0.001 |    0.751 | 0.257 |       0.04  |          0.133 |            0.914 |               66.333 |             0.139 |          328.333 |       3 |
-| GMM        | model+rules | 0.858 ± 0.001 |    0.751 | 0.257 |       0.04  |          0.133 |            0.914 |               66.333 |             0.139 |          326.333 |       3 |
-| AE         | model       | 0.823 ± 0.001 |    0.724 | 0.261 |       0.029 |          0.21  |            0.924 |               98     |             0.143 |          185.5   |       3 |
-| AE         | model+rules | 0.824 ± 0.001 |    0.724 | 0.262 |       0.029 |          0.19  |            0.924 |               98     |             0.134 |          201.167 |       3 |
-| WinAE      | model       | 0.822 ± 0.005 |    0.726 | 0.258 |       0.018 |          0.171 |            0.905 |               60.667 |             0.185 |          203.5   |       3 |
-| WinAE      | model+rules | 0.823 ± 0.006 |    0.727 | 0.26  |       0.018 |          0.171 |            0.933 |               61.333 |             0.202 |          203.5   |       3 |
-| LSTM-AE    | model       | 0.825 ± 0.001 |    0.73  | 0.26  |       0.016 |          0.2   |            0.886 |               58     |             0.194 |          155.5   |       3 |
-| LSTM-AE    | model+rules | 0.827 ± 0.002 |    0.73  | 0.261 |       0.016 |          0.19  |            0.914 |               58.667 |             0.2   |          135.5   |       3 |
+| GMM        | model       | 0.858 ± 0.001 |    0.751 | 0.257 |       0.04  |          0.124 |            0.914 |               67     |             0.134 |          301.167 |       3 |
+| GMM        | model+rules | 0.858 ± 0.001 |    0.751 | 0.257 |       0.04  |          0.124 |            0.914 |               67     |             0.134 |          299.833 |       3 |
+| AE         | model       | 0.828 ± 0.001 |    0.731 | 0.258 |       0.04  |          0.21  |            0.952 |              117.667 |             0.141 |          152.667 |       3 |
+| AE         | model+rules | 0.829 ± 0.002 |    0.731 | 0.259 |       0.04  |          0.2   |            0.952 |              117.667 |             0.136 |          193.333 |       3 |
+| WinAE      | model       | 0.827 ± 0.005 |    0.729 | 0.256 |       0.021 |          0.152 |            0.895 |               61.667 |             0.198 |          221.5   |       3 |
+| WinAE      | model+rules | 0.828 ± 0.005 |    0.729 | 0.257 |       0.021 |          0.152 |            0.924 |               62.667 |             0.206 |          222     |       3 |
+| LSTM-AE    | model       | 0.822 ± 0.001 |    0.726 | 0.257 |       0.011 |          0.229 |            0.857 |               57.667 |             0.201 |          180.333 |       3 |
+| LSTM-AE    | model+rules | 0.823 ± 0.001 |    0.726 | 0.259 |       0.011 |          0.2   |            0.886 |               58.333 |             0.206 |          158.667 |       3 |
 | Rules only | rules       | 0.531         |    0.131 | 0.179 |       0     |          0.457 |            0.714 |              104     |             0.206 |          200     |       1 |
 
-FPR on clean normal data with the *training* threshold (no re-calibration): AE 1.0, GMM 0.995, IForest 0.0, LSTM-AE 0.015, WinAE 0.0
+FPR on clean normal data with the *training* threshold (no re-calibration): AE 0.46, GMM 0.95, IForest 0.0, LSTM-AE 0.04, WinAE 0.009
 
 ## Synthetic injection: event recall by type (model)
 
 | type          |   AE |   GMM |   IForest |   LSTM-AE |   WinAE |
 |:--------------|-----:|------:|----------:|----------:|--------:|
-| ALL           | 0.72 |  0.52 |      0.12 |      0.55 |    0.62 |
+| ALL           | 0.65 |  0.52 |      0.12 |      0.4  |    0.55 |
 | actuator_flip | 0.83 |  0.5  |      0    |      0.33 |    0.67 |
-| bias          | 0.67 |  0.5  |      0    |      1    |    1    |
+| bias          | 0.83 |  0.5  |      0    |      0.67 |    1    |
 | drift         | 1    |  0.67 |      0.17 |      0.83 |    0.83 |
-| noise         | 1    |  0.67 |      0.17 |      1    |    1    |
+| noise         | 0.67 |  0.67 |      0.17 |      0.67 |    1    |
 | replay        | 0.5  |  0.5  |      0    |      0.25 |    0    |
-| spike         | 1    |  0.83 |      0.17 |      0.33 |    0.67 |
+| spike         | 0.67 |  0.83 |      0.17 |      0    |    0.17 |
 | stuck         | 0    |  0    |      0.33 |      0    |    0    |
 
 ## Synthetic injection: event recall by type (model+rules)
 
 | type          |   AE |   GMM |   IForest |   LSTM-AE |   WinAE |
 |:--------------|-----:|------:|----------:|----------:|--------:|
-| ALL           | 0.72 |  0.62 |      0.48 |      0.6  |    0.68 |
+| ALL           | 0.68 |  0.6  |      0.45 |      0.52 |    0.6  |
 | actuator_flip | 0.83 |  0.5  |      0    |      0.33 |    0.67 |
-| bias          | 0.67 |  0.67 |      0.83 |      1    |    1    |
+| bias          | 0.83 |  0.67 |      0.67 |      0.83 |    1    |
 | drift         | 1    |  0.83 |      0.5  |      0.83 |    0.83 |
-| noise         | 1    |  1    |      0.83 |      1    |    1    |
+| noise         | 0.83 |  0.83 |      0.83 |      0.83 |    1    |
 | replay        | 0.5  |  0.5  |      0    |      0.25 |    0    |
-| spike         | 1    |  0.83 |      0.67 |      0.67 |    1    |
+| spike         | 0.67 |  0.83 |      0.67 |      0.5  |    0.5  |
 | stuck         | 0    |  0    |      0.33 |      0    |    0    |
 
 ## Synthetic injection: overall (recall, delay, root-cause localisation)
 
 | model   | variant     |   n |   recall |   median_delay_s |   hit_at_1 |   hit_at_3 |   false_alarm_events |
 |:--------|:------------|----:|---------:|-----------------:|-----------:|-----------:|---------------------:|
-| AE      | model       |  40 |    0.725 |                4 |      0.575 |      0.8   |                    4 |
-| AE      | model+rules |  40 |    0.725 |                4 |      0.6   |      0.8   |                    4 |
-| GMM     | model       |  40 |    0.525 |                4 |      0.3   |      0.55  |                    9 |
-| GMM     | model+rules |  40 |    0.625 |                4 |      0.3   |      0.575 |                    9 |
-| IForest | model       |  40 |    0.125 |              111 |      0.175 |      0.175 |                   10 |
-| IForest | model+rules |  40 |    0.475 |                1 |      0.3   |      0.3   |                    9 |
-| LSTM-AE | model       |  40 |    0.55  |               66 |      0.6   |      0.8   |                    6 |
-| LSTM-AE | model+rules |  40 |    0.6   |                4 |      0.625 |      0.8   |                    6 |
-| WinAE   | model       |  40 |    0.625 |               34 |      0.8   |      0.9   |                    1 |
-| WinAE   | model+rules |  40 |    0.675 |                2 |      0.8   |      0.9   |                    1 |
+| AE      | model       |  40 |    0.65  |              5   |      0.5   |      0.775 |                   17 |
+| AE      | model+rules |  40 |    0.675 |              4   |      0.525 |      0.775 |                   17 |
+| GMM     | model       |  40 |    0.525 |              5   |      0.45  |      0.75  |                    9 |
+| GMM     | model+rules |  40 |    0.6   |              4   |      0.525 |      0.75  |                    9 |
+| IForest | model       |  40 |    0.125 |            111   |      0.25  |      0.325 |                   10 |
+| IForest | model+rules |  40 |    0.45  |              3.5 |      0.425 |      0.55  |                    9 |
+| LSTM-AE | model       |  40 |    0.4   |            109   |      0.725 |      0.825 |                    4 |
+| LSTM-AE | model+rules |  40 |    0.525 |              6   |      0.725 |      0.825 |                    4 |
+| WinAE   | model       |  40 |    0.55  |             64.5 |      0.6   |      0.825 |                    0 |
+| WinAE   | model+rules |  40 |    0.6   |             22   |      0.625 |      0.825 |                    0 |
 
 ## Explanation quality: a12_A11-A10_noAIT__GMM
 
-|   attack_id | top3_contributors   | target_in_top3   | target_in_top3_or_rules   | predicted_category    | true_category         | known_attack_correct   | loo_top1_same_category   |
-|------------:|:--------------------|:-----------------|:--------------------------|:----------------------|:----------------------|:-----------------------|:-------------------------|
-|           1 | LSLL203,P301,MV501  | True             | True                      | actuator_manipulation | actuator_manipulation | True                   | True                     |
-|           2 | P101,P201,FIT201    | True             | True                      | actuator_manipulation | actuator_manipulation | True                   | False                    |
-|           3 | P205,PIT501,LSH601  | True             | True                      | standby_activation    | standby_activation    | True                   | True                     |
-|           4 | FIT101,LIT101,MV101 | True             | True                      | spoof_out_of_range    | spoof_out_of_range    | True                   | False                    |
-|           5 | LSLL203,MV501,P401  | True             | True                      | spoof_out_of_range    | actuator_manipulation | False                  | True                     |
-|           6 | FIT201,P101,PIT501  | False            | False                     | standby_activation    | drift_or_inrange      | False                  | False                    |
-|           7 | FIT201,P101,PIT501  | True             | True                      | standby_activation    | standby_activation    | True                   | False                    |
-|           8 | P601,FIT602,P301    | False            | True                      | standby_activation    | standby_activation    | True                   | True                     |
-|           9 | P205,P201,P301      | False            | True                      | spoof_out_of_range    | spoof_out_of_range    | True                   | False                    |
-|          10 | P101,P601,MV201     | False            | True                      | oscillation           | oscillation           | True                   | False                    |
+|   attack_id | top3_contributors    | target_in_top3   | target_in_top3_or_rules   | predicted_category    | true_category         | known_attack_correct   | loo_top1_same_category   |
+|------------:|:---------------------|:-----------------|:--------------------------|:----------------------|:----------------------|:-----------------------|:-------------------------|
+|           1 | LSLL203,MV501,PIT502 | True             | True                      | standby_activation    | actuator_manipulation | True                   | True                     |
+|           2 | P201,FIT101,P101     | True             | True                      | actuator_manipulation | actuator_manipulation | True                   | False                    |
+|           3 | PIT501,LSH601,PIT503 | False            | True                      | standby_activation    | standby_activation    | True                   | True                     |
+|           4 | FIT101,LIT101,LIT301 | True             | True                      | spoof_out_of_range    | spoof_out_of_range    | True                   | False                    |
+|           5 | MV501,LSLL203,PIT502 | True             | True                      | spoof_out_of_range    | actuator_manipulation | True                   | True                     |
+|           6 | FIT201,LIT401,LIT301 | False            | False                     | standby_activation    | drift_or_inrange      | False                  | False                    |
+|           7 | FIT201,LIT401,LIT301 | False            | True                      | standby_activation    | standby_activation    | True                   | False                    |
+|           8 | FIT301,P601,FIT602   | False            | True                      | standby_activation    | standby_activation    | True                   | False                    |
+|           9 | P205,P201,P301       | False            | True                      | spoof_out_of_range    | spoof_out_of_range    | True                   | False                    |
+|          10 | LIT601,MV201,P101    | True             | True                      | oscillation           | oscillation           | True                   | False                    |
 
-Mean: target_in_top3 0.60, target_in_top3_or_rules 0.90, category_correct 0.80, known_attack_correct 0.80, loo_top1_same_category 0.40
+Mean: target_in_top3 0.50, target_in_top3_or_rules 0.90, category_correct 0.70, known_attack_correct 0.90, loo_top1_same_category 0.30
 
 ## Explanation quality: a12_A11-A10_noAIT__WinAE
 
 |   attack_id | top3_contributors    | target_in_top3   | target_in_top3_or_rules   | predicted_category     | true_category         | known_attack_correct   | loo_top1_same_category   |
 |------------:|:---------------------|:-----------------|:--------------------------|:-----------------------|:----------------------|:-----------------------|:-------------------------|
-|           1 | MV501,LSLL203,LIT602 | True             | True                      | actuator_manipulation  | actuator_manipulation | True                   | True                     |
-|           2 | FIT201,P101,FIT101   | True             | True                      | out_of_range_excursion | actuator_manipulation | True                   | False                    |
-|           3 | LSH601,P205,LIT601   | True             | True                      | standby_activation     | standby_activation    | True                   | False                    |
-|           4 | LIT101,LIT301,FIT101 | True             | True                      | spoof_out_of_range     | spoof_out_of_range    | True                   | True                     |
-|           5 | MV501,FIT504,LSLL203 | True             | True                      | spoof_out_of_range     | actuator_manipulation | False                  | False                    |
-|           6 | LIT301,P205,LIT401   | False            | False                     | standby_activation     | drift_or_inrange      | False                  | False                    |
-|           7 | LIT301,P205,LIT401   | False            | True                      | standby_activation     | standby_activation    | True                   | True                     |
-|           8 | DPIT301,P301,FIT301  | False            | True                      | standby_activation     | standby_activation    | True                   | False                    |
-|           9 | DPIT301,FIT301,P301  | True             | True                      | spoof_out_of_range     | spoof_out_of_range    | True                   | True                     |
-|          10 | LIT601,MV201,FIT201  | True             | True                      | oscillation            | oscillation           | True                   | False                    |
+|           1 | MV501,LSLL203,PIT501 | True             | True                      | actuator_manipulation  | actuator_manipulation | True                   | True                     |
+|           2 | LIT301,FIT201,FIT101 | False            | False                     | out_of_range_excursion | actuator_manipulation | True                   | False                    |
+|           3 | LSLL203,LSH601,P205  | True             | True                      | standby_activation     | standby_activation    | True                   | True                     |
+|           4 | LIT101,LIT301,LIT401 | True             | True                      | spoof_out_of_range     | spoof_out_of_range    | True                   | False                    |
+|           5 | MV501,LSLL203,PIT501 | True             | True                      | spoof_out_of_range     | actuator_manipulation | True                   | True                     |
+|           6 | LIT301,LIT401,LIT101 | True             | True                      | standby_activation     | drift_or_inrange      | True                   | False                    |
+|           7 | LIT301,LIT401,LIT101 | False            | True                      | standby_activation     | standby_activation    | False                  | False                    |
+|           8 | LSLL203,MV501,P501   | False            | True                      | standby_activation     | standby_activation    | True                   | False                    |
+|           9 | DPIT301,FIT301,P301  | True             | True                      | spoof_out_of_range     | spoof_out_of_range    | True                   | False                    |
+|          10 | LIT601,PIT503,MV201  | True             | True                      | oscillation            | oscillation           | True                   | False                    |
 
-Mean: target_in_top3 0.70, target_in_top3_or_rules 0.90, category_correct 0.70, known_attack_correct 0.80, loo_top1_same_category 0.40
+Mean: target_in_top3 0.70, target_in_top3_or_rules 0.90, category_correct 0.70, known_attack_correct 0.90, loo_top1_same_category 0.30
+
+## Explanation quality: llm_notime_a12_A11-A10_noAIT__WinAE
+
+|   attack_id | top3_contributors      | target_in_top3   | target_in_top3_or_rules   | predicted_category     | true_category         | known_attack_correct   | loo_top1_same_category   |
+|------------:|:-----------------------|:-----------------|:--------------------------|:-----------------------|:----------------------|:-----------------------|:-------------------------|
+|           1 | MV501,LSLL203,LIT602   | True             | True                      | actuator_manipulation  | actuator_manipulation | True                   | True                     |
+|           2 | FIT201,FIT101,P101     | True             | True                      | out_of_range_excursion | actuator_manipulation | True                   | False                    |
+|           3 | LSH601,P205,P201       | True             | True                      | standby_activation     | standby_activation    | True                   | True                     |
+|           4 | LIT101,LIT301,FIT101   | True             | True                      | spoof_out_of_range     | spoof_out_of_range    | True                   | True                     |
+|           5 | MV501,FIT504,LSLL203   | True             | True                      | spoof_out_of_range     | actuator_manipulation | False                  | False                    |
+|           6 | LIT301,LIT401,P205     | False            | False                     | standby_activation     | drift_or_inrange      | False                  | False                    |
+|           7 | LIT301,LIT401,P205     | False            | True                      | standby_activation     | standby_activation    | True                   | True                     |
+|           8 | LIT301,DPIT301,LSLL203 | False            | True                      | standby_activation     | standby_activation    | True                   | False                    |
+|           9 | DPIT301,FIT301,P301    | True             | True                      | spoof_out_of_range     | spoof_out_of_range    | True                   | True                     |
+|          10 | LIT601,MV201,FIT201    | True             | True                      | oscillation            | oscillation           | True                   | False                    |
+
+Mean: target_in_top3 0.70, target_in_top3_or_rules 0.90, category_correct 0.70, known_attack_correct 0.80, loo_top1_same_category 0.50
