@@ -1,0 +1,430 @@
+[
+ {
+  "summary": "Between 13:25:00 and 13:32:26 the detector flagged an anomaly led by the RO permeate valve MV501 (stage P5). MV501 should never change in normal operation [02_tag_dictionary#65][05_mined_invariants#13], and the timing almost exactly matches the catalogued A12 attack 1, in which MV501-MV504 were flipped from 13:24:50 to 13:30:30 [04_a12_attack_catalog#1]. The other contributors (LSLL203, LIT602, FIT504, LIT101) show weak or inconsistent deviations, and the unseen P501 speed value at 13:30:15 is likely a side effect near the end of the attack window.",
+  "category_label": "actuator_manipulation",
+  "evidence": [
+   "MV501.Status is the top contributor (share 0.298, contribution increase 707.4) and takes the values 0, 1 and 2 during the event. The tag dictionary says MV501 is 2 in 100% of normal operation and that any change is suspicious [02_tag_dictionary#65][05_mined_invariants#13]. Note that the event's own 'normal_values' field lists [0, 1, 2], which contradicts the knowledge base. I treat the knowledge base as authoritative here, but the detector baseline should be checked.",
+   "Event window 13:25:00-13:32:26 overlaps almost exactly with A12 attack 1 (13:24:50-13:30:30, 341 s) on MV501-504 [04_a12_attack_catalog#1]. The peak score at 13:30:31 coincides with the end of the attack, which suggests the valves being restored also produced a strong deviation.",
+   "The pattern matches the actuator-manipulation signature: each valve state is legal on its own, but the combination never occurs in normal operation (permeate valves closed while reject valves are open) [03_attack_and_fault_patterns#4].",
+   "Rule hit: P501.Speed = 8.56, first seen at 13:30:15. That value is never seen in normal operation, where it is always 10 [02_tag_dictionary#62]. It appeared 15 s before the catalogued attack end, so it is plausibly the RO pump reacting to the valve changes or to their restoration. This is an inference; the knowledge base does not describe it.",
+   "LSLL203.Alarm stays at 1 throughout. The knowledge base gives 1 as its normal value (100%) [02_tag_dictionary#24], so its high contribution looks like a model artifact rather than a real NaOCl low-low event. Weak evidence.",
+   "LIT602 ranges from 561.5 to 577.7 mm. This is close to the knowledge-base normal range of 561-568 mm (median 564, max 572) [02_tag_dictionary#71], only slightly above it at the top. The event's baseline median of 988 mm disagrees with the knowledge base, so the 'low' flag is questionable. Weak evidence.",
+   "FIT504 (RO recirculation flow) peaks at 0.0626 m3/h, only slightly above its p99 of 0.0576. This is a mild deviation and may be a downstream reaction in P5.",
+   "LIT101 (stage P1) runs from 494 to 579 mm, at the low end of its normal band and rising. P1 is not listed in stages_involved, and the deviation is weak.",
+   "Not visible in the top contributors: MV502-MV504, and FIT502/PIT502, which the catalog says react during attack 1 [04_a12_attack_catalog#1]. MV501 and MV502 normally move together [05_mined_invariants#12], so confirming their joint movement requires the raw data."
+  ],
+  "similar_known_attacks": [
+   "A12 attack 1: Stage 5 valve manipulation (MV503/504 open, MV501/502 close), 13:24:50-13:30:30 [04_a12_attack_catalog#1]. This is a near-exact time match.",
+   "A12 attack 5: repeat of attack 1 on MV501-504, 15:04:50-15:10:30 [04_a12_attack_catalog#5]. Same mechanism, different time."
+  ],
+  "recommended_checks": [
+   "Review the HMI command history and PLC mode (manual/auto) for MV501-MV504 between 13:24 and 13:31, and check the physical valve position indicators [03_attack_and_fault_patterns#4].",
+   "Verify in the raw data that MV501/MV502 and MV503/MV504 flipped together, and look at FIT502/PIT502 for the expected diversion of RO permeate [04_a12_attack_catalog#1][05_mined_invariants#12].",
+   "Check P501 status and speed after 13:30:15 to confirm the pump returned to speed 10 and status 2 [02_tag_dictionary#61][02_tag_dictionary#62].",
+   "Check whether P401, P403 and UV401 are still off. The catalog notes they stayed off for the rest of the day after attack 1 [04_a12_attack_catalog#1].",
+   "Reconcile the detector's normal baselines for MV501, LSLL203 and LIT602 with the tag dictionary, since the large contributions from LSLL203 and LIT602 may be baseline artifacts.",
+   "Be prepared for a similar event around 15:04-15:10 (attack 5) [04_a12_attack_catalog#5]."
+  ],
+  "confidence": "high",
+  "category": "actuator_manipulation",
+  "sources": [
+   "02_tag_dictionary#65",
+   "02_tag_dictionary#24",
+   "02_tag_dictionary#71",
+   "02_tag_dictionary#61",
+   "02_tag_dictionary#62",
+   "03_attack_and_fault_patterns#4",
+   "04_a12_attack_catalog#5",
+   "04_a12_attack_catalog#1",
+   "05_mined_invariants#13",
+   "05_mined_invariants#12",
+   "01_process_overview#7"
+  ],
+  "event_id": "a12-WinAE-001",
+  "backend": "claude"
+ },
+ {
+  "summary": "Between 14:05:14 and 14:12:00 the raw water tank T101 level (LIT101) rose above its normal range, reaching up to 960 mm. Raw water inflow (FIT101) was high at the start of the event while the transfer pump P101 and the downstream dosing flow (FIT201) showed abnormal on/off behaviour. The timing, the 960 mm level and the pattern match the documented A12 attack 2, in which MV101 is held open and P101 is stopped, so T101 fills without being emptied and risks overflowing [04_a12_attack_catalog#2][01_process_overview#2].",
+  "category_label": "actuator manipulation \u2013 Stage 1 flow disruption causing T101 overfill (rule pre-class: out_of_range_excursion on LIT101)",
+  "evidence": [
+   "Timing: the event (14:05:14\u201314:12:00, peak 14:10:19) overlaps A12 attack 2 (14:04:50\u201314:10:30). The event starts about 24 s after the attack begins and peaks about 11 s before it ends [04_a12_attack_catalog#2].",
+   "Rule hit: LIT101 is out of range at 911\u2013960 mm, first seen at 14:09:04, and was not already active before the event. The dictionary's normal range is 486\u2013826 mm (max 827) [02_tag_dictionary#2]. The catalog states that attack 2 drives LIT101 to about 960 mm [04_a12_attack_catalog#2].",
+   "This does not look like the sensor-spoofing signature of a constant, out-of-range value. The LIT101 flat fraction is only 0.31, and the level moves consistently with the flow signals, which points to a real physical overfill rather than a forced reading [03_attack_and_fault_patterns#1].",
+   "FIT101 (raw water inflow) was 3.87 m3/h at event start, above the dictionary maximum of 2.62 m3/h. It then fell to 0 (change \u22123.87). The open-MV101 invariant predicts about 2.56\u20132.58 m3/h [02_tag_dictionary#3][05_mined_invariants#1]. A high inflow means water was entering T101 during the event. Note: the detector's own normal_p99 for FIT101 (5.94) disagrees with the dictionary range, so how unusual this value is remains uncertain.",
+   "P101 (duty transfer pump) is a top contributor (share 0.134) and shows both states 1 and 2 during the event [02_tag_dictionary#5]. This is consistent with the pump being stopped during the attack and later restarted.",
+   "FIT201 starts at 0 and rises to 2.36 m3/h (slope +0.42 m3/h per min). This matches the invariant that FIT201 is about 2.34\u20132.39 when P101 is ON and 0 when it is OFF [05_mined_invariants#7][02_tag_dictionary#8]. The event therefore likely covers both the pump-stopped period and the restart or recovery.",
+   "LIT101 shows a slight downward slope (\u22122.7 mm/min) within the out-of-range window. This fits drawdown after P101 resumed, which may explain why the event extends to 14:12:00, beyond the catalogued attack end.",
+   "MV201 stayed at status 2 throughout. Its contribution is modest, and it is within its normal values.",
+   "LIT601 (P6) is slightly above its normal p99 (max 619 vs 617 mm) with low variance. P6 is not among the involved stages, and no excerpt links it to attack 2. Treat it as weak and probably incidental."
+  ],
+  "similar_known_attacks": [
+   "A12 attack 2: Stage 1 flow disruption (MV101 open, P101 & P102 stop), 14:04:50\u201314:10:30. This is the best match on timing, affected tags and LIT101 peak of about 960 mm [04_a12_attack_catalog#2].",
+   "A12 attack 6: Tank overflow via LIT101 spoofing. It shares the same overflow objective on T101, but it was an in-range spoof at 15:24\u201315:27, so it is not a match here [04_a12_attack_catalog#6].",
+   "Generic pattern of sensor spoofing with an out-of-range constant value. Considered and judged unlikely, because the signals are not flat and the related flows corroborate a real level rise [03_attack_and_fault_patterns#1]."
+  ],
+  "recommended_checks": [
+   "Check the MV101 status history and PLC/HMI write logs for 14:04\u201314:12. MV101 is not among the provided contributors, so the 'MV101 forced open' part is inferred only from the FIT101 inflow and the catalog [05_mined_invariants#1][03_attack_and_fault_patterns#1].",
+   "Review the P101 and P102 command and status logs. Confirm whether P101 was forced off and when it restarted, and confirm that P102 stayed off as in normal operation [01_process_overview#2].",
+   "Inspect T101 locally for overflow or spillage, and compare the field level gauge with LIT101, since the level reached about 960 mm.",
+   "Confirm that LIT101 has returned below about 826 mm and that MV101 and P101 have resumed normal PLC control (MV101 closing on high level, P101 following LIT301 demand) [01_process_overview#2].",
+   "Cross-check the FIT101 calibration and normal range. The dictionary maximum (2.62 m3/h) disagrees with the detector's normal_p99 (5.94 m3/h), and the 3.87 m3/h reading should be explained.",
+   "Optionally, check the LIT601 trend in P6 to confirm that its slight high reading is unrelated."
+  ],
+  "confidence": "high",
+  "category": "out_of_range_excursion",
+  "sources": [
+   "02_tag_dictionary#8",
+   "02_tag_dictionary#3",
+   "02_tag_dictionary#5",
+   "02_tag_dictionary#2",
+   "03_attack_and_fault_patterns#1",
+   "04_a12_attack_catalog#2",
+   "04_a12_attack_catalog#6",
+   "05_mined_invariants#7",
+   "05_mined_invariants#1",
+   "01_process_overview#2"
+  ],
+  "event_id": "a12-WinAE-002",
+  "backend": "claude"
+ },
+ {
+  "summary": "This is a short (19 s), marginal detection. The peak score is only 2.2% above threshold (0.2037 vs 0.1992), and no rule fired. The main contributor is the T301 level, LIT301 (54% share). It is below its median but inside the normal range, and it is rising at about 30 mm/min while UF feed flow FIT301 is 0 and DPIT301 sits in its low state (about 3.03 kPa). Together these look like an ordinary UF idle/non-filtration phase with T301 refilling from a lower-than-usual level. No known attack matches, so this is most likely benign, but the evidence either way is weak.",
+  "category_label": "drift_or_inrange (probable benign operating state; low-severity, unconfirmed)",
+  "evidence": [
+   "Marginal score: max_score_ratio 1.022, mean score 0.2016, duration 19 s, triggered_by model only, rule_hits empty.",
+   "LIT301 ranged 832.4\u2013842.1 mm. That is inside the normal range of 794 to 1.01e+03 mm [02_tag_dictionary#29] but below the median of about 943\u2013946 mm. The detector labels its direction 'low' only relative to that median.",
+   "The rule pre-classification says 'LIT301 trending low', but the signal is actually rising: change +9.69 mm, slope +29.7 mm/min, no direction changes, max step 1.2 mm (0.02 sigma). This is a smooth fill, not a step or freeze.",
+   "DPIT301 was 3.025\u20133.038 kPa and nearly flat (flat_fraction 0.944). This is the low plateau of the normal 2.6/16 kPa filtration/backwash square wave [01_process_overview#4], within the normal range of 2.54 to 16 kPa [02_tag_dictionary#31].",
+   "Per a mined invariant, a DPIT301 value of about 3.0 kPa normally corresponds to MV302 OFF/closed (2.55\u20133.39 kPa) [05_mined_invariants#2]. FIT301 = 0 m3/h for the whole event is consistent with no UF flow in that state.",
+   "Possible minor inconsistency: with MV302 closed, LIT301 is normally 906 to 1.01e+03 mm [05_mined_invariants#11], but here it is about 832\u2013842 mm. MV302's actual state is not in the event data, so this cannot be confirmed.",
+   "With no UF outflow (FIT301 = 0), a rising LIT301 is what a mass balance would predict if T301 is being fed upstream. This argues against a falsely falling level of the kind in [03_attack_and_fault_patterns#2].",
+   "LSH601 = 0, which is its most common normal value (90% of the time) [02_tag_dictionary#77]. Its contribution likely reflects context rather than an abnormal alarm.",
+   "LIT101 was 749\u2013757 mm, in range and rising [04_a12_attack_catalog#6 does not apply, see below]. It has a small share (6.2%)."
+  ],
+  "similar_known_attacks": [
+   "A12 attack 9 (DPIT301 spoofing) [04_a12_attack_catalog#9]: weak or no match. That attack froze DPIT301 at about 45 kPa, far above normal. Here DPIT301 is about 3.03 kPa, a normal low-state value. The event time (14:19) also does not overlap the catalogued window (16:09:50\u201316:15:30).",
+   "A12 attack 6 (LIT101 in-range spoofing) [04_a12_attack_catalog#6]: no match. That attack made LIT101 fall about 77 mm in 2 min. Here LIT101 rises slightly and contributes little. The catalogued window was 15:24:50\u201315:27:30.",
+   "Generic in-range sensor spoofing pattern [03_attack_and_fault_patterns#2]: listed only as the generic risk for in-range level anomalies. Current data does not show the wrong-direction or rate inconsistency that defines it."
+  ],
+  "recommended_checks": [
+   "Confirm MV302's position and P301/P302 status during 14:19:47\u201314:20:05. If MV302 was closed and pumps were off, the DPIT301 and FIT301 readings are expected [05_mined_invariants#2, 01_process_overview#4].",
+   "Do a mass balance on T301: check that inflow to T301 was positive and roughly matches the +30 mm/min rise in LIT301, given zero UF outflow [03_attack_and_fault_patterns#2].",
+   "Look at the minutes after the event. LIT301 should keep filling toward its usual 906 to 1.01e+03 mm band, and DPIT301 should step back to about 16 kPa with FIT301 near 1.8 m3/h when filtration resumes. A missing transition would raise concern.",
+   "If MV302 is confirmed closed, find out why T301 was lower than usual (about 832 mm vs. 906 mm or more) [05_mined_invariants#11]. For example, check for a longer preceding filtration run or reduced upstream supply.",
+   "If any doubt remains, cross-check LIT301 against a local or independent level indication for T301.",
+   "Consider whether this detection threshold is too sensitive for normal P3 idle phases if similar marginal events recur at phase transitions."
+  ],
+  "confidence": "low",
+  "category": "drift_or_inrange",
+  "sources": [
+   "02_tag_dictionary#29",
+   "02_tag_dictionary#77",
+   "02_tag_dictionary#31",
+   "03_attack_and_fault_patterns#2",
+   "04_a12_attack_catalog#9",
+   "04_a12_attack_catalog#6",
+   "05_mined_invariants#11",
+   "05_mined_invariants#2",
+   "01_process_overview#4"
+  ],
+  "event_id": "a12-WinAE-003",
+  "backend": "claude"
+ },
+ {
+  "summary": "From 14:45:26 to 14:51:21 (356 s), the three standby dosing pumps P202 (NaCl), P204 (HCl) and P206 (NaOCl) switched to status 2. None of these pumps ever changes state in normal operation, so their activation affects chemical dosing and is safety critical [02_tag_dictionary#14][05_mined_invariants#13][03_attack_and_fault_patterns#5]. The event closely matches the timing and signature of A12 attack 3, the Florida/Oldsmar-style dosing pump activation with sensor spoofing [04_a12_attack_catalog#3]. The P6 alarm LSH601, which is the top model contributor, shows only values that also occur in normal operation, so its role is unclear.",
+  "category_label": "standby_activation (standby dosing pumps P202/P204/P206 started; possible chemical overdosing scenario)",
+  "evidence": [
+   "Rule hits (unseen_state): P202.Status, P204.Status and P206.Status all observed at 2, first seen at 14:45:26. Their normal value is only 1, and none was already active before the event. P202 is 100% at value 1 in normal data, and any change is suspicious [02_tag_dictionary#14]. P202, P204 and P206 are listed as tags that never change in normal operation [05_mined_invariants#13].",
+   "These are the standby pumps of the NaCl, HCl and NaOCl dosing pairs. Starting them changes the water chemistry [01_process_overview#3] and is classed as safety critical [03_attack_and_fault_patterns#5].",
+   "The timing matches A12 attack 3 (14:44:50 to 14:50:30, 341 s), whose targets are P201-P206 and MV201 and whose observed effect is that P202, P204 and P206 start [04_a12_attack_catalog#3]. The detected event (14:45:26 to 14:51:21, 356 s) starts about 36 s after the catalogued start and ends about 51 s after the catalogued end. The catalog gives times of day only, so the match is by time of day, tags and behaviour.",
+   "Model contributors P205, P201 and MV201 (all targets of attack 3) took only values that also occur in normal operation [02_tag_dictionary#17][02_tag_dictionary#13]. Their anomaly comes from a contribution increase (P205 +6.26, P201 +4.04, MV201 +2.84) rather than from new states, which suggests unusual switching patterns. This is weaker evidence.",
+   "FIT201 starts at 2.15 m3/h and ends near 0 (change -2.15, slope -0.41 m3/h per min). It reverses direction 7.92 times per min and is flat for 38% of the event, with values between 0 and 2.348. The P201->FIT201 invariant says the flow should be 2.34-2.39 when P201 is on and 0 when it is off [05_mined_invariants#4]. A starting value of 2.15 lies outside both bands, but the event summary does not allow a per-sample check against P201's state. Attack 3 includes sensor spoofing [04_a12_attack_catalog#3], so FIT201 readings may not be trustworthy. This is indicative only.",
+   "The top model contributor is LSH601 (T601 high level alarm, P6, share 0.455). It took values 0 and 1, both seen in normal operation (1 occurs 10% of the time) [02_tag_dictionary#77]. No knowledge base excerpt links attack 3 to P6, so this may be incidental or a downstream effect. The evidence for P6 involvement is weak.",
+   "The model score alone is only modestly above threshold (max 0.2446 vs threshold 0.1992, ratio 1.23; mean 0.0787). The strong evidence comes from the rule hits rather than from the model score."
+  ],
+  "similar_known_attacks": [
+   "A12 attack 3: Florida water plant scenario, dosing pump activation and sensor spoofing (targets P201-P206, MV201; 14:44:50 to 14:50:30). Strong match on timing, standby pumps P202/P204/P206 and the P2 actuators involved [04_a12_attack_catalog#3].",
+   "A12 attack 7: Stage 2 parallel pump override (MV201, P101, P102; 15:25:00 to 15:30:30). Same category, but it does not match: the time differs and P101/P102 are not in this event [04_a12_attack_catalog#7]."
+  ],
+  "recommended_checks": [
+   "Verify at the panel and in the field whether P202, P204 and P206 are actually running. If they are not part of planned work, return them to off/standby.",
+   "Confirm whether any maintenance was planned and identify who or what issued the start commands (HMI/SCADA/PLC command logs) [03_attack_and_fault_patterns#5].",
+   "Check the dosing chemistry in the event window and afterwards: conductivity AIT201, pH AIT202 and ORP AIT203 [01_process_overview#3]. These analysers are not among the reported contributors, so their behaviour is unknown. Take a grab sample if overdosing is possible.",
+   "Cross-check FIT201 against P201's on/off state using the invariant (2.34-2.39 m3/h when on, 0 when off) [05_mined_invariants#4]. Compare it with an independent or local measurement, because sensor spoofing is part of the matching attack [04_a12_attack_catalog#3].",
+   "Review the switching history of P201, P205 and MV201 during the window, and check whether chemically conditioned water was passed to UF feed tank T301 via MV201.",
+   "Independently verify the T601 level and the LSH601 alarm. Determine whether the alarm reflects a real high level or is unrelated to the P2 activity."
+  ],
+  "confidence": "high",
+  "category": "standby_activation",
+  "sources": [
+   "02_tag_dictionary#77",
+   "02_tag_dictionary#17",
+   "02_tag_dictionary#13",
+   "02_tag_dictionary#14",
+   "03_attack_and_fault_patterns#5",
+   "04_a12_attack_catalog#3",
+   "04_a12_attack_catalog#7",
+   "05_mined_invariants#4",
+   "05_mined_invariants#13",
+   "01_process_overview#3"
+  ],
+  "event_id": "a12-WinAE-004",
+  "backend": "claude"
+ },
+ {
+  "summary": "Between 14:54:50 and 15:02:41 the raw water tank level sensor LIT101 read a flat 400 mm, below its normal range, and then jumped to about 981 mm, above its normal range. The start time, the frozen 400 mm value and the ~980 mm level match catalogued A12 attack 4, tank overflow via LIT101 spoofing [04_a12_attack_catalog#4]. This is very likely sensor spoofing that left the real tank T101 filling while the controller saw it as low, with overflow risk [01_process_overview#2].",
+  "category_label": "sensor spoofing out of range (LIT101 frozen low, leading to T101 overflow risk)",
+  "evidence": [
+   "LIT101 starts the event at exactly 400.0 mm and is flat for 74% of steps (flat_fraction 0.743). 400 mm is below the rule's normal range (408.2\u2013911.1 mm) and the dictionary range of 486\u2013826 mm, with an observed minimum of 480 mm [02_tag_dictionary#2]. This fits the frozen out-of-range signature [03_attack_and_fault_patterns#1].",
+   "The out_of_range rule fired on LIT101.Pv at 14:54:50 and was not active before. This is the same second as the catalogued start of A12 attack 4 (14:54:50) [04_a12_attack_catalog#4].",
+   "LIT101 reaches a maximum of 980.77 mm, far above its normal maximum of about 827 mm [02_tag_dictionary#2]. Its largest single step is 563 mm (5.52 sigma). This matches the catalogued effect of 'real level reaches about 980 mm: tank overflow' [04_a12_attack_catalog#4]. The large step most likely marks the moment the spoofed value was released and the true level became visible. The peak score at 15:00:35 is 5 s after the catalogued attack end of 15:00:30, which supports this, but it is an inference.",
+   "LIT101 is the top contributor (share 0.392). Max score is 0.3919, about 1.97\u00d7 the threshold.",
+   "FIT101 (raw water inflow) varies between 0 and 3.89 m3/h during the event. Its maximum is above the dictionary normal maximum of 2.62 m3/h [02_tag_dictionary#3], although it is within the detector's own p99 of 5.94. Inflow into T101 continuing is consistent with the controller keeping MV101 open because LIT101 read low [01_process_overview#2]. Its flat_fraction of 0.665 and frequent direction changes make this a moderate, not conclusive, indicator.",
+   "MV101 shows statuses 0, 1 and 2 during the event, all within normal values. The event data does not show how long MV101 was open, so the 'MV101 kept open' mechanism is taken from the catalogue [04_a12_attack_catalog#4] and not directly confirmed here. The invariant MV101=open \u21d2 FIT101\u22482.57 [05_mined_invariants#1] can be checked against the raw data.",
+   "LIT301 (P3) is the second contributor (share 0.365) but stays within its normal range (809\u2013892 mm vs 794\u20131010 mm [02_tag_dictionary#29]), with low variability (std_ratio 0.32). Its link to the attack is weak. Since P101 is run when T301 needs water [01_process_overview#2], it may reflect a downstream interaction, or simply normal tank level variation [05_mined_invariants#11].",
+   "LIT401 (P4) has a minor contribution (share 0.02) and stays within its normal range. It is probably incidental.",
+   "The rule-based pre-classification is spoof_out_of_range, which agrees with the model-plus-rules trigger."
+  ],
+  "similar_known_attacks": [
+   "A12 attack 4: tank overflow via LIT101 spoofing (Schneider demo attack 01), 14:54:50\u201315:00:30. LIT101 frozen at 400 mm, MV101 kept open, real level about 980 mm [04_a12_attack_catalog#4]. This is a direct match on timing, target and values.",
+   "A12 attack 9: forced backwash via DPIT301 spoofing [04_a12_attack_catalog#9]. It is the same technique (out-of-range constant spoof) on a different stage and sensor. It is not this event and is listed for pattern reference only."
+  ],
+  "recommended_checks": [
+   "Physically inspect tank T101 for overflow or spillage and check the LIT101 field transmitter locally against a sight glass or manual measurement [03_attack_and_fault_patterns#1].",
+   "Review PLC and HMI write logs around 14:54:50\u201315:00:30 for forced or overwritten LIT101 values [03_attack_and_fault_patterns#1].",
+   "Cross-check LIT101 against redundant evidence: integrate FIT101 inflow and the MV101 open time over the event to estimate the true level rise, and confirm FIT101 follows the MV101 open/closed invariant [05_mined_invariants#1].",
+   "Confirm MV101 status history and P101/P102 pump status over the window. P102 should remain off in normal 2026 operation [01_process_overview#2].",
+   "Verify that LIT101 has returned to normal 480\u2013830 mm oscillation after 15:02:41 and that the out_of_range rule has cleared.",
+   "Optionally review LIT301 and P101 behaviour to determine whether the T301 level change is a downstream consequence or unrelated normal variation. Evidence for a link is currently weak."
+  ],
+  "confidence": "high",
+  "category": "spoof_out_of_range",
+  "sources": [
+   "02_tag_dictionary#2",
+   "02_tag_dictionary#29",
+   "02_tag_dictionary#3",
+   "03_attack_and_fault_patterns#1",
+   "04_a12_attack_catalog#4",
+   "04_a12_attack_catalog#9",
+   "05_mined_invariants#1",
+   "05_mined_invariants#11",
+   "01_process_overview#2"
+  ],
+  "event_id": "a12-WinAE-005",
+  "backend": "claude"
+ },
+ {
+  "summary": "Between 15:04:55 and 15:12:16 (442 s) the detector flagged unusual behaviour in RO stage P5, with smaller contributions from chemical dosing stage P2. The clearest finding is that the RO high-pressure pump P501 ran at speed 8.76, a value never seen in normal operation, where it is always 10. RO permeate valve MV501 also changed state, although it is normally constant. The rule-based label 'sensor spoofing out of range' on FIT504 is weakly supported: FIT504 only just exceeds the upper rule limit (0.070 to 0.072 vs 0.07) and still varies with normal-looking variance, so this looks more like a change in how the RO stage was being operated (manual or malicious actuator change, or an RO stop/start transition) than a frozen spoofed sensor.",
+  "category_label": "Suspected actuator manipulation or unusual operating state in P5 (RO). Not confirmed; the sensor-spoofing pre-classification is doubtful.",
+  "evidence": [
+   "Rule hit 'unseen_state': P501.Speed (RO high-pressure duty pump) observed at 8.76, first seen at 15:04:55, which is the event start. It was not active before. The knowledge base says P501.Speed is 10 in 100% of normal operation and any change is suspicious [02_tag_dictionary#62][05_mined_invariants#13].",
+   "MV501 (RO permeate valve) is the top model contributor (share 0.259) and took values 0, 1 and 2 during the event. The knowledge base says MV501 is 2 in 100% of normal operation and never changes [02_tag_dictionary#65][05_mined_invariants#13]. MV501 normally moves together with MV502 [05_mined_invariants#12][01_process_overview#6]. MV502 is not included in the event, so the pairing cannot be verified.",
+   "FIT504 (RO recirculation flow) triggered an out_of_range rule with observed values of 0.070 to 0.072 against a rule range of -0.012 to 0.07. This is a marginal exceedance.",
+   "FIT504 does not match the 'out-of-range constant value' spoofing signature, which requires a jump outside the normal range followed by a flat, very low-variance signal [03_attack_and_fault_patterns#1]. Over the event FIT504 moved from 0.0176 to 0.0717. Its std_ratio is about 1.1 (normal variance), it changed direction about 5 times per minute, and its largest step was only about 1 sigma. The 80% flat fraction may simply reflect sensor resolution, so the evidence for spoofing is weak.",
+   "The baselines disagree. The event reports a FIT504 normal median of 0.0236 (p01 0.0211, p99 0.0576), while the tag dictionary gives a normal range of 0.055 to 0.0579 with median 0.0571 [02_tag_dictionary#53]. Against the dictionary range, the event minimum of 0.0176 would be far too low rather than too high. The event also lists MV501 normal values as 0/1/2, whereas the dictionary says only 2. Whether the readings are abnormal therefore depends on which baseline is correct.",
+   "LSLL203 (NaOCl tank low-low level switch, P2) has a high contribution (share 0.11), but its value during the event was 1, which matches its normal constant value of 1 [02_tag_dictionary#24]. No state change is visible, so this contribution is likely a model artifact.",
+   "P205 (NaOCl dosing pump) took values 1 and 2, both within its normal values. The P2 involvement is therefore weak.",
+   "LIT602 (P6 backwash tank) sat at about 562 to 577 mm, near its normal p01 (562) and well below its median (988). It was almost static (std_ratio 0.016), and P6 is not listed among the involved stages. This is minor and possibly unrelated.",
+   "Timing: the event starts about 4.5 minutes after catalogued A12 attack 4 ended at 15:00:30 [04_a12_attack_catalog#4]. No knowledge-base excerpt links attack 4 to P5, so any connection is speculative."
+  ],
+  "similar_known_attacks": [
+   "No catalogued attack matches. Attacks 4 (LIT101 spoofing) and 9 (DPIT301 spoofing) are out-of-range sensor spoofs on other tags and stages [04_a12_attack_catalog#4][04_a12_attack_catalog#9]. They resemble only the rule pre-classification, which the signal data do not support well.",
+   "Generic pattern 'sensor spoofing with out-of-range constant value' [03_attack_and_fault_patterns#1]: partial match at best, because FIT504 is not constant."
+  ],
+  "recommended_checks": [
+   "Check PLC/HMI write logs and the operator log around 15:04:55 for a speed command to P501 (8.76 instead of 10) and for commands to MV501/MV502 [03_attack_and_fault_patterns#1].",
+   "Pull P501.Status, MV502, MV503/MV504 and P5_STATE for the event window. Verify whether MV501 and MV502 stayed paired; if they diverged, an actuator was operated individually [05_mined_invariants#12]. Also check whether permeate was being diverted [01_process_overview#6].",
+   "Check PIT501 (feed pressure, about 245 kPa in operation) and FIT501-FIT503 to determine whether the RO was stopping, restarting or warming up. Unusual values during the first 20 to 30 minutes after start-up are expected [01_process_overview#6].",
+   "Cross-check FIT504 against the other RO flows (FIT501-FIT503) for consistency, and inspect the FIT504 transmitter locally only if the flows disagree.",
+   "Confirm which normal baseline is correct for FIT504 and MV501, since the event metadata and the tag dictionary conflict, before trusting the out-of-range finding.",
+   "Physically verify the NaOCl tank level and LSLL203. The model flagged it, but the recorded value looks normal.",
+   "Check whether recovery actions after attack 4 (ending 15:00:30) involved manual operation of downstream stages."
+  ],
+  "confidence": "low",
+  "category": "spoof_out_of_range",
+  "sources": [
+   "02_tag_dictionary#65",
+   "02_tag_dictionary#53",
+   "02_tag_dictionary#24",
+   "02_tag_dictionary#61",
+   "02_tag_dictionary#62",
+   "03_attack_and_fault_patterns#1",
+   "04_a12_attack_catalog#4",
+   "04_a12_attack_catalog#9",
+   "05_mined_invariants#13",
+   "05_mined_invariants#12",
+   "01_process_overview#6"
+  ],
+  "event_id": "a12-WinAE-006",
+  "backend": "claude"
+ },
+ {
+  "summary": "From 15:25:19 to 15:31:38, the standby raw water transfer pump P102 switched to state 2 (on). P102 is always 1 (off) in normal operation, so any change is suspicious [02_tag_dictionary#6][01_process_overview#2]. The event's timing and target match catalogued A12 attack 7, a 'Stage 2 parallel pump override' in which P102 is started together with MV201 opening [04_a12_attack_catalog#7]. The downstream tank levels LIT301 and LIT401 rose during the event, which fits extra water being pumped forward, but both stayed within their normal ranges.",
+  "category_label": "standby equipment activation (P102 started \u2013 matches A12 attack 7, parallel pump override)",
+  "evidence": [
+   "Rule hit 'unseen_state': P102.Status went to 2 at 15:25:19 (first sample of the event). Its normal value is 1 only, and it was not active before the event. P102 is 1 in 100% of normal data and 'never changes in normal operation' [02_tag_dictionary#6]. The standby pump P102 is 'always off' in normal 2026 operation [01_process_overview#2]. A constant-in-normal tag changing is the signature of standby/unused equipment activation [03_attack_and_fault_patterns#5].",
+   "Timing: the event (15:25:19\u201315:31:38, 380 s) almost exactly covers A12 attack 7 (15:25:00\u201315:30:30, 331 s), which targets MV201, P101 and P102 [04_a12_attack_catalog#7]. The model peak at 15:30:37 falls just after the catalogued attack end. The roughly 1-minute tail after 15:30:30 is plausibly process recovery, but this is inference.",
+   "LIT301 (UF feed tank T301) was the top model contributor (share 0.32). It rose from 913 to 981 mm at about 10.6 mm/min, which is consistent with additional transfer flow into T301. All values stayed inside the normal range of 794\u20131013 mm [02_tag_dictionary#29], so the level itself is not abnormal.",
+   "LIT401 (T401) started at 812 mm, in the lower part of its normal range (normal range 788\u20131000 mm, median 895 [02_tag_dictionary#39]). It rose 53 mm with frequent direction changes (26/min). It stayed in range, so this is weak supporting evidence only.",
+   "FIT201 peaked at 2.71 m3/h, marginally above its normal p99 of 2.69 m3/h. This is a very small exceedance and weak evidence of increased flow through stage P2.",
+   "P205 (values 1 and 2) and LSLL203 (value 1) showed only states that also occur in normal operation [02_tag_dictionary#17]. Their contributions likely reflect unusual combinations rather than clear faults, so this evidence is weak.",
+   "MV201, also a target of attack 7 [04_a12_attack_catalog#7], does not appear among the top contributors or rule hits. The event data therefore does not confirm the MV201 part of that attack.",
+   "The catalog notes attack 7 'overlaps attack 6' [04_a12_attack_catalog#7]. Attack 6 is not described in the provided excerpts, so its contribution to this event cannot be assessed."
+  ],
+  "similar_known_attacks": [
+   "A12 attack 7: Stage 2 parallel pump override \u2013 MV201 open, P101 & P102 run (15:25:00\u201315:30:30). This is a direct match on target (P102), category and time window [04_a12_attack_catalog#7].",
+   "A12 attack 3: Florida water plant scenario. This is the same category (standby equipment activation), but it involved the standby dosing pumps P202/P204/P206 rather than P102, and occurred at a different time. It is a pattern-level similarity only [04_a12_attack_catalog#3]."
+  ],
+  "recommended_checks": [
+   "Confirm whether P102 operation was planned (maintenance or a switchover) and identify who or what issued the start command [03_attack_and_fault_patterns#5].",
+   "Verify P102 is now back to off (1). Check the P101 status during the event to see whether both transfer pumps ran in parallel [04_a12_attack_catalog#7][01_process_overview#2].",
+   "Check the MV201 state and command history for 15:25\u201315:31, since MV201 is a target of attack 7 but is not visible in this event's contributors [04_a12_attack_catalog#7].",
+   "Check the T101 level (LIT101) and MV101 behaviour for drawdown or overflow risk from the extra pumping [01_process_overview#2].",
+   "Watch LIT301 and LIT401 for continued rise toward their upper limits (about 1013 mm and 1000 mm) [02_tag_dictionary#29][02_tag_dictionary#39].",
+   "Review chemical dosing in P2 during the higher flow: P205 status, FIT201, and the NaOCl tank level (LSLL203 low-low alarm). Confirm dosing tracked the changed flow.",
+   "Look for signs of the overlapping attack 6 in adjacent data, because it is not characterised in the available knowledge base [04_a12_attack_catalog#7]."
+  ],
+  "confidence": "high",
+  "category": "standby_activation",
+  "sources": [
+   "02_tag_dictionary#29",
+   "02_tag_dictionary#39",
+   "02_tag_dictionary#17",
+   "02_tag_dictionary#6",
+   "03_attack_and_fault_patterns#5",
+   "04_a12_attack_catalog#7",
+   "04_a12_attack_catalog#3",
+   "05_mined_invariants#11",
+   "01_process_overview#2"
+  ],
+  "event_id": "a12-WinAE-007",
+  "backend": "claude"
+ },
+ {
+  "summary": "From 15:45:01 to 15:54:58 the detector saw abnormal valve and backwash activity in UF stage P3, with knock-on effects in P6. The event begins when UF backwash drain valve MV303 leaves its fixed position, about 11 s after the catalogued A12 attack 8 (MV302 close, MV303 open, 15:44:50-15:50:30), so this is most likely that attack [04_a12_attack_catalog#8]. The later full backwash, with P602 on, backwash flow on FIT601 and new P3 PLC states, appears to be the plant reacting to DPIT301 going above its normal range at the end of the attack window, not a separate standby-pump attack.",
+  "category_label": "standby equipment activation (A12 attack 8: MV302 close / MV303 open, UF backwash diversion), followed by a PLC-driven backwash",
+  "evidence": [
+   "MV303 (UF backwash drain valve) is always 1 in normal data but showed 0 and 2 from 15:45:01, the first second of the event [event rule_hits]. MV303 should never move in normal operation [05_mined_invariants#13][01_process_overview#4][03_attack_and_fault_patterns#5].",
+   "The timing matches A12 attack 8 (15:44:50-15:50:30, targets MV302 and MV303). The catalogued effect, 'valves cycle for minutes and DPIT301 behaves abnormally', matches what was observed [04_a12_attack_catalog#8].",
+   "MV302 (UF outlet valve to T401) took the values 0, 1 and 2 during the event [event]. LIT301 rose from 853 to 1009.7 mm, about +11 mm/min. The level stayed inside its normal range (794-1010 mm) [02_tag_dictionary#29], but the rise fits the invariant that T301 level is higher while MV302 is closed (906-1010 mm) [05_mined_invariants#11]. Water leaving T301 was apparently blocked or diverted.",
+   "DPIT301 (UF membrane differential pressure) exceeded the rule limit of 19.24 kPa, reaching 19.29-20.56 kPa from 15:50:35 [event]. That is above the dictionary normal maximum of about 16 kPa [02_tag_dictionary#31]. A rising DPIT301 is what makes the PLC start a backwash [01_process_overview#4].",
+   "A backwash sequence followed within about 50 s of the DPIT301 excursion. P3_STATE entered codes never seen in normal data (9, 10, 12, 14, 15, 16) at 15:51:03 [event][02_tag_dictionary#25]. MV301 (backwash valve) changed at 15:51:14 and P602 (UF backwash pump) switched on at 15:51:22. FIT601 (backwash flow) showed real flow of up to 1.78 against a normal value of about 0 at 15:51:23 [event]. Backwash uses RO permeate pumped back by P602 [01_process_overview#4].",
+   "FIT601 shows real flow, so P602 actually ran and the backwash physically happened. This was not just a spoofed status bit [event].",
+   "DPIT301 peaked at about 20.6 kPa and was not frozen. The flat fraction was 0.41 and the signal changed direction about 3.9 times per minute. This does not match attack 9 (DPIT301 frozen at 45 kPa), which is also catalogued for a different time, 16:09:50 [04_a12_attack_catalog#9][event].",
+   "The rule pre-classification 'standby_activation (P602)' is correct as a category [03_attack_and_fault_patterns#5]. However, P602 switched on about 6 minutes after MV303 changed, so it is most likely a consequence of the attack, not its first step.",
+   "The peak score of 6.35x threshold came at 15:53:31, about 3 minutes after the catalogued attack end. This suggests the second half of the event is the plant's response or recovery, not attacker actions. This is an inference from timing only [event][04_a12_attack_catalog#8].",
+   "Weak or contradictory evidence: LSLL203 (NaOCl tank low-low switch) is listed as a top contributor, but its in-event value was 1, which is the only value seen in normal operation [02_tag_dictionary#24]. Its contribution is probably a model artifact, and nothing indicates a P2 dosing problem. Also, the event lists normal values [0, 1] for LSLL203 while the dictionary says it is always 1. This inconsistency should be checked in the detector baseline."
+  ],
+  "similar_known_attacks": [
+   "A12 attack 8: RO backwash diversion, MV302 close / MV303 open (15:44:50-15:50:30), category standby equipment activation. This is a strong match on timing, targets and effect [04_a12_attack_catalog#8].",
+   "A12 attack 9: forced backwash via DPIT301 spoofing (16:09:50-16:15:30). Related because it also produces unnecessary backwashes, but it is not a match: the time differs and DPIT301 was not frozen at 45 kPa here [04_a12_attack_catalog#9]."
+  ],
+  "recommended_checks": [
+   "Check PLC/HMI and SCADA command logs around 15:44:50-15:45:01 to find who or what issued the MV303 and MV302 commands, and confirm no maintenance was planned [03_attack_and_fault_patterns#5].",
+   "Confirm in the field that MV303 has returned to its normal fixed position (1), that MV301 is back to 1, and that MV302 is following normal PLC control [05_mined_invariants#13][01_process_overview#4].",
+   "Confirm P602 is off again, FIT601 is back near 0, and P3_STATE has returned to its normal codes (mainly 7 or 99) [02_tag_dictionary#25].",
+   "Compare DPIT301 with a local gauge or reference to make sure the 19-20.6 kPa readings were real membrane pressure and not spoofing. This also separates this event from the attack 9 pattern [04_a12_attack_catalog#9].",
+   "Check T301 level (LIT301 reached about 1010 mm, the top of its normal range) for overflow risk, and check whether downstream T401 lost feed while MV302 was closed [02_tag_dictionary#29][05_mined_invariants#11].",
+   "Since the unscheduled backwash used RO permeate pumped by P602, verify the P6 permeate reserve [01_process_overview#4].",
+   "Review the detector baseline for LSLL203, whose normal-values list conflicts with the tag dictionary. No dosing action is indicated by this event [02_tag_dictionary#24]."
+  ],
+  "confidence": "high",
+  "category": "standby_activation",
+  "sources": [
+   "02_tag_dictionary#29",
+   "02_tag_dictionary#31",
+   "02_tag_dictionary#24",
+   "02_tag_dictionary#25",
+   "03_attack_and_fault_patterns#5",
+   "04_a12_attack_catalog#8",
+   "04_a12_attack_catalog#9",
+   "05_mined_invariants#13",
+   "05_mined_invariants#11",
+   "01_process_overview#4"
+  ],
+  "event_id": "a12-WinAE-008",
+  "backend": "claude"
+ },
+ {
+  "summary": "Between 16:09:52 and 16:16:37 the UF differential pressure sensor DPIT301 read a constant 45 kPa, far above its normal maximum of about 16 kPa, and then dropped in a single step to about 3.1 kPa. During the same window the UF feed pump P301 was OFF and UF feed flow FIT301 was about 0. Under those conditions DPIT301 should sit near 2.6 kPa, so the 45 kPa reading is physically inconsistent. The event matches the textbook out-of-range sensor spoofing signature and lines up in time with known A12 attack 9 (forced backwash via DPIT301 spoofing at 45 kPa).",
+  "category_label": "sensor_spoofing_out_of_range (DPIT301)",
+  "evidence": [
+   "DPIT301 was 45.0 kPa at event start and stayed flat for 98.8% of steps (flat_fraction 0.988). The out_of_range rule fired at 16:09:52 with observed min/max 45.0, against a normal range of about -0.26 to 19.2. The rule was not active before this event.",
+   "45 kPa is well outside the documented normal range of 2.54 to 16 kPa (max 16.1) [02_tag_dictionary#31]. The event's own normal_p99 is 16.22 kPa.",
+   "DPIT301 accounts for 90.5% of the model contribution (3475.7) and is the dominant driver of the anomaly. Max score ratio is 7.16x the threshold.",
+   "The spoofed period ended with a single large step: change -41.85 kPa, max_step 41.84 kPa (6.65 sigma). The value fell to a minimum of 3.14 kPa, close to the pump-OFF reference level.",
+   "P301 was status 1 (OFF) for the whole event and FIT301 stayed at 0 to 0.0004 m3/h. The mined invariants say that when P301 is OFF, FIT301 is 0 to 0.000256 and DPIT301 is 2.55 to 2.67 kPa [05_mined_invariants#6][05_mined_invariants#9]. P301 and FIT301 therefore agree with each other, but DPIT301 at 45 kPa contradicts both.",
+   "The pattern matches the knowledge-base spoofing signature: a sensor jumps outside its normal range and stays flat while related sensors behave consistently with the real process. The excerpt explicitly names 'DPIT301 forced to 45 kPa' as an example [03_attack_and_fault_patterns#1].",
+   "Timing matches A12 attack 9 (16:09:50 to 16:15:30, DPIT301 frozen at 45 kPa) to within 2 s at the start [04_a12_attack_catalog#9]. The detected event ends about 67 s after the catalog end (406 s vs 341 s), which may reflect detector windowing or the recovery transient. This is not confirmed by the data.",
+   "Secondary contributors are weak. LIT401 (T401 level) fell 82.6 mm, from 992 to 909 mm (about -11.9 mm/min), but stayed within its normal range. This could indicate T401 drawing down while UF was not producing, but that link is speculative. P201 showed only normal values (1 and 2) and a 0.7% share, and is likely incidental."
+  ],
+  "similar_known_attacks": [
+   "A12 attack 9: Forced backwash trigger via DPIT301 spoofing (Ensign pre-UAT attack 1). Same tag, same 45 kPa frozen value, same start time (16:09:50) [04_a12_attack_catalog#9]",
+   "A12 attack 4: Tank overflow via LIT101 spoofing. Same technique (constant out-of-range sensor value) applied to a different stage [04_a12_attack_catalog#4]"
+  ],
+  "recommended_checks": [
+   "Inspect the DPIT301 field transmitter or a local gauge, and compare it with the PLC/HMI value for 16:09 to 16:16 [03_attack_and_fault_patterns#1].",
+   "Review PLC/HMI write and forcing logs around 16:09:50 and 16:15:30 for any write or force on DPIT301.Pv [03_attack_and_fault_patterns#1].",
+   "Check whether the PLC started unnecessary UF backwash cycles during the window: MV301 to MV304 positions and the backwash pump P602 [01_process_overview#4][04_a12_attack_catalog#9]. These tags are not in the event data, so this effect is unverified.",
+   "Confirm that DPIT301 has returned to its normal square wave between about 2.6 and 16 kPa, tracking P301 ON/OFF per the invariant [01_process_overview#4][05_mined_invariants#9].",
+   "Confirm whether P301 being OFF for the whole window was expected (for example, part of a backwash) or a consequence of the spoofed reading.",
+   "Monitor the T401 level (LIT401) to make sure it recovers once UF filtration resumes."
+  ],
+  "confidence": "high",
+  "category": "spoof_out_of_range",
+  "sources": [
+   "02_tag_dictionary#31",
+   "02_tag_dictionary#30",
+   "02_tag_dictionary#36",
+   "03_attack_and_fault_patterns#1",
+   "04_a12_attack_catalog#9",
+   "04_a12_attack_catalog#4",
+   "05_mined_invariants#6",
+   "05_mined_invariants#9",
+   "01_process_overview#4"
+  ],
+  "event_id": "a12-WinAE-009",
+  "backend": "claude"
+ },
+ {
+  "summary": "Between 16:35:38 and 16:39:52 (255 s), the product tank T601 level sensor LIT601 jumped back and forth between about 100 and 1000 mm. It changed direction about 32 times per minute, with single steps of up to 800 mm. A tank level cannot physically change that fast, so this looks like spoofed or falsified level readings. The event falls inside the documented A12 attack 10 window (LIT601 multi-value oscillation spoofing) [04_a12_attack_catalog#10] and matches the generic oscillating-spoofing signature [03_attack_and_fault_patterns#3]. The P2 tags (MV201, FIT201, P101, P201) contribute very little, and nothing in the data shows they are part of the anomaly.",
+  "category_label": "oscillating / multi-value sensor spoofing (LIT601)",
+  "evidence": [
+   "LIT601 (RO permeate tank T601 level, stage P6) carries 91% of the anomaly contribution (contribution 547.9, increase 509.4) [02_tag_dictionary#70].",
+   "Observed LIT601 values ranged from 100 to 1000 mm, starting at 800 mm. The tag dictionary gives a normal range of 75.5\u2013618 mm, with a maximum ever seen of 620 mm [02_tag_dictionary#70].",
+   "Out-of-range rule fired on LIT601 at 16:35:38: observed 800\u20131000 mm against the rule range of -54.5 to 735 mm. It was not active before the event.",
+   "Signal shape: 32.24 direction changes per minute, maximum step of 800 mm (5.09 sigma), std ratio 1.76 and flat fraction 0.008. This fits a sensor 'jumping between two or more values (e.g. 100 and 1000 mm) at a rate the physical process cannot follow' [03_attack_and_fault_patterns#3].",
+   "Net change over the window is only 100 mm (slope about 4.7 mm/min). The large back-and-forth steps are therefore not a real fill or drain trend.",
+   "Timing: the event (16:35:38\u201316:39:52) lies inside the catalogued A12 attack 10 window (16:34:50\u201316:40:30). That attack targets LIT601 with jumps between about 100 and 1000 mm [04_a12_attack_catalog#10].",
+   "The P2 contributors have small shares: MV201 2.5%, FIT201 1.2%, P101 1.1%, P201 1.0%. Their values all stay within the normal value sets and ranges: MV201 took 0/1/2 and FIT201 stayed at 0\u20132.36 m3/h against a normal 0\u20132.39 [02_tag_dictionary#12][02_tag_dictionary#8].",
+   "The model score only slightly exceeded its threshold (max 0.2056 vs 0.1992, ratio 1.03). Detection rests mainly on the out-of-range rule together with the clear LIT601 signal pattern."
+  ],
+  "similar_known_attacks": [
+   "A12 attack 10: Multi-value level oscillation, LIT601 spoofing (Ensign pre-UAT attack 3), 16:34:50\u201316:40:30. This is a strong match on target tag, value pattern and timing [04_a12_attack_catalog#10].",
+   "A12 attack 3: Florida water plant scenario (dosing pumps and MV201). Listed only because P2 tags appear among the contributors. It is not a match: it occurred at a different time (14:44\u201314:50), and the event shows no standby dosing pumps running [04_a12_attack_catalog#3][01_process_overview#3]."
+  ],
+  "recommended_checks": [
+   "Compare LIT601 with an independent indication of the T601 level (local gauge or sight glass, or the inflow/outflow balance). A real tank cannot move 800 mm in a single step [03_attack_and_fault_patterns#3].",
+   "Review PLC/HMI audit logs for writes or overrides on LIT601.Pv between about 16:34 and 16:40. Also check the sensor wiring and transmitter [03_attack_and_fault_patterns#3].",
+   "Check how P601/P602 behaved during the window. The catalogued attack confused their control, so look for unexpected starts or stops or wrong product-water transfers [04_a12_attack_catalog#10].",
+   "Confirm that MV201 and FIT201 stayed consistent with the mined invariant: FIT201 about 2.34\u20132.39 m3/h when MV201 is open (2), and 0 when it is closed (1). The same invariant links P101 to FIT201. The event summary does not allow this check [05_mined_invariants#5][05_mined_invariants#7].",
+   "Verify that the standby dosing pumps P202, P204, P206, P207 and P208 stayed off. This rules out any P2 chemical-dosing manipulation [01_process_overview#3].",
+   "Once spoofing is confirmed, check the true T601 level for overflow or low-level risk, since control logic may have acted on the false readings."
+  ],
+  "confidence": "high",
+  "category": "oscillation",
+  "sources": [
+   "02_tag_dictionary#70",
+   "02_tag_dictionary#12",
+   "02_tag_dictionary#8",
+   "03_attack_and_fault_patterns#3",
+   "04_a12_attack_catalog#10",
+   "04_a12_attack_catalog#3",
+   "05_mined_invariants#5",
+   "05_mined_invariants#7",
+   "01_process_overview#3"
+  ],
+  "event_id": "a12-WinAE-010",
+  "backend": "claude"
+ }
+]
