@@ -167,6 +167,7 @@ def calibrate_confidence(ev: dict, category: str, reasons: list[str], raw: str) 
     return _LEVELS[i], why + [f"evidence score {pts} -> cap {cap}"]
 
 
+CATALOGS = ["04_a12_attack_catalog.md", "04_swat2015_attack_catalog.md"]
 CATALOG_TAG_BOOST = float(os.environ.get("SWAT_CATALOG_BOOST", 0.6))
 
 
@@ -188,6 +189,11 @@ def _fmt_tag(t: dict) -> str:
                 f"(normal {t.get('normal_values')})")
     return (f"{t['tag']} ({t['description']}): {t['value_min']:.4g} to {t['value_max']:.4g} {t['unit']} "
             f"vs normal {t['normal_p01']:.4g} to {t['normal_p99']:.4g} -> {t['direction']}")
+
+
+def _body(text: str) -> str:
+    """Chunk text without its title line (empty if the chunk is a single line)."""
+    return text.partition("\n")[2]
 
 
 class TemplateBackend:
@@ -225,8 +231,8 @@ class TemplateBackend:
             "evidence": evidence,
             "similar_known_attacks": [c.title for c, _ in known[:2]],
             "pattern": patterns[0][0].title if patterns else None,
-            "process_context": [c.text.split("\n", 1)[1][:400] for c, _ in process[:1]],
-            "relevant_invariants": [c.text.split("\n", 1)[1] for c, _ in inv[:2]],
+            "process_context": [_body(c.text)[:400] for c, _ in process[:1]],
+            "relevant_invariants": [_body(c.text) for c, _ in inv[:2]],
             "recommended_checks": CHECKS[category],
             "confidence": "high" if ev["rule_hits"] and ev["max_score_ratio"] > 2 else
                           "medium" if ev["max_score_ratio"] > 1.5 or ev["rule_hits"] else "low",
@@ -292,8 +298,10 @@ def to_markdown(ev: dict, ex: dict) -> str:
 
 
 class Explainer:
-    def __init__(self, backend: str = "auto", exclude_chunks=()):
+    def __init__(self, backend: str = "auto", exclude_chunks=(), own_catalog: str = CATALOGS[0]):
         self.retriever = Retriever()
+        self.own_catalog = own_catalog     # catalog of the dataset being explained (top 2) ...
+        self.other_catalogs = [c for c in CATALOGS if c != own_catalog]   # ... the others add 1 each
         self.exclude = set(exclude_chunks)   # e.g. leave-one-out evaluation of the catalog
         if backend == "auto":
             backend = "claude" if os.environ.get("ANTHROPIC_API_KEY") and _has_anthropic() else "template"
@@ -318,9 +326,9 @@ class Explainer:
         # 3) known incidents, 4) physical invariants, 5) process description
         # (the catalog is searched with a stronger tag boost: the attacked tags are the most
         # reliable evidence, while the wording of the query is biased by the guessed category)
-        add([x for x in R.search(query, tags, k=2 + len(ex), sources=["04_a12_attack_catalog.md"],
-                                 tag_boost=CATALOG_TAG_BOOST)
-             if x[0].chunk_id not in ex][:2])
+        for src, n in [(self.own_catalog, 2)] + [(o, 1) for o in self.other_catalogs]:
+            add([x for x in R.search(query, tags, k=n + len(ex), sources=[src], tag_boost=CATALOG_TAG_BOOST)
+                 if x[0].chunk_id not in ex][:n])
         add([x for x in R.search(query, tags, k=2, sources=["05_mined_invariants.md"]) if x[1] > 0.05][:2])
         add(R.search(query, tags, k=1, sources=["01_process_overview.md"]))
         return got

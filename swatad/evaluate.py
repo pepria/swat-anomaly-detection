@@ -14,6 +14,14 @@ def smooth(score: np.ndarray, w: int = 10) -> np.ndarray:
     return pd.Series(score).rolling(w, min_periods=1).median().values
 
 
+def score_ratio(score, thr: float):
+    """Score relative to its threshold: 1 at the threshold, > 1 above.
+
+    Equal to score / thr for thr > 0 and still monotone for thr <= 0 (a negative
+    log-likelihood threshold), where score / thr would invert the ordering."""
+    return (score - thr) / max(abs(thr), 1e-12) + 1.0
+
+
 def alarm_segments(alarm: np.ndarray, index: pd.DatetimeIndex, merge_gap_s: int = 60,
                    min_len_s: int = 1) -> pd.DataFrame:
     """Group alarm points into alarm events (gaps <= merge_gap_s are merged)."""
