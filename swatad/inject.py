@@ -56,7 +56,7 @@ def _modify(v, kind, i0, i1, sigma, rng):
         v[i0:i1] += rng.normal(0, m * sigma, n)
         return m
     if kind == "actuator_flip":
-        v[i0:i1] = np.where(v[i0:i1] == 2, 1, 2)
+        v[i0:i1] = np.where(v[i0:i1] == 2, 1, np.where(v[i0:i1] == 1, 2, v[i0:i1]))   # keep 0 (valve moving)
         return 0.0
     if kind == "replay":
         v[i0:i1] = v[i0 - 1800:i1 - 1800].copy()

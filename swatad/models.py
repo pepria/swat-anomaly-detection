@@ -13,6 +13,7 @@ Window models (WindowAE, LSTMAE) look at the last ``win`` samples taken every
 """
 from __future__ import annotations
 
+import os
 import time
 
 import numpy as np
@@ -72,15 +73,22 @@ class GMMDet:
                 best = g
         self.m = best
         self.k = best.n_components
-        self.var = np.stack([np.diag(c) for c in best.covariances_])  # [K, F]
+        self.prec = best.precisions_                                   # [K, F, F]
         return self
 
     def score(self, Z):
         s = -self.m.score_samples(Z)
         k = self.m.predict(Z)
-        # per-feature standardised squared deviation from the responsible component
-        contrib = (Z - self.m.means_[k]) ** 2 / self.var[k]
-        return s, contrib
+        # per-feature share of the squared Mahalanobis distance to the responsible component
+        # (d_i * (P d)_i sums to d' P d, so the attribution is consistent with the full covariance);
+        # negative shares (features that cancel a correlated deviation) are clipped to 0
+        d = Z.astype("float64") - self.m.means_[k]
+        contrib = np.zeros_like(d)
+        for j in range(self.k):
+            m = k == j
+            if m.any():
+                contrib[m] = d[m] * (d[m] @ self.prec[j])
+        return s, np.clip(contrib, 0, None)
 
 
 # --------------------------------------------------------------------- neural
@@ -119,13 +127,30 @@ class _LSTMAE(nn.Module):
         return self.out(y)
 
 
+# "blocks": validation = contiguous time blocks (default). "random": random rows, which leaks
+# for overlapping windows and autocorrelated 1 Hz data (kept only to reproduce the first results).
+VAL_SPLIT = os.environ.get("SWAT_VAL_SPLIT", "blocks")
+
+
+def _val_mask(n, seed, split=None, n_blocks=20, val_every=10):
+    """Boolean mask of validation rows (about 10 %). X must be in time order for "blocks"."""
+    split = split or VAL_SPLIT
+    if split == "random" or n < 4 * n_blocks:
+        m = np.zeros(n, bool)
+        m[np.random.default_rng(seed).permutation(n)[:max(1, n // 10)]] = True
+        return m
+    edges = np.linspace(0, n, n_blocks + 1).astype(int)
+    m = np.zeros(n, bool)
+    for j in range(val_every - 1, n_blocks, val_every):
+        m[edges[j]:edges[j + 1]] = True
+    return m
+
+
 def _train(net, X, epochs, lr, batch, seed, log_name):
     torch.manual_seed(seed)
-    rng = np.random.default_rng(seed)
-    idx = rng.permutation(len(X))
-    n_val = max(1, len(X) // 10)
-    Xv = torch.tensor(X[idx[:n_val]])
-    Xt = torch.tensor(X[idx[n_val:]])
+    val = _val_mask(len(X), seed)
+    Xv = torch.tensor(X[val])
+    Xt = torch.tensor(X[~val])
     opt = torch.optim.Adam(net.parameters(), lr=lr)
     best, best_state, patience, history = np.inf, None, 0, []
     t0 = time.time()
@@ -148,7 +173,10 @@ def _train(net, X, epochs, lr, batch, seed, log_name):
             patience += 1
             if patience >= 5:
                 break
-    net.load_state_dict(best_state)
+    if best_state is None:     # validation loss never improved (e.g. NaN): keep the current weights
+        print(f"  [{log_name}] WARNING: validation loss never improved, keeping the last weights")
+    else:
+        net.load_state_dict(best_state)
     print(f"  [{log_name}] {ep + 1} epochs, best val MSE {best:.4f}, {time.time() - t0:.0f}s")
     return history
 
