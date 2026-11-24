@@ -38,18 +38,28 @@ The ranking and the conclusions of the main experiment do not change; only the n
 
 ### Training-time threshold (no re-calibration)
 
-| Model | FPR on clean normal data before -> after | False-alarm events before -> after | Event recall before -> after |
-|---|---|---|---|
-| GMM | 0.979 -> 0.082 | 1.7 -> 19.3 | 0.06 -> 0.33 |
-| AE | 0.834 -> 0.048 | 5.3 -> 20.3 | 0.03 -> 0.73 |
-| WinAE | 0.000 -> 0.039 | 0.0 -> 16.0 | 0.70 -> 0.79 |
-| LSTM-AE | 0.000 -> 0.061 | 0.3 -> 18.3 | 0.76 -> 0.73 |
+FPR on clean normal data with the threshold learnt on the training data, before -> after (false-alarm events with this
+threshold in brackets, after the fix; with the calibration hour they are 2-7):
 
-The old values (FPR 83-98% for GMM and AE) were an artefact of the biased training threshold. After the fix, the training-time
-threshold gives 16-20 false-alarm events instead of 5-7 with the calibration window, and 4-8% instead of 0.3% FPR on clean data.
-Re-calibration still helps by a factor of about 3-4, but it is not the dramatic failure shown before. **The statements in RESULTS.md
-(sections 1-2, "GMM 24%, AE 61%, LSTM-AE 93% FPR clean") and the README note on thresholds that do not transfer should be updated
-accordingly.**
+| Configuration | GMM | AE | WinAE | LSTM-AE | IForest |
+|---|---|---|---|---|---|
+| A11+A10, noAIT (main) | 0.98 -> 0.08 (19) | 0.83 -> 0.05 (20) | 0.00 -> 0.04 (16) | 0.00 -> 0.06 (18) | 0.11 -> 0.17 (16) |
+| A11+A10, all features | 1.00 -> 1.00 | 1.00 -> 0.53 (17) | 0.00 -> 0.51 (18) | 0.00 -> 0.51 (17) | 0.12 -> 0.26 (13) |
+| A11 only, noAIT | 1.00 -> 0.95 | 1.00 -> 0.99 | 1.00 -> 1.00 | 1.00 -> 1.00 | 0.08 -> 0.07 (20) |
+| A11 only, all features | 1.00 -> 1.00 | 1.00 -> 1.00 | 1.00 -> 1.00 | 1.00 -> 1.00 | 0.08 -> 0.22 (18) |
+
+The old numbers were produced by a biased computation (sampled, non-contiguous rows for the point models; only the first 60,000
+training rows for the window models). After the fix the picture is different from both the old table and from a simple
+"not dramatic" reading:
+
+- In the **main configuration** the training threshold costs 4-8% FPR and 16-20 false-alarm events instead of 0.2-0.5% and 2-7 with the
+  calibration hour; the old 83-98% for GMM and AE was an artefact.
+- With **A11 only or with AIT features** the training threshold still fails completely (50-100% FPR: the models alarm on almost all clean
+  data), because of the domain shift between recordings. The old statement that only the window models stay at <= 0.1% without
+  re-calibration was wrong: they are not more robust (0.00 -> 0.51 with all features).
+- Re-calibration on a short recent normal window therefore stays necessary; how much it matters depends on how diverse the training data is.
+
+RESULTS.md (section 1, findings 4 and 5), RESULTS_zh.md and the README now say this.
 
 ### Synthetic injections (`run_synthetic.py`, 40 injections)
 
@@ -76,5 +86,6 @@ is not (0.72), and on SWaT 2015 the WinAE "high" confidence (1 attack among 7 ev
   less biased checks.
 - The signature classifier and the category mapping were written knowing the A12 attacks. The leave-one-out retrieval score (0.4) is
   the more honest number for the explanation layer than the category accuracy (0.7).
-- The `outputs/` tables and the numbers in RESULTS.md were produced by the code before these fixes. They are not updated in this
-  change, to avoid conflicts with the open documentation pull request; the new numbers are in this file.
+- `outputs/` (metrics, tables, figures, synthetic results, anomaly JSON and explanations) and the numbers in RESULTS.md, RESULTS_zh.md and
+  the README were regenerated after these fixes (all A12 configurations and the SWaT 2015 setup with 3 seeds, the synthetic injections
+  and the explanations of the main configuration).

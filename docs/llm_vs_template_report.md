@@ -125,7 +125,7 @@ LLM rerun with the new retrieval (no attack times in the catalog, corrected tags
 
 Notes:
 - **Trade-off**: tag matching favours attacks that hit the same tags, which helps for repeated attacks (attack 5 repeats attack 1) but not for new ones. In leave-one-out, attack 5 became correct, but attacks 4 and 9 became wrong: with attack 4 removed, the attack that also targets LIT101 is attack 2 (actuator manipulation), which has a different category.
-- With only 10 attacks, 0.1 is one attack, so the changes are directional. The boost was chosen on the same 10 attacks, so there is a risk of overfitting.
+- With only 10 attacks, 0.1 is one attack, so the changes are directional. After the networks were retrained for the code-review fixes (`docs/review_fixes.md`), the same template evaluation gives 0.9 for the known attack and 0.3 for leave-one-out; the leave-one-out score moves by one attack from run to run (0.3-0.5). The boost was chosen on the same 10 attacks, so there is a risk of overfitting.
 - The "correct known attack" check in `scripts/export_and_explain.py` required the text to start with `A12 attack N:`, which undercounted Claude's wording (0.7 instead of 0.9). It now matches `A12 attack N` as a word in the first two entries.
 
 ## 9. Follow-up: confidence calibration
