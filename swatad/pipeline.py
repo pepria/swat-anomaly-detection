@@ -87,7 +87,7 @@ def make_setup(setup: str, train_sets: str = "A11+A10") -> Setup:
 def run(setup: str = "a12", train_sets: str = "A11+A10", drop_ait: bool = True,
         models=("IForest", "GMM", "AE", "WinAE", "LSTM-AE"), q: float = 0.995,
         tag: str | None = None, save_contrib: bool = True, model_kwargs: dict | None = None,
-        seeds=(0, 1, 2)):
+        seeds=(0, 1, 2), rule_kwargs: dict | None = None):
     """Train every model (once per seed), calibrate thresholds, evaluate.
 
     Saves to outputs/runs/<tag>/: metrics.csv (one row per model/variant/seed),
@@ -99,7 +99,7 @@ def run(setup: str = "a12", train_sets: str = "A11+A10", drop_ait: bool = True,
     out.mkdir(parents=True, exist_ok=True)
     S = make_setup(setup, train_sets)
     fs = FeatureSpace(drop_ait=drop_ait).fit(S.train[valid_mask(S.train)])
-    rules = RuleMonitor().fit(S.train[valid_mask(S.train)])
+    rules = RuleMonitor(**(rule_kwargs or {})).fit(S.train[valid_mask(S.train)])
     rules.calibrate(S.calib_df[S.calib_mask])
     print(f"[{tag}] train rows {len(S.train)}, features {len(fs.cols)}")
 
@@ -185,16 +185,17 @@ def run(setup: str = "a12", train_sets: str = "A11+A10", drop_ait: bool = True,
 
 def fit_and_calibrate(setup="a12", train_sets="A11+A10", drop_ait=True,
                       models=("IForest", "GMM", "AE", "WinAE", "LSTM-AE"), q=0.995, seed=0,
-                      model_kwargs=None):
+                      model_kwargs=None, rule_kwargs=None):
     """Fit models once and return everything needed to score new data.
 
+    ``rule_kwargs`` is passed to ``RuleMonitor`` (e.g. ``{"stuck_s": 120}``).
     Returns dict(setup=S, fs=FeatureSpace, rules=RuleMonitor,
                  models={name: dict(det, thr, w, c_norm)}).
     """
     S = make_setup(setup, train_sets)
     v = valid_mask(S.train)
     fs = FeatureSpace(drop_ait=drop_ait).fit(S.train[v])
-    rules = RuleMonitor().fit(S.train[v])
+    rules = RuleMonitor(**(rule_kwargs or {})).fit(S.train[v])
     rules.calibrate(S.calib_df[S.calib_mask])
     Ztr, Zca = fs.transform(S.train), fs.transform(S.calib_df)
     out = {}
