@@ -21,7 +21,7 @@ from swatad import config as C  # noqa: E402
 from swatad.evaluate import alarm_segments  # noqa: E402
 from swatad.features import tag_kind  # noqa: E402
 from swatad.inject import inject  # noqa: E402
-from swatad.pipeline import fit_and_calibrate, score_with  # noqa: E402
+from swatad.pipeline import fit_and_calibrate, score_with, valid_mask  # noqa: E402
 
 train_sets = sys.argv[1] if len(sys.argv) > 1 else "A11+A10"
 drop_ait = (sys.argv[2] if len(sys.argv) > 2 else "noAIT") == "noAIT"
@@ -34,7 +34,7 @@ out.mkdir(exist_ok=True)
 F = fit_and_calibrate("a12", train_sets, drop_ait)
 S, fs, rules = F["setup"], F["fs"], F["rules"]
 base = S.test[S.test.index.strftime("%H:%M:%S") < "13:20:00"].copy()
-train_v = S.train
+train_v = S.train[valid_mask(S.train)]      # sigma from valid rows only (no warm-up / gaps)
 sensors = [c for c in fs.cols if tag_kind(c) == "sensor"]
 actuators = [c for c in fs.cols if tag_kind(c) == "actuator"]
 sigma = {c: float(train_v[c].std()) for c in fs.cols}

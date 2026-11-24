@@ -17,7 +17,7 @@ import pandas as pd
 
 from . import config as C
 from . import data as D
-from .evaluate import full_report, smooth
+from .evaluate import full_report, score_ratio, smooth
 from .features import FeatureSpace
 from .models import MODELS
 from .rules import RuleMonitor
@@ -40,6 +40,24 @@ def valid_mask(df: pd.DataFrame) -> np.ndarray:
     dt = np.r_[1, np.diff(df.index.values).astype("timedelta64[s]").astype(int)]
     v &= dt == 1
     return v
+
+
+def train_scores(det, Ztr: np.ndarray, vtr: np.ndarray, w: int, n_blocks: int = 3, block: int = 20000):
+    """Smoothed scores and contributions of the (in-sample) training data on contiguous blocks.
+
+    Used for the training-time threshold and for the contribution normalisation. Contiguous
+    blocks are scored and smoothed exactly like a test recording (window models need them),
+    and the valid rows are selected afterwards."""
+    T = len(Ztr)
+    starts = list(dict.fromkeys(np.linspace(0, max(T - block, 0), n_blocks).astype(int)))
+    ss, cs = [], []
+    for a in starts:
+        sl = slice(a, min(a + block, T))
+        s, c = det.score(Ztr[sl])
+        m = vtr[sl]
+        ss.append(smooth(s, w)[m])
+        cs.append(c[m])
+    return np.concatenate(ss), np.concatenate(cs)
 
 
 def make_setup(setup: str, train_sets: str = "A11+A10") -> Setup:
@@ -112,20 +130,15 @@ def run(setup: str = "a12", train_sets: str = "A11+A10", drop_ait: bool = True,
             w = 10 if name in ("IForest", "GMM", "AE") else 5
             s_te, s_ca = smooth(s_te, w), smooth(s_ca, w)
             thr = float(np.quantile(s_ca[S.calib_mask], q))
-            # training-time threshold (no re-calibration), reported for the drift discussion
-            if name in ("IForest", "GMM", "AE"):
-                s_tr, c_tr = det.score(Ztr[vtr][::5])
-            else:  # window models need contiguous rows: score a training slice
-                sl = slice(0, min(len(Ztr), 60000))
-                s_tr, c_tr = det.score(Ztr[sl])
-                s_tr, c_tr = s_tr[vtr[sl]], c_tr[vtr[sl]]
-            thr_train = float(np.quantile(smooth(s_tr, w), q))
+            # training-time threshold (no re-calibration, in-sample), reported for the drift discussion
+            s_tr, c_tr = train_scores(det, Ztr, vtr, w)
+            thr_train = float(np.quantile(s_tr, q))
             c_norm = c_tr.mean(0) + 1e-6
             dt = time.time() - t0
 
             for variant, sc, th in [
                 ("model", s_te, thr),
-                ("model+rules", np.maximum(s_te / thr, 2.0 * rule_any), 1.0),
+                ("model+rules", np.maximum(score_ratio(s_te, thr), 2.0 * rule_any), 1.0),
                 ("model (train thr)", s_te, thr_train),
             ]:
                 r = full_report(sc[em], y[em], th, idx, S.events)
@@ -190,11 +203,7 @@ def fit_and_calibrate(setup="a12", train_sets="A11+A10", drop_ait=True,
         det = MODELS[name](**kw).fit(Ztr, v)
         w = 10 if name in ("IForest", "GMM", "AE") else 5
         thr = float(np.quantile(smooth(det.score(Zca)[0], w)[S.calib_mask], q))
-        if name in ("IForest", "GMM", "AE"):
-            c_tr = det.score(Ztr[v][::20])[1]
-        else:
-            sl = slice(0, min(len(Ztr), 60000))
-            c_tr = det.score(Ztr[sl])[1][v[sl]]
+        c_tr = train_scores(det, Ztr, v, w)[1]
         out[name] = {"det": det, "thr": thr, "w": w, "c_norm": c_tr.mean(0) + 1e-6}
     return {"setup": S, "fs": fs, "rules": rules, "models": out}
 
