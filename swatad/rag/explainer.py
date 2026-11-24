@@ -191,6 +191,11 @@ def _fmt_tag(t: dict) -> str:
             f"vs normal {t['normal_p01']:.4g} to {t['normal_p99']:.4g} -> {t['direction']}")
 
 
+def _body(text: str) -> str:
+    """Chunk text without its title line (empty if the chunk is a single line)."""
+    return text.partition("\n")[2]
+
+
 class TemplateBackend:
     name = "template"
 
@@ -226,8 +231,8 @@ class TemplateBackend:
             "evidence": evidence,
             "similar_known_attacks": [c.title for c, _ in known[:2]],
             "pattern": patterns[0][0].title if patterns else None,
-            "process_context": [c.text.split("\n", 1)[1][:400] for c, _ in process[:1]],
-            "relevant_invariants": [c.text.split("\n", 1)[1] for c, _ in inv[:2]],
+            "process_context": [_body(c.text)[:400] for c, _ in process[:1]],
+            "relevant_invariants": [_body(c.text) for c, _ in inv[:2]],
             "recommended_checks": CHECKS[category],
             "confidence": "high" if ev["rule_hits"] and ev["max_score_ratio"] > 2 else
                           "medium" if ev["max_score_ratio"] > 1.5 or ev["rule_hits"] else "low",

@@ -13,7 +13,7 @@ import numpy as np
 import pandas as pd
 
 from . import config as C
-from .evaluate import alarm_segments
+from .evaluate import alarm_segments, score_ratio
 from .features import base_tag, is_discrete, tag_kind, tag_stage
 from .rag.tags import STAGE_NAMES, describe
 
@@ -43,7 +43,8 @@ class EventExporter:
                  events_gt: pd.DataFrame | None = None):
         self.run_dir = Path(run_dir)
         self.meta = json.loads((self.run_dir / "meta.json").read_text())
-        obj = pickle.load(open(self.run_dir / "feature_space.pkl", "rb"))
+        with open(self.run_dir / "feature_space.pkl", "rb") as f:
+            obj = pickle.load(f)
         self.fs, self.rules = obj["fs"], obj["rules"]
         self.scores = pd.read_parquet(self.run_dir / "scores.parquet")
         self.test = test
@@ -136,7 +137,7 @@ class EventExporter:
                 "threshold": round(thr, 4),
                 "max_score": round(float(np.max(s[full])), 4),
                 "mean_score": round(float(np.mean(s[full])), 4),
-                "max_score_ratio": round(float(np.max(s[full]) / thr), 3),
+                "max_score_ratio": round(float(score_ratio(np.max(s[full]), thr)), 3),
                 "triggered_by": ("model+rules" if (s[full] > thr).any() and len(rule_hits)
                                  else "model" if (s[full] > thr).any() else "rules"),
                 "stages_involved": stages,

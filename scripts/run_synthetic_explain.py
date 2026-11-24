@@ -61,7 +61,7 @@ base = S.test[S.test.index.strftime("%H:%M:%S") < "13:20:00"].copy()
 train_v = S.train[valid_mask(S.train)]
 sensors = [c for c in fs.cols if tag_kind(c) == "sensor"]
 actuators = [c for c in fs.cols if tag_kind(c) == "actuator"]
-sigma = {c: float(S.train[c].std()) for c in fs.cols}
+sigma = {c: float(train_v[c].std()) for c in fs.cols}
 E = Explainer(backend="template")
 title = {c.chunk_id: c.title.lower() for c in E.retriever.chunks}
 

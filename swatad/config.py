@@ -4,7 +4,7 @@ All raw-data locations can be overridden with environment variables so the
 project runs on any machine (e.g. your laptop) without editing code:
 
     SWAT_RAW_DIR   folder that holds the raw SWaT files (default: /mnt/project-files)
-    SWAT_A12_ZIP   path to the A12 zip (default: <raw>/uploads/hearth/<id>)
+    SWAT_A12_ZIP   path to the A12 zip (default: <raw>/SWaT.A12_OTDataset_Mar_26.zip)
     SWAT_WORK_DIR  where extracted / cached data is written (default: <project>/data)
 """
 from __future__ import annotations
@@ -21,7 +21,7 @@ KB_DIR = Path(os.environ.get("SWAT_KB_DIR", PROJECT_DIR / "knowledge_base"))
 A11_ZIP = RAW_DIR / "SWaT.A11_OTDataset_Feb_26.zip"
 A10_CSV = RAW_DIR / "SWaT.A10_Dec 2023 Historian Data.csv"
 A12_ZIP = Path(os.environ.get(
-    "SWAT_A12_ZIP", RAW_DIR / "uploads/hearth/b33e8669-1a9c-43e5-9993-8b6d0cefb622"))
+    "SWAT_A12_ZIP", RAW_DIR / "SWaT.A12_OTDataset_Mar_26.zip"))
 A12_LABELS = RAW_DIR / "swat_eda/A12_labels_shifted.csv"
 A12_ATTACKS = RAW_DIR / "swat_eda/A12_attack_list.csv"
 S2015_NORMAL = RAW_DIR / "swat2015_csv/SWaT2015_normal_v1.csv"
