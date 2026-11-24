@@ -155,9 +155,16 @@ biased test of the evidence the explainer receives.
 
 ## 5. What to do next
 
-1. Run the LLM back-end (`Explainer(backend="claude")`) with an API key and compare it with the
-   template on the same events (faithfulness: does it only use facts in the JSON/excerpts?).
+1. ~~Run the LLM back-end and compare it with the template.~~ Done: see
+   [docs/llm_vs_template_report.md](docs/llm_vs_template_report.md) (LLM better on 9 of 10
+   events, no invented numbers; the attack clock times in the catalog were removed in a control
+   run and the same attacks were still recognised).
 2. Ask iTrust for the tag documentation and set points; replace the public-knowledge process
    description, and get the 2015 attack list PDF to evaluate explanations on 36 more attacks.
-3. Add a frozen-sensor rule and an AIT detrending step (to bring back attack #11).
+3. Frozen-sensor rule: implemented as an opt-in rule (`RuleMonitor(stuck_s=...)`, unit-tested on
+   synthetic data) but not yet run on the real data:
+   `python scripts/run_synthetic.py --stuck-rule 120`. AIT detrending (to bring back attack #11)
+   is still open.
 4. Sweep the window length (1-5 min) and the calibration window length for the threshold.
+5. Retrieve known-attack chunks by the affected tags of the event (event 5 missed attack 5
+   because its chunk was not retrieved, see the LLM report §4.2).

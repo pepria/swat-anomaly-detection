@@ -31,6 +31,7 @@ raw SWaT CSV -> preprocessing -> models  ->  anomaly event JSON   ->  retrieval 
 | `swatad/rag/` | `retriever.py` (TF-IDF, multi-source), `explainer.py` (classifier, template and Claude back-ends), `tags.py` |
 | `knowledge_base/` | RAG documents: process overview, tag dictionary, attack/fault patterns, A12 attack catalog, mined invariants |
 | `scripts/` | reproducible entry points (below) |
+| `tests/` | unit tests on synthetic data (`pytest`, no SWaT files needed) |
 | `notebooks/01_walkthrough.ipynb` | guided tour of the pipeline and the results |
 | `outputs/` | metrics, scores, anomaly JSON, explanations, figures |
 | `docs/anomaly_event.schema.json` | the detector -> explainer contract |
@@ -61,7 +62,36 @@ python scripts/build_notebook.py --execute
 ```
 
 Raw files are read directly from the original zip/CSV files in `SWAT_RAW_DIR`; cleaned data is
-cached in `data/processed/*.parquet`.
+cached in `data/processed/*.parquet`. The SWaT data is not redistributable (request it from
+iTrust, SUTD). `swatad/config.py` expects this layout under `SWAT_RAW_DIR`:
+
+```
+SWaT.A11_OTDataset_Feb_26.zip
+SWaT.A10_Dec 2023 Historian Data.csv
+<A12 zip>                         # set SWAT_A12_ZIP to its path (the default is our shared folder)
+swat_eda/A12_labels_shifted.csv   # per-second A12 labels from the EDA
+swat_eda/A12_attack_list.csv
+swat2015_csv/SWaT2015_normal_v1.csv
+swat2015_csv/SWaT2015_attack_v0.csv
+```
+
+Example: `export SWAT_RAW_DIR=~/swat_raw SWAT_A12_ZIP=~/swat_raw/SWaT.A12.zip`.
+
+## Tests
+
+The unit tests use small synthetic recordings and the stored anomaly JSON, so they run without
+the SWaT data (about 10 s on a laptop) and on every push via GitHub Actions
+(`.github/workflows/tests.yml`):
+
+```bash
+pip install -r requirements-dev.txt
+pytest
+```
+
+They cover feature selection and windowing, point/event metrics (including the onset rule),
+the rule layer (unseen state, out of range, acknowledgement, calibration, frozen sensor),
+synthetic injection, the common `fit/score` API of all five detectors, retrieval, and the
+template explainer (schema validity, no ground-truth leak).
 
 ## Method in short
 
@@ -84,7 +114,11 @@ transfer across weeks (reported as `model (train thr)`).
 **Rule layer.** (1) a discrete tag takes a value never seen in training (catches standby pumps
 and valves that attacks switch on), (2) a non-AIT sensor leaves the training range plus margin.
 Tags that already fire on the calibration window are disabled (drift). A persistent violation
-alarms for 10 minutes and is then considered acknowledged.
+alarms for 10 minutes and is then considered acknowledged. An optional third rule, (3) a continuous sensor frozen at
+exactly the same value for longer than both `stuck_s` seconds and its longest flat run in
+training, targets the frozen-sensor case that no model detects (RESULTS §3). It is off by
+default so the published numbers are unchanged; enable it with `RuleMonitor(stuck_s=120)`,
+`run(..., rule_kwargs={"stuck_s": 120})` or `python scripts/run_synthetic.py --stuck-rule 120`.
 
 **Evaluation.** Point level: AUC-ROC, AUC-PR, precision/recall/F1 at the calibrated threshold,
 FPR on clean normal data (before the first attack). Event level: an attack counts as detected
@@ -98,8 +132,9 @@ features). The explainer classifies the signature (standby activation, out-of-ra
 oscillation, actuator manipulation, excursion, drift/in-range, multivariate), retrieves a fixed
 budget of chunks per document type (tag dictionary, pattern, known attacks, invariants, process)
 and fills a template. `Explainer(backend="claude")` sends the same evidence to Claude
-(`claude-opus-5-5`) instead; it needs `pip install anthropic` and an API key, and was not run in
-this environment.
+(`claude-opus-5-5`) instead; it needs `pip install anthropic` and an API key. The two back-ends
+are compared event by event in [docs/llm_vs_template_report.md](docs/llm_vs_template_report.md)
+(Chinese: [llm_vs_template_report_zh.md](docs/llm_vs_template_report_zh.md)).
 
 ## Limitations
 
