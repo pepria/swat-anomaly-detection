@@ -16,10 +16,11 @@ threshold = 99.5% quantile, AIT kept), one seed. Scripts: `scripts/eval_2015_exp
 |---|---|---|---|---|
 | IForest | 0.84 | 19 (0.54) | 243 | 392 s |
 | GMM | 0.86 | 5 (0.14) | 70 | 271 s |
-| AE | 0.81 | 8 (0.23) | 108 | 162 s |
-| WinAE | 0.83 | 8 (0.23) | 63 | 103 s |
+| AE | 0.82 | 6 (0.17) | 96 | 132 s |
+| WinAE | 0.83 | 7 (0.20) | 51 | 71 s |
 | Rules only | 0.53 | 16 (0.46) | 104 | 200 s |
 
+(Numbers after the code-review fixes; the neural models changed slightly, e.g. WinAE 8 -> 7 attacks and 63 -> 51 false alarms.)
 The detectors are much weaker than on A12 (WinAE + rules: 10 of 11 attacks): the 2015 attacks are mostly
 single-sensor changes that stay in a normal range, and the evaluation covers 4 days with drift, so there are many false alarms.
 No model dominates; IForest finds the most attacks and WinAE has the fewest false alarms among the neural models.
@@ -28,36 +29,37 @@ No model dominates; IForest finds the most attacks and WinAE has the fewest fals
 
 | | IForest | WinAE |
 |---|---|---|
-| Attacks detected | 18 of 36 | 7 of 36 |
-| Attacked tag in the top 3 contributors | 0.50 | 0.29 |
-| Top 3 or a new rule violation | 0.61 | 0.43 |
-| Category reasonable (single-point attacks only) | 0.62 (n=13) | 0.50 (n=6) |
-| Right 2015 attack among the top 2 retrieved | 0.28 | 0.14 |
-| Leave-one-out: top-1 has the same category | 0.33 | 0.14 |
+| Attacks detected | 18 of 36 | 6 of 36 |
+| Attacked tag in the top 3 contributors | 0.50 | 0.33 |
+| Top 3 or a new rule violation | 0.61 | 0.50 |
+| Category reasonable (single-point attacks only) | 0.69 (n=13) | 0.40 (n=5) |
+| Right 2015 attack among the top 2 retrieved | 0.22 | 0.00 |
+| Leave-one-out: top-1 has the same category | 0.28 | 0.00 |
 
 By true category (IForest, detected attacks): in-range sensor spoofing 3 of 3 found, actuator manipulation 3 of 5, multi-point 3 of 5,
-**out-of-range sensor spoofing only 2 of 5**. The numbers per group are tiny.
+**out-of-range sensor spoofing only 2 of 5**. The WinAE numbers rest on 6 attacks and the groups are tiny.
 
 These scores are clearly lower than on A12 (0.9 for the tag, 0.8-0.9 for the retrieved attack) and lower than on the
-synthetic injections (0.98-1.0). Reasons: many 2015 attacks only set a value the PLC sees, so the process hardly reacts and the
+synthetic injections (0.97-1.0). Reasons: many 2015 attacks only set a value the PLC sees, so the process hardly reacts and the
 model contributions point elsewhere; adjacent and overlapping attacks produce merged events; the signature classifier was designed
 on A12; and the knowledge base had no 2015 information when the classifier was built.
 
 ## 3. Confidence
 
-There are 296 alarm events for IForest and 75 for WinAE, almost all of them false alarms (the attack file lasts 4 days).
+There are 296 alarm events for IForest and 63 for WinAE, almost all of them false alarms (the attack file lasts 4 days).
 
 | Model, calibrated confidence | events | of which attacks |
 |---|---|---|
-| IForest low | 189 | 10 (5%) |
-| IForest medium | 107 | 8 (7%) |
-| WinAE high | 7 | 3 (43%) |
-| WinAE medium | 20 | 2 (10%) |
-| WinAE low | 48 | 2 (4%) |
+| IForest low | 183 | 8 (4%) |
+| IForest medium | 113 | 10 (9%) |
+| WinAE high | 7 | 1 (14%) |
+| WinAE medium | 14 | 3 (21%) |
+| WinAE low | 42 | 2 (5%) |
 
-- The calibration keeps almost every false alarm at "low" or "medium" (IForest: no "high" at all), but it only weakly separates
-  attacks from false alarms: IForest "low" and "medium" have about the same attack share.
-- WinAE "high" has the best attack share (3 of 7) but also 4 false alarms, so "high" is not as reliable as on the synthetic data.
+- The calibration keeps almost every false alarm at "low" or "medium" (IForest: no "high" at all), but it separates attacks from
+  false alarms only weakly: IForest "low" and "medium" differ by a few percentage points.
+- On 2015 the WinAE "high" is not more reliable than "medium" (1 of 7 events is an attack), so the "high" level of the
+  synthetic data does not carry over. Confidence should not be used to filter alarms on this dataset.
 
 ## 4. Limits and what to do next
 

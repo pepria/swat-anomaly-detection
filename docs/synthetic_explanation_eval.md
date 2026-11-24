@@ -20,36 +20,40 @@ Checks (rates are among *detected* injections):
 
 ## Results
 
+(Numbers after the code-review fixes of `docs/review_fixes.md`: injection sigma from valid training rows, contiguous-block
+early stopping, consistent contribution normalisation. The first version of this report gave slightly higher recall.)
+
 | Model | Detected | Tag rank 1 | Tag in top 3 or rules | Category ok | Pattern ok | Fully ok |
 |---|---|---|---|---|---|---|
-| AE | 0.61 | 0.85 | **1.00** | 0.95 | 0.34 | 0.95 |
-| WinAE | 0.60 | **0.92** | 0.98 | 0.85 | 0.40 | 0.82 |
+| AE | 0.64 | 0.79 | **1.00** | 0.84 | 0.33 | 0.84 |
+| WinAE | 0.54 | **0.89** | 0.97 | 0.86 | 0.31 | 0.86 |
 
-By type (WinAE; AE is similar except for spikes): actuator flip 0.88, bias 0.89, drift 0.78, noise 1.00 fully ok;
-**spike 0.25** (only 40% detected; the 5-second spikes give events whose signature scatters over
-drift / multivariate / actuator); **stuck and replay are never detected** (0 of 17 for both models), so there is nothing to explain.
+By type (WinAE; fully ok among the detected): actuator flip 0.71, bias 0.89, drift 0.78, noise 1.00. **Spikes**: only 1 of 10
+detected by WinAE (6 of 10 by AE, fully ok 0.67). **Stuck and replay**: never detected by WinAE; AE detects 2 of 7 replays
+and none of the 10 stuck injections, and the 2 replays are not explained as such.
 
 Confidence (calibrated, `confidence`) against correctness (fully_ok):
 
 | Model | high | medium | low |
 |---|---|---|---|
-| AE | 9 events, 1.00 correct | 29 events, 0.93 | 7 events, 0.43 (includes all 4 false alarms) |
-| WinAE | 17 events, 1.00 | 15 events, 0.67 | 8 events, 0.75 |
+| AE | 18 events, 0.72 correct (includes 2 false alarms) | 29 events, 0.69 | 3 events, 1.00 |
+| WinAE | 11 events, **1.00** | 18 events, 0.78 | 7 events, 0.86 |
 
 ## Findings
 
-1. **The input to the explainer is good when the anomaly is detected**: the injected tag is in the top 3 / rule hits in 98-100% of
+1. **The input to the explainer is good when the anomaly is detected**: the injected tag is in the top 3 / rule hits in 97-100% of
    the cases (A12 real attacks: 0.90). This is higher than on A12 because injections touch a single tag.
-2. **"High" confidence is reliable** (all 26 "high" events were correct), which is what an operator needs. All 4 false alarms of AE are "low".
-3. **Calibration does not separate "medium" from "low" for WinAE** (0.67 vs 0.75, small samples). It is a cap on over-confidence,
-   not a ranking of correctness.
-4. **Pattern retrieval is the weak spot** (0.34-0.40): the generic pattern follows the signature category, so drift, noise and
+2. **For the WinAE, "high" confidence was reliable** (11 of 11 correct); for the AE it was not (0.72, two false alarms were
+   labelled "high"). The calibration does not separate the levels well: WinAE "low" (0.86) is as good as "medium" (0.78), AE "low" is
+   better than "high". It caps over-confidence but is not a ranking of correctness.
+3. **Pattern retrieval is the weak spot** (0.31-0.33): the generic pattern follows the signature category, so drift, noise and
    spike never retrieve their specific pattern ("Sensor drift", "Increased noise", "Spike or glitch"). Retrieving the top 2
    patterns or using the signal shape would fix this.
-5. **Spikes** and the 5 s window are a weak point of the WinAE (detected 0.40) and of the classifier (category scatter).
-6. **Stuck and replay are invisible to the detectors** (see RESULTS section 3); a "zero variance for N minutes" rule is the natural fix.
+4. **Short spikes** are almost invisible to the WinAE (window of 2 minutes) and only partly detected by the AE.
+5. **Stuck and replay are invisible to the detectors** (see RESULTS section 3); a "zero variance for N minutes" rule is the natural fix
+   (a proposal for it is in the open pull request of the other team member).
 
 ## Limits
 
 Single tag per injection, magnitudes 2-10 sigma, template backend only (the LLM was not run on these events), judgement-based
-acceptable categories, and the confidence rules were designed with the A12 events in mind.
+acceptable categories, one seed of the detectors, and the confidence rules were designed with the A12 events in mind.
