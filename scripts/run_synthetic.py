@@ -6,7 +6,10 @@ record whether it was detected (alarm onset within [start, end + 120 s]), the
 delay, and whether the injected tag is among the top-k contributing features
 (root-cause localisation, used to check the explanation layer).
 
-    python scripts/run_synthetic.py [train_sets] [noAIT|all]
+    python scripts/run_synthetic.py [train_sets] [noAIT|all] [--stuck-rule SECONDS]
+
+``--stuck-rule 120`` enables the optional frozen-sensor rule of the rule layer;
+results then go to outputs/synthetic_stuck/ so the published run is not overwritten.
 """
 import json
 import sys
@@ -23,15 +26,22 @@ from swatad.features import tag_kind  # noqa: E402
 from swatad.inject import inject  # noqa: E402
 from swatad.pipeline import fit_and_calibrate, score_with  # noqa: E402
 
-train_sets = sys.argv[1] if len(sys.argv) > 1 else "A11+A10"
-drop_ait = (sys.argv[2] if len(sys.argv) > 2 else "noAIT") == "noAIT"
+args = sys.argv[1:]
+stuck_s = None
+if "--stuck-rule" in args:
+    i = args.index("--stuck-rule")
+    stuck_s = int(args[i + 1])
+    del args[i:i + 2]
+train_sets = args[0] if len(args) > 0 else "A11+A10"
+drop_ait = (args[1] if len(args) > 1 else "noAIT") == "noAIT"
 REALISATIONS = (0, 1, 2)
 TOL = pd.Timedelta(seconds=120)
 
 C.ensure_dirs()
-out = C.OUT_DIR / "synthetic"
+out = C.OUT_DIR / ("synthetic_stuck" if stuck_s else "synthetic")
 out.mkdir(exist_ok=True)
-F = fit_and_calibrate("a12", train_sets, drop_ait)
+F = fit_and_calibrate("a12", train_sets, drop_ait,
+                      rule_kwargs={"stuck_s": stuck_s} if stuck_s else None)
 S, fs, rules = F["setup"], F["fs"], F["rules"]
 base = S.test[S.test.index.strftime("%H:%M:%S") < "13:20:00"].copy()
 train_v = S.train
@@ -90,7 +100,7 @@ summary.to_csv(out / "synthetic_summary.csv", index=False)
 pd.DataFrame(all_inj).to_csv(out / "injections.csv", index=False)
 with open(out / "meta.json", "w") as f:
     json.dump({"train_sets": train_sets, "drop_ait": drop_ait, "realisations": list(REALISATIONS),
-               "n_injections": len(all_inj)}, f, indent=1)
+               "n_injections": len(all_inj), "stuck_rule_s": stuck_s}, f, indent=1)
 pv = summary[summary.variant == "model"].pivot(index="type", columns="model", values="recall").round(2)
 print(pv.to_string())
 print(overall.round(3).to_string())

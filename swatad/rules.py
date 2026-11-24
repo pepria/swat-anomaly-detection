@@ -15,6 +15,13 @@ calibration window: this is how drifted tags are found at deployment time
 (A11 -> A12: FIT501/503/504, FIT101 ...). Disabled tags are kept in
 ``self.disabled`` and reported.
 
+3. ``stuck`` (optional, off by default) – a continuous sensor keeps exactly the
+   same value for longer than ``stuck_s`` seconds *and* longer than any flat run
+   seen for that tag in training. Plausible frozen values are invisible to every
+   ML model (see RESULTS.md section 3); this rule is the targeted fix. It is
+   disabled by default so the published numbers stay reproducible; enable it with
+   ``RuleMonitor(stuck_s=120)``.
+
 Rule hits are reported per tag so they can be passed to the explanation layer.
 """
 from __future__ import annotations
@@ -36,6 +43,10 @@ class RuleMonitor:
     disabled: list = field(default_factory=list)
     lo: dict = field(default_factory=dict)
     hi: dict = field(default_factory=dict)
+    stuck_s: int | None = None
+    stuck_slack: float = 1.2
+    stuck_max_s: int = 3600
+    stuck_limit: dict = field(default_factory=dict)
 
     def fit(self, train: pd.DataFrame) -> "RuleMonitor":
         for c in feature_cols(train):
@@ -46,6 +57,12 @@ class RuleMonitor:
                 lo, hi = float(s.quantile(0.0)), float(s.quantile(1.0))
                 pad = max(self.margin * (hi - lo), 0.05 * abs(hi), 1e-3)
                 self.lo[c], self.hi[c] = lo - pad, hi + pad
+                if self.stuck_s:
+                    longest = int(flat_run_length(s.values).max()) if len(s) else 0
+                    limit = max(self.stuck_s, int(np.ceil(self.stuck_slack * longest)))
+                    # a tag that is naturally flat for very long cannot be checked this way
+                    if limit <= self.stuck_max_s:
+                        self.stuck_limit[c] = limit
         return self
 
     def calibrate(self, calib: pd.DataFrame) -> "RuleMonitor":
@@ -55,6 +72,7 @@ class RuleMonitor:
             self.seen.pop(c, None)
             self.lo.pop(c, None)
             self.hi.pop(c, None)
+            self._stuck_limits().pop(c, None)
         return self
 
     def hits(self, df: pd.DataFrame) -> pd.DataFrame:
@@ -67,7 +85,22 @@ class RuleMonitor:
             if c in df:
                 v = df[c].values
                 out[c] = (v < self.lo[c]) | (v > self.hi[c])
+        for c, limit in self._stuck_limits().items():
+            if c in df:
+                st = self._stuck(df[c].values, limit)
+                out[c] = out[c] | st if c in out else st
         return pd.DataFrame(out, index=df.index)
+
+    def _stuck_limits(self) -> dict:
+        # monitors pickled before the stuck rule existed have no such attribute
+        if not hasattr(self, "stuck_limit"):
+            self.stuck_limit = {}
+        return self.stuck_limit
+
+    @staticmethod
+    def _stuck(v: np.ndarray, limit: int) -> np.ndarray:
+        """True from the moment a flat run exceeds ``limit`` samples until it ends."""
+        return flat_run_length(v) > limit
 
     def alarm(self, df: pd.DataFrame, ack_s: int = 600) -> tuple[np.ndarray, pd.DataFrame]:
         """Rule alarm with operator acknowledgement.
@@ -97,7 +130,22 @@ class RuleMonitor:
             return {"rule": "unseen_state", "tag": c, "kind": tag_kind(c),
                     "normal_values": sorted(self.seen[c]),
                     "observed_values": sorted(set(np.unique(values).tolist()) - self.seen[c])}
+        vmin, vmax = float(np.min(values)), float(np.max(values))
+        if c in self._stuck_limits() and self.lo[c] <= vmin and vmax <= self.hi[c]:
+            return {"rule": "stuck", "tag": c, "kind": tag_kind(c),
+                    "frozen_value": round(vmin, 3), "limit_s": self.stuck_limit[c]}
         return {"rule": "out_of_range", "tag": c, "kind": tag_kind(c),
                 "normal_range": [round(self.lo[c], 3), round(self.hi[c], 3)],
                 "observed_min": round(float(np.min(values)), 3),
                 "observed_max": round(float(np.max(values)), 3)}
+
+
+def flat_run_length(v: np.ndarray) -> np.ndarray:
+    """For each sample, how many consecutive samples (including it) had exactly this value."""
+    v = np.asarray(v)
+    if len(v) == 0:
+        return np.zeros(0, dtype=int)
+    new = np.r_[True, v[1:] != v[:-1]]
+    starts = np.flatnonzero(new)
+    run_start = starts[np.cumsum(new) - 1]
+    return np.arange(len(v)) - run_start + 1
