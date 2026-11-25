@@ -1,6 +1,56 @@
 [
  {
-  "summary": "Between 13:25:00 and 13:32:26 (447 s) the WinAE detector and the rule layer flagged an anomaly in P2 (chemical dosing), P5 (reverse osmosis (RO)), P6 (product water and UF backwash); peak score 25.0x the threshold. Most likely interpretation: illegal combination of actuator states (actuator manipulation).",
+  "summary": "Between 12:08:37 and 12:08:53 (17 s) the WinAE detector flagged an anomaly in P1 (raw water supply), P5 (reverse osmosis (RO)); peak score 1.1x the threshold. Most likely interpretation: illegal combination of actuator states (actuator manipulation).",
+  "category": "actuator_manipulation",
+  "category_label": "illegal combination of actuator states (actuator manipulation)",
+  "reasons": [
+   "top contributors are actuators: MV101"
+  ],
+  "evidence": [
+   "MV101 (Raw water inlet valve to T101): values [0.0, 1.0] (normal [0.0, 1.0, 2.0])",
+   "FIT503 (RO reject flow): 0.2144 to 0.2165 m3/h vs normal 0.2219 to 0.2611 -> low",
+   "PIT501 (RO feed (high) pressure): 241.7 to 242 kPa vs normal 242.4 to 250.1 -> in-range"
+  ],
+  "similar_known_attacks": [
+   "A12 attack 2: Stage 1 flow disruption: MV101 open, P101 & P102 stop",
+   "A12 attack 6: Tank overflow via LIT101 spoofing (Schneider demo attack 01)"
+  ],
+  "pattern": "Actuator manipulation (illegal valve or pump combination)",
+  "process_context": [
+   "\nHigh-pressure pumps P501 (duty) and P502 (standby) push water through the RO membranes.\nPIT501 is the RO feed pressure (about 245 kPa in operation), PIT502 the permeate pressure and\nPIT503 the reject pressure. FIT501-FIT504 are feed, permeate, reject and recirculation flows.\nAIT501 (pH), AIT502 (ORP), AIT503 (feed conductivity) and AIT504 (permeate conductivity)\nmonitor water quality. Valves MV50"
+  ],
+  "relevant_invariants": [
+   "When MV101 is ON/open (2), FIT101 is normally between 2.56 and 2.58; when MV101 is OFF/closed (1), FIT101 is between 0 and 0 (effect size 27.5)."
+  ],
+  "recommended_checks": [
+   "Compare commanded and actual valve/pump positions.",
+   "Check the PLC mode (auto/manual) and recent operator commands.",
+   "Check downstream flows and levels for the expected reaction."
+  ],
+  "confidence": "low",
+  "sources": [
+   "02_tag_dictionary#4",
+   "02_tag_dictionary#52",
+   "02_tag_dictionary#58",
+   "03_attack_and_fault_patterns#4",
+   "04_a12_attack_catalog#2",
+   "04_a12_attack_catalog#6",
+   "04_swat2015_attack_catalog#1",
+   "05_mined_invariants#1",
+   "01_process_overview#6"
+  ],
+  "confidence_raw": "low",
+  "confidence_reasons": [
+   "-1 score only 1.1x the threshold",
+   "+1 specific signature found",
+   "-1 short event (17 s)",
+   "evidence score -1 -> cap low"
+  ],
+  "event_id": "a12-WinAE-001",
+  "backend": "template"
+ },
+ {
+  "summary": "Between 13:25:00 and 13:32:26 (447 s) the WinAE detector and the rule layer flagged an anomaly in P2 (chemical dosing), P5 (reverse osmosis (RO)); peak score 28.7x the threshold. Most likely interpretation: illegal combination of actuator states (actuator manipulation).",
   "category": "actuator_manipulation",
   "category_label": "illegal combination of actuator states (actuator manipulation)",
   "reasons": [
@@ -9,16 +59,16 @@
   "evidence": [
    "MV501 (RO permeate valve (paired with MV502)): values [0.0, 1.0, 2.0] (normal [0.0, 1.0, 2.0])",
    "LSLL203 (NaOCl tank low-low level switch): values [1.0] (normal [0.0, 1.0])",
-   "LIT602 (UF backwash water tank T602 level): 561.5 to 577.7 mm vs normal 562 to 988.7 -> low",
+   "PIT501 (RO feed (high) pressure): 75.17 to 242 kPa vs normal 242.4 to 250.1 -> in-range",
    "Rule: P501 took value(s) [8.5600004196167] never seen in normal operation (normal [0.0, 10.0])."
   ],
   "similar_known_attacks": [
-   "A12 attack 5: Stage 5 valve manipulation (repeat)",
-   "A12 attack 1: Stage 5 valve manipulation: MV503/504 open, MV501/502 close"
+   "A12 attack 1: Stage 5 valve manipulation: MV503/504 open, MV501/502 close",
+   "A12 attack 5: Stage 5 valve manipulation (repeat)"
   ],
   "pattern": "Actuator manipulation (illegal valve or pump combination)",
   "process_context": [
-   "\nRO permeate is stored in tank T601 (level LIT601); T602 (LIT602) is the backwash water tank.\nP601 sends product water out (back to the raw water tank or, in CrossOver mode, to WaDi), P602\nfeeds the UF backwash, P603 is a spare pump. FIT601 is the backwash flow (almost always 0 in\n2026) and FIT602 a product flow with pulse-like behaviour. LSH601/LSL601 etc. are high/low level\nswitches. Spoofing LI"
+   "\nHigh-pressure pumps P501 (duty) and P502 (standby) push water through the RO membranes.\nPIT501 is the RO feed pressure (about 245 kPa in operation), PIT502 the permeate pressure and\nPIT503 the reject pressure. FIT501-FIT504 are feed, permeate, reject and recirculation flows.\nAIT501 (pH), AIT502 (ORP), AIT503 (feed conductivity) and AIT504 (permeate conductivity)\nmonitor water quality. Valves MV50"
   ],
   "relevant_invariants": [
    "Constant in the steady-state part of the normal A11 data (start-up excluded): P102, P2_STATE, P202, P204, P206, P207, P208, LS201, LS202, LSL203, LSLL203, MV301, MV303, P302, P4_STATE, AIT401, P401, P402, P403, P404, UV401, LS401, P5_STATE, PIT502, P501, P502, MV501, MV502, MV503, MV504, P6_STATE, P602, P603, LSH602, LSL602, LSH603, LSL603. Any change of these tags is suspicious: standby pumps, bypass valves or alarms that should stay quiet.",
@@ -33,43 +83,52 @@
   "sources": [
    "02_tag_dictionary#65",
    "02_tag_dictionary#24",
-   "02_tag_dictionary#71",
+   "02_tag_dictionary#58",
    "02_tag_dictionary#61",
    "02_tag_dictionary#62",
    "03_attack_and_fault_patterns#4",
-   "04_a12_attack_catalog#5",
    "04_a12_attack_catalog#1",
+   "04_a12_attack_catalog#5",
+   "04_swat2015_attack_catalog#17",
    "05_mined_invariants#13",
    "05_mined_invariants#12",
-   "01_process_overview#7"
+   "01_process_overview#6"
   ],
-  "event_id": "a12-WinAE-001",
+  "confidence_raw": "high",
+  "confidence_reasons": [
+   "+1 score 28.7x the threshold",
+   "+1 1 new rule violation(s)",
+   "+1 MV501 dominates the contribution (40%)",
+   "+1 specific signature found",
+   "evidence score 4 -> cap high"
+  ],
+  "event_id": "a12-WinAE-002",
   "backend": "template"
  },
  {
-  "summary": "Between 14:05:09 and 14:12:00 (412 s) the WinAE detector and the rule layer flagged an anomaly in P1 (raw water supply), P2 (chemical dosing); peak score 2.0x the threshold. Most likely interpretation: process variable outside its normal range.",
+  "summary": "Between 14:05:08 and 14:12:00 (413 s) the WinAE detector and the rule layer flagged an anomaly in P1 (raw water supply), P2 (chemical dosing), P3 (ultrafiltration (UF)); peak score 3.2x the threshold. Most likely interpretation: process variable outside its normal range.",
   "category": "out_of_range_excursion",
   "category_label": "process variable outside its normal range",
   "reasons": [
    "out of range: LIT101"
   ],
   "evidence": [
+   "LIT301 (UF feed tank T301 level): 715.8 to 823.8 mm vs normal 794.3 to 1013 -> low",
    "FIT201 (Flow through chemical dosing section): 0 to 2.358 m3/h vs normal 0 to 2.686 -> in-range",
-   "P101 (Raw water transfer pump (duty) P1->P2): values [1.0, 2.0] (normal [1.0, 2.0])",
    "FIT101 (Raw water inflow to T101): 0 to 3.893 m3/h vs normal 0 to 5.942 -> high",
    "Rule: LIT101 left its normal range [408.182, 911.064] (observed 911.292 to 960.436)."
   ],
   "similar_known_attacks": [
    "A12 attack 2: Stage 1 flow disruption: MV101 open, P101 & P102 stop",
-   "A12 attack 6: Tank overflow via LIT101 spoofing (Schneider demo attack 01)"
+   "A12 attack 4: Tank overflow via LIT101 spoofing (Schneider demo attack 01)"
   ],
   "pattern": "Sensor spoofing with an out-of-range constant value",
   "process_context": [
    "\nRaw water enters tank T101 through motorised valve MV101. LIT101 measures the T101 level and\nFIT101 the inflow. Pumps P101 (duty) and P102 (standby) transfer raw water to stage P2. The PLC\nopens MV101 when LIT101 is low and closes it when LIT101 is high, and runs P101 when the\ndownstream UF feed tank T301 (LIT301) needs water. In normal 2026 operation LIT101 oscillates\nbetween about 480 and 830 m"
   ],
   "relevant_invariants": [
-   "When P101 is ON/open (2), FIT201 is normally between 2.34 and 2.39; when P101 is OFF/closed (1), FIT201 is between 0 and 0 (effect size 12.9).",
-   "When MV101 is ON/open (2), FIT101 is normally between 2.56 and 2.58; when MV101 is OFF/closed (1), FIT101 is between 0 and 0 (effect size 27.5)."
+   "When MV101 is ON/open (2), FIT101 is normally between 2.56 and 2.58; when MV101 is OFF/closed (1), FIT101 is between 0 and 0 (effect size 27.5).",
+   "When P101 is ON/open (2), FIT201 is normally between 2.34 and 2.39; when P101 is OFF/closed (1), FIT201 is between 0 and 0 (effect size 12.9)."
   ],
   "recommended_checks": [
    "Check whether a real process excursion is happening (overflow, pressure).",
@@ -77,42 +136,98 @@
   ],
   "confidence": "medium",
   "sources": [
+   "02_tag_dictionary#29",
    "02_tag_dictionary#8",
-   "02_tag_dictionary#5",
    "02_tag_dictionary#3",
    "02_tag_dictionary#2",
    "03_attack_and_fault_patterns#1",
    "04_a12_attack_catalog#2",
-   "04_a12_attack_catalog#6",
-   "05_mined_invariants#7",
+   "04_a12_attack_catalog#4",
+   "04_swat2015_attack_catalog#6",
    "05_mined_invariants#1",
+   "05_mined_invariants#7",
    "01_process_overview#2"
   ],
-  "event_id": "a12-WinAE-002",
+  "confidence_raw": "high",
+  "confidence_reasons": [
+   "+1 score 3.2x the threshold",
+   "+1 1 new rule violation(s)",
+   "evidence score 2 -> cap medium"
+  ],
+  "event_id": "a12-WinAE-003",
   "backend": "template"
  },
  {
-  "summary": "Between 14:19:19 and 14:19:37 (19 s) the WinAE detector flagged an anomaly in P3 (ultrafiltration (UF)), P6 (product water and UF backwash); peak score 1.1x the threshold. Most likely interpretation: gradual drift or in-range deviation (drift fault or in-range spoofing).",
+  "summary": "Between 14:19:10 and 14:20:29 (80 s) the WinAE detector flagged an anomaly in P3 (ultrafiltration (UF)); peak score 1.7x the threshold. Most likely interpretation: gradual drift or in-range deviation (drift fault or in-range spoofing).",
   "category": "drift_or_inrange",
   "category_label": "gradual drift or in-range deviation (drift fault or in-range spoofing)",
   "reasons": [
    "LIT301 trending low"
   ],
   "evidence": [
-   "LIT301 (UF feed tank T301 level): 818 to 828.2 mm vs normal 794.3 to 1013 -> low",
-   "LSH601 (T601 high level switch): values [0.0] (normal [0.0, 1.0])",
-   "FIT301 (UF feed flow): 0 to 0 m3/h vs normal 0 to 1.989 -> low"
+   "LIT301 (UF feed tank T301 level): 812 to 854.5 mm vs normal 794.3 to 1013 -> low",
+   "FIT301 (UF feed flow): 0 to 0.1022 m3/h vs normal 0 to 1.989 -> low",
+   "DPIT301 (Differential pressure across the UF membrane (triggers backwash)): 3.012 to 3.329 kPa vs normal 2.58 to 16.22 -> low"
   ],
   "similar_known_attacks": [
-   "A12 attack 6: Tank overflow via LIT101 spoofing (Schneider demo attack 01)",
-   "A12 attack 9: Forced backwash trigger via DPIT301 spoofing (Ensign pre-UAT attack 1)"
+   "A12 attack 9: Forced backwash trigger via DPIT301 spoofing (Ensign pre-UAT attack 1)",
+   "A12 attack 8: RO backwash diversion: MV302 close, MV303 open"
   ],
-  "pattern": "Sensor spoofing within the normal range",
+  "pattern": "Sensor drift (fault)",
   "process_context": [
    "\nTank T301 (level LIT301) feeds the UF unit through pumps P301 (duty) and P302 (standby).\nDPIT301 is the differential pressure across the UF membrane, FIT301 the UF flow. Valves\nMV301-MV304 route water for filtration, backwash and drain. When the membrane fouls, DPIT301\nrises; the PLC then starts a backwash using RO permeate pumped back from P6 (P602). In the 2026\ndata DPIT301 is a square wave bet"
   ],
   "relevant_invariants": [
    "When MV302 is ON/open (2), FIT301 is normally between 1.76 and 1.79; when MV302 is OFF/closed (1), FIT301 is between 0 and 0.000384 (effect size 8.2).",
+   "When P301 is ON/open (2), FIT301 is normally between 1.76 and 1.79; when P301 is OFF/closed (1), FIT301 is between 0 and 0.000256 (effect size 14.1)."
+  ],
+  "recommended_checks": [
+   "Check the instrument calibration and compare with a reference measurement.",
+   "Check the mass balance between inflow, outflow and level."
+  ],
+  "confidence": "medium",
+  "sources": [
+   "02_tag_dictionary#29",
+   "02_tag_dictionary#30",
+   "02_tag_dictionary#31",
+   "03_attack_and_fault_patterns#7",
+   "04_a12_attack_catalog#9",
+   "04_a12_attack_catalog#8",
+   "04_swat2015_attack_catalog#36",
+   "05_mined_invariants#10",
+   "05_mined_invariants#6",
+   "01_process_overview#4"
+  ],
+  "confidence_raw": "medium",
+  "confidence_reasons": [
+   "+1 LIT301 dominates the contribution (43%)",
+   "evidence score 1 -> cap medium"
+  ],
+  "event_id": "a12-WinAE-004",
+  "backend": "template"
+ },
+ {
+  "summary": "Between 14:23:52 and 14:25:19 (88 s) the WinAE detector flagged an anomaly in P1 (raw water supply), P2 (chemical dosing), P3 (ultrafiltration (UF)); peak score 1.1x the threshold. Most likely interpretation: gradual drift or in-range deviation (drift fault or in-range spoofing).",
+  "category": "drift_or_inrange",
+  "category_label": "gradual drift or in-range deviation (drift fault or in-range spoofing)",
+  "reasons": [
+   "LIT301 trending high"
+  ],
+  "evidence": [
+   "LIT301 (UF feed tank T301 level): 962 to 1007 mm vs normal 794.3 to 1013 -> high",
+   "LIT101 (Raw water tank T101 level): 758 to 800.4 mm vs normal 494 to 833.6 -> in-range",
+   "P201 (NaCl dosing pump (duty)): values [1.0, 2.0] (normal [1.0, 2.0])"
+  ],
+  "similar_known_attacks": [
+   "A12 attack 6: Tank overflow via LIT101 spoofing (Schneider demo attack 01)",
+   "A12 attack 2: Stage 1 flow disruption: MV101 open, P101 & P102 stop"
+  ],
+  "pattern": "Sensor spoofing within the normal range",
+  "process_context": [
+   "\nRaw water enters tank T101 through motorised valve MV101. LIT101 measures the T101 level and\nFIT101 the inflow. Pumps P101 (duty) and P102 (standby) transfer raw water to stage P2. The PLC\nopens MV101 when LIT101 is low and closes it when LIT101 is high, and runs P101 when the\ndownstream UF feed tank T301 (LIT301) needs water. In normal 2026 operation LIT101 oscillates\nbetween about 480 and 830 m"
+  ],
+  "relevant_invariants": [
+   "When P201 is ON/open (2), FIT201 is normally between 2.34 and 2.39; when P201 is OFF/closed (1), FIT201 is between 0 and 0 (effect size 20.6).",
    "When MV302 is ON/open (2), LIT301 is normally between 801 and 975; when MV302 is OFF/closed (1), LIT301 is between 906 and 1.01e+03 (effect size 2.5)."
   ],
   "recommended_checks": [
@@ -122,40 +237,47 @@
   "confidence": "low",
   "sources": [
    "02_tag_dictionary#29",
-   "02_tag_dictionary#77",
-   "02_tag_dictionary#30",
+   "02_tag_dictionary#2",
+   "02_tag_dictionary#13",
    "03_attack_and_fault_patterns#2",
    "04_a12_attack_catalog#6",
-   "04_a12_attack_catalog#9",
-   "05_mined_invariants#10",
+   "04_a12_attack_catalog#2",
+   "04_swat2015_attack_catalog#36",
+   "05_mined_invariants#4",
    "05_mined_invariants#11",
-   "01_process_overview#4"
+   "01_process_overview#2"
   ],
-  "event_id": "a12-WinAE-003",
+  "confidence_raw": "low",
+  "confidence_reasons": [
+   "-1 score only 1.1x the threshold",
+   "+1 LIT301 dominates the contribution (53%)",
+   "evidence score 0 -> cap low"
+  ],
+  "event_id": "a12-WinAE-005",
   "backend": "template"
  },
  {
-  "summary": "Between 14:45:26 and 14:51:21 (356 s) the WinAE detector and the rule layer flagged an anomaly in P2 (chemical dosing), P6 (product water and UF backwash); peak score 1.4x the threshold. Most likely interpretation: activation of standby or unused equipment.",
+  "summary": "Between 14:45:26 and 14:51:25 (360 s) the WinAE detector and the rule layer flagged an anomaly in P2 (chemical dosing), P6 (product water and UF backwash); peak score 1.5x the threshold. Most likely interpretation: activation of standby or unused equipment.",
   "category": "standby_activation",
   "category_label": "activation of standby or unused equipment",
   "reasons": [
    "normally-off pump(s) switched on: P202, P204, P206"
   ],
   "evidence": [
+   "LSLL203 (NaOCl tank low-low level switch): values [1.0] (normal [0.0, 1.0])",
    "LSH601 (T601 high level switch): values [0.0, 1.0] (normal [0.0, 1.0])",
    "P205 (NaOCl dosing pump (duty)): values [1.0, 2.0] (normal [1.0, 2.0])",
-   "LIT601 (RO permeate (product) tank T601 level): 542.9 to 616.9 mm vs normal 72.48 to 617.1 -> high",
    "Rule: P202 took value(s) [2.0] never seen in normal operation (normal [1.0]).",
    "Rule: P204 took value(s) [2.0] never seen in normal operation (normal [1.0]).",
    "Rule: P206 took value(s) [2.0] never seen in normal operation (normal [1.0])."
   ],
   "similar_known_attacks": [
    "A12 attack 3: Florida water plant scenario: dosing pump activation & sensor spoofing",
-   "A12 attack 10: Multi-value level oscillation: LIT601 spoofing (Ensign pre-UAT attack 3)"
+   "A12 attack 8: RO backwash diversion: MV302 close, MV303 open"
   ],
   "pattern": "Activation of standby or unused equipment",
   "process_context": [
-   "\nRO permeate is stored in tank T601 (level LIT601); T602 (LIT602) is the backwash water tank.\nP601 sends product water out (back to the raw water tank or, in CrossOver mode, to WaDi), P602\nfeeds the UF backwash, P603 is a spare pump. FIT601 is the backwash flow (almost always 0 in\n2026) and FIT602 a product flow with pulse-like behaviour. LSH601/LSL601 etc. are high/low level\nswitches. Spoofing LI"
+   "\nWater from P1 is chemically conditioned before ultrafiltration. Dosing pumps add sodium chloride\n(NaCl, P201/P202), hydrochloric acid (HCl, P203/P204) and sodium hypochlorite (NaOCl, P205/P206);\nin each pair the first pump is duty and the second standby. P207/P208 are additional dosing\npumps (to confirm). Analysers measure conductivity (AIT201), pH (AIT202) and ORP (oxidation\nreduction potential,"
   ],
   "relevant_invariants": [
    "Constant in the steady-state part of the normal A11 data (start-up excluded): P102, P2_STATE, P202, P204, P206, P207, P208, LS201, LS202, LSL203, LSLL203, MV301, MV303, P302, P4_STATE, AIT401, P401, P402, P403, P404, UV401, LS401, P5_STATE, PIT502, P501, P502, MV501, MV502, MV503, MV504, P6_STATE, P602, P603, LSH602, LSL602, LSH603, LSL603. Any change of these tags is suspicious: standby pumps, bypass valves or alarms that should stay quiet."
@@ -167,21 +289,28 @@
   ],
   "confidence": "medium",
   "sources": [
+   "02_tag_dictionary#24",
    "02_tag_dictionary#77",
    "02_tag_dictionary#17",
-   "02_tag_dictionary#70",
    "02_tag_dictionary#14",
    "03_attack_and_fault_patterns#5",
    "04_a12_attack_catalog#3",
-   "04_a12_attack_catalog#10",
+   "04_a12_attack_catalog#8",
+   "04_swat2015_attack_catalog#24",
    "05_mined_invariants#13",
-   "01_process_overview#7"
+   "01_process_overview#3"
   ],
-  "event_id": "a12-WinAE-004",
+  "confidence_raw": "medium",
+  "confidence_reasons": [
+   "+1 3 new rule violation(s)",
+   "+1 specific signature found",
+   "evidence score 2 -> cap medium"
+  ],
+  "event_id": "a12-WinAE-006",
   "backend": "template"
  },
  {
-  "summary": "Between 14:54:50 and 15:02:41 (472 s) the WinAE detector and the rule layer flagged an anomaly in P1 (raw water supply), P3 (ultrafiltration (UF)); peak score 2.0x the threshold. Most likely interpretation: sensor value forced outside its normal range (spoofing or stuck sensor).",
+  "summary": "Between 14:54:50 and 15:02:41 (472 s) the WinAE detector and the rule layer flagged an anomaly in P1 (raw water supply), P3 (ultrafiltration (UF)), P4 (dechlorination (UV + NaHSO3)); peak score 2.3x the threshold. Most likely interpretation: sensor value forced outside its normal range (spoofing or stuck sensor).",
   "category": "spoof_out_of_range",
   "category_label": "sensor value forced outside its normal range (spoofing or stuck sensor)",
   "reasons": [
@@ -190,19 +319,18 @@
   "evidence": [
    "LIT101 (Raw water tank T101 level): 400 to 980.8 mm vs normal 494 to 833.6 -> low",
    "LIT301 (UF feed tank T301 level): 809.3 to 891.7 mm vs normal 794.3 to 1013 -> low",
-   "FIT101 (Raw water inflow to T101): 0 to 3.888 m3/h vs normal 0 to 5.942 -> high",
+   "LIT401 (RO feed tank T401 level): 930.5 to 993.5 mm vs normal 788.4 to 1001 -> high",
    "Rule: LIT101 left its normal range [408.182, 911.064] (observed 400.0 to 980.769)."
   ],
   "similar_known_attacks": [
    "A12 attack 4: Tank overflow via LIT101 spoofing (Schneider demo attack 01)",
-   "A12 attack 9: Forced backwash trigger via DPIT301 spoofing (Ensign pre-UAT attack 1)"
+   "A12 attack 2: Stage 1 flow disruption: MV101 open, P101 & P102 stop"
   ],
   "pattern": "Sensor spoofing with an out-of-range constant value",
   "process_context": [
    "\nRaw water enters tank T101 through motorised valve MV101. LIT101 measures the T101 level and\nFIT101 the inflow. Pumps P101 (duty) and P102 (standby) transfer raw water to stage P2. The PLC\nopens MV101 when LIT101 is low and closes it when LIT101 is high, and runs P101 when the\ndownstream UF feed tank T301 (LIT301) needs water. In normal 2026 operation LIT101 oscillates\nbetween about 480 and 830 m"
   ],
   "relevant_invariants": [
-   "When MV101 is ON/open (2), FIT101 is normally between 2.56 and 2.58; when MV101 is OFF/closed (1), FIT101 is between 0 and 0 (effect size 27.5).",
    "When MV302 is ON/open (2), LIT301 is normally between 801 and 975; when MV302 is OFF/closed (1), LIT301 is between 906 and 1.01e+03 (effect size 2.5)."
   ],
   "recommended_checks": [
@@ -210,23 +338,31 @@
    "Inspect the transmitter locally and check PLC register writes.",
    "Put the affected control loop in manual if the value drives an actuator."
   ],
-  "confidence": "medium",
+  "confidence": "high",
   "sources": [
    "02_tag_dictionary#2",
    "02_tag_dictionary#29",
-   "02_tag_dictionary#3",
+   "02_tag_dictionary#39",
    "03_attack_and_fault_patterns#1",
    "04_a12_attack_catalog#4",
-   "04_a12_attack_catalog#9",
-   "05_mined_invariants#1",
+   "04_a12_attack_catalog#2",
+   "04_swat2015_attack_catalog#26",
    "05_mined_invariants#11",
    "01_process_overview#2"
   ],
-  "event_id": "a12-WinAE-005",
+  "confidence_raw": "high",
+  "confidence_reasons": [
+   "+1 score 2.3x the threshold",
+   "+1 1 new rule violation(s)",
+   "+1 LIT101 dominates the contribution (54%)",
+   "+1 specific signature found",
+   "evidence score 4 -> cap high"
+  ],
+  "event_id": "a12-WinAE-007",
   "backend": "template"
  },
  {
-  "summary": "Between 15:04:55 and 15:12:16 (442 s) the WinAE detector and the rule layer flagged an anomaly in P2 (chemical dosing), P5 (reverse osmosis (RO)); peak score 24.8x the threshold. Most likely interpretation: sensor value forced outside its normal range (spoofing or stuck sensor).",
+  "summary": "Between 15:04:55 and 15:12:16 (442 s) the WinAE detector and the rule layer flagged an anomaly in P2 (chemical dosing), P5 (reverse osmosis (RO)); peak score 27.2x the threshold. Most likely interpretation: sensor value forced outside its normal range (spoofing or stuck sensor).",
   "category": "spoof_out_of_range",
   "category_label": "sensor value forced outside its normal range (spoofing or stuck sensor)",
   "reasons": [
@@ -234,14 +370,14 @@
   ],
   "evidence": [
    "MV501 (RO permeate valve (paired with MV502)): values [0.0, 1.0, 2.0] (normal [0.0, 1.0, 2.0])",
-   "FIT504 (RO recirculation flow): 0.0176 to 0.0717 m3/h vs normal 0.0211 to 0.0576 -> high",
    "LSLL203 (NaOCl tank low-low level switch): values [1.0] (normal [0.0, 1.0])",
+   "PIT501 (RO feed (high) pressure): 73.81 to 240.3 kPa vs normal 242.4 to 250.1 -> low",
    "Rule: P501 took value(s) [8.760000228881836] never seen in normal operation (normal [0.0, 10.0]).",
    "Rule: FIT504 left its normal range [-0.012, 0.07] (observed 0.07 to 0.072)."
   ],
   "similar_known_attacks": [
-   "A12 attack 4: Tank overflow via LIT101 spoofing (Schneider demo attack 01)",
-   "A12 attack 9: Forced backwash trigger via DPIT301 spoofing (Ensign pre-UAT attack 1)"
+   "A12 attack 1: Stage 5 valve manipulation: MV503/504 open, MV501/502 close",
+   "A12 attack 5: Stage 5 valve manipulation (repeat)"
   ],
   "pattern": "Sensor spoofing with an out-of-range constant value",
   "process_context": [
@@ -256,25 +392,33 @@
    "Inspect the transmitter locally and check PLC register writes.",
    "Put the affected control loop in manual if the value drives an actuator."
   ],
-  "confidence": "high",
+  "confidence": "medium",
   "sources": [
    "02_tag_dictionary#65",
-   "02_tag_dictionary#53",
    "02_tag_dictionary#24",
+   "02_tag_dictionary#58",
    "02_tag_dictionary#61",
    "02_tag_dictionary#62",
    "03_attack_and_fault_patterns#1",
-   "04_a12_attack_catalog#4",
-   "04_a12_attack_catalog#9",
+   "04_a12_attack_catalog#1",
+   "04_a12_attack_catalog#5",
+   "04_swat2015_attack_catalog#17",
    "05_mined_invariants#13",
    "05_mined_invariants#12",
    "01_process_overview#6"
   ],
-  "event_id": "a12-WinAE-006",
+  "confidence_raw": "high",
+  "confidence_reasons": [
+   "+1 score 27.2x the threshold",
+   "+1 2 new rule violation(s)",
+   "-1 the 'spoofed value' only exceeds its range marginally (< 5% of the range)",
+   "evidence score 1 -> cap medium"
+  ],
+  "event_id": "a12-WinAE-008",
   "backend": "template"
  },
  {
-  "summary": "Between 15:25:19 and 15:31:40 (382 s) the WinAE detector and the rule layer flagged an anomaly in P1 (raw water supply), P2 (chemical dosing), P3 (ultrafiltration (UF)), P4 (dechlorination (UV + NaHSO3)); peak score 1.6x the threshold. Most likely interpretation: activation of standby or unused equipment.",
+  "summary": "Between 15:25:19 and 15:31:47 (389 s) the WinAE detector and the rule layer flagged an anomaly in P1 (raw water supply), P3 (ultrafiltration (UF)), P4 (dechlorination (UV + NaHSO3)); peak score 2.1x the threshold. Most likely interpretation: activation of standby or unused equipment.",
   "category": "standby_activation",
   "category_label": "activation of standby or unused equipment",
   "reasons": [
@@ -282,13 +426,13 @@
   ],
   "evidence": [
    "LIT301 (UF feed tank T301 level): 913.3 to 981.4 mm vs normal 794.3 to 1013 -> in-range",
-   "P205 (NaOCl dosing pump (duty)): values [1.0, 2.0] (normal [1.0, 2.0])",
-   "LIT401 (RO feed tank T401 level): 812.5 to 865.4 mm vs normal 788.4 to 1001 -> low",
+   "LIT401 (RO feed tank T401 level): 812.5 to 867.1 mm vs normal 788.4 to 1001 -> low",
+   "LIT101 (Raw water tank T101 level): 698 to 790.3 mm vs normal 494 to 833.6 -> low",
    "Rule: P102 took value(s) [2.0] never seen in normal operation (normal [1.0])."
   ],
   "similar_known_attacks": [
-   "A12 attack 7: Stage 2 parallel pump override: MV201 open, P101 & P102 run",
-   "A12 attack 3: Florida water plant scenario: dosing pump activation & sensor spoofing"
+   "A12 attack 2: Stage 1 flow disruption: MV101 open, P101 & P102 stop",
+   "A12 attack 6: Tank overflow via LIT101 spoofing (Schneider demo attack 01)"
   ],
   "pattern": "Activation of standby or unused equipment",
   "process_context": [
@@ -302,32 +446,41 @@
    "Verify physically that the standby unit is running.",
    "If it is a dosing pump, check chemical concentrations immediately (AIT201-203)."
   ],
-  "confidence": "medium",
+  "confidence": "high",
   "sources": [
    "02_tag_dictionary#29",
-   "02_tag_dictionary#17",
    "02_tag_dictionary#39",
+   "02_tag_dictionary#2",
    "02_tag_dictionary#6",
    "03_attack_and_fault_patterns#5",
-   "04_a12_attack_catalog#7",
-   "04_a12_attack_catalog#3",
+   "04_a12_attack_catalog#2",
+   "04_a12_attack_catalog#6",
+   "04_swat2015_attack_catalog#12",
    "05_mined_invariants#11",
    "01_process_overview#2"
   ],
-  "event_id": "a12-WinAE-007",
+  "confidence_raw": "high",
+  "confidence_reasons": [
+   "+1 score 2.1x the threshold",
+   "+1 1 new rule violation(s)",
+   "+1 LIT301 dominates the contribution (60%)",
+   "+1 specific signature found",
+   "evidence score 4 -> cap high"
+  ],
+  "event_id": "a12-WinAE-009",
   "backend": "template"
  },
  {
-  "summary": "Between 15:45:01 and 15:55:01 (601 s) the WinAE detector and the rule layer flagged an anomaly in P3 (ultrafiltration (UF)), P6 (product water and UF backwash); peak score 7.3x the threshold. Most likely interpretation: activation of standby or unused equipment.",
+  "summary": "Between 15:45:01 and 15:55:01 (601 s) the WinAE detector and the rule layer flagged an anomaly in P2 (chemical dosing), P3 (ultrafiltration (UF)), P5 (reverse osmosis (RO)), P6 (product water and UF backwash); peak score 8.7x the threshold. Most likely interpretation: activation of standby or unused equipment.",
   "category": "standby_activation",
   "category_label": "activation of standby or unused equipment",
   "reasons": [
    "normally-off pump(s) switched on: P602"
   ],
   "evidence": [
-   "DPIT301 (Differential pressure across the UF membrane (triggers backwash)): 0.0064 to 20.56 kPa vs normal 2.58 to 16.22 -> low",
-   "P301 (UF feed pump (duty)): values [1.0, 2.0] (normal [1.0, 2.0])",
-   "FIT301 (UF feed flow): 0 to 2.27 m3/h vs normal 0 to 1.989 -> low",
+   "LSLL203 (NaOCl tank low-low level switch): values [1.0] (normal [0.0, 1.0])",
+   "MV501 (RO permeate valve (paired with MV502)): values [2.0] (normal [0.0, 1.0, 2.0])",
+   "P501 (RO high-pressure pump (duty)): values [2.0] (normal [1.0, 2.0])",
    "Rule: P3_STATE took value(s) [9.0, 10.0, 12.0, 14.0, 15.0, 16.0] never seen in normal operation (normal [2.0, 3.0, 4.0, 5.0, 6.0, 7.0, 99.0]).",
    "Rule: MV301 took value(s) [0.0, 2.0] never seen in normal operation (normal [1.0]).",
    "Rule: MV303 took value(s) [0.0, 2.0] never seen in normal operation (normal [1.0]).",
@@ -337,15 +490,14 @@
   ],
   "similar_known_attacks": [
    "A12 attack 8: RO backwash diversion: MV302 close, MV303 open",
-   "A12 attack 9: Forced backwash trigger via DPIT301 spoofing (Ensign pre-UAT attack 1)"
+   "A12 attack 1: Stage 5 valve manipulation: MV503/504 open, MV501/502 close"
   ],
   "pattern": "Activation of standby or unused equipment",
   "process_context": [
-   "\nTank T301 (level LIT301) feeds the UF unit through pumps P301 (duty) and P302 (standby).\nDPIT301 is the differential pressure across the UF membrane, FIT301 the UF flow. Valves\nMV301-MV304 route water for filtration, backwash and drain. When the membrane fouls, DPIT301\nrises; the PLC then starts a backwash using RO permeate pumped back from P6 (P602). In the 2026\ndata DPIT301 is a square wave bet"
+   "\nHigh-pressure pumps P501 (duty) and P502 (standby) push water through the RO membranes.\nPIT501 is the RO feed pressure (about 245 kPa in operation), PIT502 the permeate pressure and\nPIT503 the reject pressure. FIT501-FIT504 are feed, permeate, reject and recirculation flows.\nAIT501 (pH), AIT502 (ORP), AIT503 (feed conductivity) and AIT504 (permeate conductivity)\nmonitor water quality. Valves MV50"
   ],
   "relevant_invariants": [
-   "When P301 is ON/open (2), FIT301 is normally between 1.76 and 1.79; when P301 is OFF/closed (1), FIT301 is between 0 and 0.000256 (effect size 14.1).",
-   "When P301 is ON/open (2), DPIT301 is normally between 15.5 and 15.9; when P301 is OFF/closed (1), DPIT301 is between 2.55 and 2.67 (effect size 9.3)."
+   "Constant in the steady-state part of the normal A11 data (start-up excluded): P102, P2_STATE, P202, P204, P206, P207, P208, LS201, LS202, LSL203, LSLL203, MV301, MV303, P302, P4_STATE, AIT401, P401, P402, P403, P404, UV401, LS401, P5_STATE, PIT502, P501, P502, MV501, MV502, MV503, MV504, P6_STATE, P602, P603, LSH602, LSL602, LSH603, LSL603. Any change of these tags is suspicious: standby pumps, bypass valves or alarms that should stay quiet."
   ],
   "recommended_checks": [
    "Check the HMI/PLC command log for who switched the equipment and whether maintenance was scheduled.",
@@ -354,22 +506,31 @@
   ],
   "confidence": "high",
   "sources": [
-   "02_tag_dictionary#31",
-   "02_tag_dictionary#36",
-   "02_tag_dictionary#30",
+   "02_tag_dictionary#24",
+   "02_tag_dictionary#65",
+   "02_tag_dictionary#61",
+   "02_tag_dictionary#62",
    "02_tag_dictionary#25",
    "03_attack_and_fault_patterns#5",
    "04_a12_attack_catalog#8",
-   "04_a12_attack_catalog#9",
-   "05_mined_invariants#6",
-   "05_mined_invariants#9",
-   "01_process_overview#4"
+   "04_a12_attack_catalog#1",
+   "04_swat2015_attack_catalog#18",
+   "05_mined_invariants#13",
+   "01_process_overview#6"
   ],
-  "event_id": "a12-WinAE-008",
+  "confidence_raw": "high",
+  "confidence_reasons": [
+   "+1 score 8.7x the threshold",
+   "+1 6 new rule violation(s)",
+   "+1 LSLL203 dominates the contribution (40%)",
+   "+1 specific signature found",
+   "evidence score 4 -> cap high"
+  ],
+  "event_id": "a12-WinAE-010",
   "backend": "template"
  },
  {
-  "summary": "Between 16:09:52 and 16:16:39 (408 s) the WinAE detector and the rule layer flagged an anomaly in P3 (ultrafiltration (UF)); peak score 7.7x the threshold. Most likely interpretation: sensor value forced outside its normal range (spoofing or stuck sensor).",
+  "summary": "Between 16:09:52 and 16:16:43 (412 s) the WinAE detector and the rule layer flagged an anomaly in P3 (ultrafiltration (UF)); peak score 9.0x the threshold. Most likely interpretation: sensor value forced outside its normal range (spoofing or stuck sensor).",
   "category": "spoof_out_of_range",
   "category_label": "sensor value forced outside its normal range (spoofing or stuck sensor)",
   "reasons": [
@@ -383,7 +544,7 @@
   ],
   "similar_known_attacks": [
    "A12 attack 9: Forced backwash trigger via DPIT301 spoofing (Ensign pre-UAT attack 1)",
-   "A12 attack 4: Tank overflow via LIT101 spoofing (Schneider demo attack 01)"
+   "A12 attack 8: RO backwash diversion: MV302 close, MV303 open"
   ],
   "pattern": "Sensor spoofing with an out-of-range constant value",
   "process_context": [
@@ -405,16 +566,25 @@
    "02_tag_dictionary#36",
    "03_attack_and_fault_patterns#1",
    "04_a12_attack_catalog#9",
-   "04_a12_attack_catalog#4",
+   "04_a12_attack_catalog#8",
+   "04_swat2015_attack_catalog#7",
    "05_mined_invariants#6",
    "05_mined_invariants#9",
    "01_process_overview#4"
   ],
-  "event_id": "a12-WinAE-009",
+  "confidence_raw": "high",
+  "confidence_reasons": [
+   "+1 score 9.0x the threshold",
+   "+1 1 new rule violation(s)",
+   "+1 DPIT301 dominates the contribution (85%)",
+   "+1 specific signature found",
+   "evidence score 4 -> cap high"
+  ],
+  "event_id": "a12-WinAE-011",
   "backend": "template"
  },
  {
-  "summary": "Between 16:35:38 and 16:39:52 (255 s) the WinAE detector and the rule layer flagged an anomaly in P2 (chemical dosing), P6 (product water and UF backwash); peak score 1.1x the threshold. Most likely interpretation: oscillating / multi-value sensor values (spoofing or noise).",
+  "summary": "Between 16:35:38 and 16:39:52 (255 s) the WinAE detector and the rule layer flagged an anomaly in P2 (chemical dosing), P5 (reverse osmosis (RO)), P6 (product water and UF backwash); peak score 1.2x the threshold. Most likely interpretation: oscillating / multi-value sensor values (spoofing or noise).",
   "category": "oscillation",
   "category_label": "oscillating / multi-value sensor values (spoofing or noise)",
   "reasons": [
@@ -422,8 +592,8 @@
   ],
   "evidence": [
    "LIT601 (RO permeate (product) tank T601 level): 100 to 1000 mm vs normal 72.48 to 617.1 -> high",
+   "PIT503 (RO reject pressure): 195.3 to 195.7 kPa vs normal 202.3 to 211.9 -> low",
    "MV201 (Valve from dosing section to UF feed tank T301): values [0.0, 1.0, 2.0] (normal [0.0, 1.0, 2.0])",
-   "FIT201 (Flow through chemical dosing section): 0 to 2.363 m3/h vs normal 0 to 2.686 -> high",
    "Rule: LIT601 left its normal range [-54.505, 735.036] (observed 800.0 to 1000.0)."
   ],
   "similar_known_attacks": [
@@ -432,11 +602,10 @@
   ],
   "pattern": "Oscillating or multi-value spoofing",
   "process_context": [
-   "\nWater from P1 is chemically conditioned before ultrafiltration. Dosing pumps add sodium chloride\n(NaCl, P201/P202), hydrochloric acid (HCl, P203/P204) and sodium hypochlorite (NaOCl, P205/P206);\nin each pair the first pump is duty and the second standby. P207/P208 are additional dosing\npumps (to confirm). Analysers measure conductivity (AIT201), pH (AIT202) and ORP (oxidation\nreduction potential,"
+   "\nRO permeate is stored in tank T601 (level LIT601); T602 (LIT602) is the backwash water tank.\nP601 sends product water out (back to the raw water tank or, in CrossOver mode, to WaDi), P602\nfeeds the UF backwash, P603 is a spare pump. FIT601 is the backwash flow (almost always 0 in\n2026) and FIT602 a product flow with pulse-like behaviour. LSH601/LSL601 etc. are high/low level\nswitches. Spoofing LI"
   ],
   "relevant_invariants": [
-   "When MV201 is ON/open (2), FIT201 is normally between 2.34 and 2.39; when MV201 is OFF/closed (1), FIT201 is between 0 and 0 (effect size 16.4).",
-   "When P101 is ON/open (2), FIT201 is normally between 2.34 and 2.39; when P101 is OFF/closed (1), FIT201 is between 0 and 0 (effect size 12.9)."
+   "When MV201 is ON/open (2), FIT201 is normally between 2.34 and 2.39; when MV201 is OFF/closed (1), FIT201 is between 0 and 0 (effect size 16.4)."
   ],
   "recommended_checks": [
    "Check whether the rate of change is physically possible for the tank/process.",
@@ -445,16 +614,24 @@
   "confidence": "medium",
   "sources": [
    "02_tag_dictionary#70",
+   "02_tag_dictionary#60",
    "02_tag_dictionary#12",
-   "02_tag_dictionary#8",
    "03_attack_and_fault_patterns#3",
    "04_a12_attack_catalog#10",
    "04_a12_attack_catalog#3",
+   "04_swat2015_attack_catalog#25",
    "05_mined_invariants#5",
-   "05_mined_invariants#7",
-   "01_process_overview#3"
+   "01_process_overview#7"
   ],
-  "event_id": "a12-WinAE-010",
+  "confidence_raw": "medium",
+  "confidence_reasons": [
+   "-1 score only 1.2x the threshold",
+   "+1 1 new rule violation(s)",
+   "+1 LIT601 dominates the contribution (90%)",
+   "+1 specific signature found",
+   "evidence score 2 -> cap medium"
+  ],
+  "event_id": "a12-WinAE-012",
   "backend": "template"
  }
 ]

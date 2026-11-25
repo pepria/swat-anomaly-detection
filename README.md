@@ -43,7 +43,7 @@ raw SWaT CSV -> preprocessing -> models  ->  anomaly event JSON   ->  retrieval 
 | SWaT.A11 (19-20 Feb 2026) | training (normal) | 2 x 8 h, 1 s, 87 columns |
 | SWaT.A10 (Dec 2023, 105 h) | extra training (normal) | minute timestamps, seconds rebuilt from row order; CrossOver with WaDi shifts water quality |
 | SWaT.A12 (11 Mar 2026) | evaluation | 4.4 h normal then 11 attacks; per-second labels from the EDA (attack sheet is ~25 min early) |
-| SWaT 2015 A1/A2 | second, independent benchmark | 7 days normal + 36 attacks, 51 columns, comparable with the literature |
+| SWaT 2015 A1/A2 | second, independent benchmark | 7 days normal + 36 attacks, 51 columns, comparable with the literature; the Excel files are converted with `scripts/convert_2015_xlsx.py`, the attack list is in `knowledge_base/04_swat2015_attack_catalog.md` |
 
 The two setups are never mixed: models trained on 2015 are near-random on A12 (EDA §6.3).
 
@@ -69,8 +69,8 @@ iTrust, SUTD). `swatad/config.py` expects this layout under `SWAT_RAW_DIR`:
 SWaT.A11_OTDataset_Feb_26.zip
 SWaT.A10_Dec 2023 Historian Data.csv
 <A12 zip>                         # set SWAT_A12_ZIP to its path (the default is our shared folder)
-swat_eda/A12_labels_shifted.csv   # per-second A12 labels from the EDA
-swat_eda/A12_attack_list.csv
+swat_eda/A12_labels_shifted.csv   # per-second A12 labels; not in the repository, rebuild them with
+swat_eda/A12_attack_list.csv      #   python scripts/rebuild_a12_labels.py   (11 attacks, 3,139 attack seconds)
 swat2015_csv/SWaT2015_normal_v1.csv
 swat2015_csv/SWaT2015_attack_v0.csv
 ```
@@ -104,12 +104,18 @@ ML input but stay in the rule layer; AIT water-quality analysers are optionally 
 **Detectors.** IsolationForest (baseline), GMM with full covariance (number of components by
 BIC), point MLP autoencoder, a window autoencoder on the last 2 minutes (30 samples every 4 s,
 flattened MLP) and an LSTM sequence autoencoder on the same windows. Each detector returns a
-score and a per-feature contribution (GMM: standardised deviation from the responsible
-component; AE: squared reconstruction error; IForest: distance from the training median).
+score and a per-feature contribution (GMM: share of the squared Mahalanobis distance to the
+responsible component; AE: squared reconstruction error; IForest: distance from the training
+median). The autoencoders stop early on a validation set made of contiguous time blocks.
 
 **Thresholds.** 99.5% quantile of the score on a short normal calibration window recorded at
-deployment time (A12 09:30-10:30), because thresholds learnt on the training data do not
-transfer across weeks (reported as `model (train thr)`).
+deployment time (A12 09:30-10:30). The alternative, the threshold learnt on the training data
+itself, is reported as `model (train thr)`: in the main configuration (A11+A10, noAIT) it gives
+4-8% FPR on clean normal data instead of 0.2-0.5% and 16-20 instead of 2-7 false-alarm events, and when
+the training data is only A11 or AIT features are used it fails completely (FPR 50-100%).
+Re-calibration on a short recent normal window is therefore recommended; how much it matters
+depends on how diverse the training data is (see RESULTS section 1, findings 4 and 5, and
+[docs/review_fixes.md](docs/review_fixes.md)).
 
 **Rule layer.** (1) a discrete tag takes a value never seen in training (catches standby pumps
 and valves that attacks switch on), (2) a non-AIT sensor leaves the training range plus margin.
@@ -131,18 +137,30 @@ contributing tags ranked by their increase versus the 2 minutes before, rule hit
 features). The explainer classifies the signature (standby activation, out-of-range spoof,
 oscillation, actuator manipulation, excursion, drift/in-range, multivariate), retrieves a fixed
 budget of chunks per document type (tag dictionary, pattern, known attacks, invariants, process)
-and fills a template. `Explainer(backend="claude")` sends the same evidence to Claude
-(`claude-opus-5-5`) instead; it needs `pip install anthropic` and an API key. The two back-ends
-are compared event by event in [docs/llm_vs_template_report.md](docs/llm_vs_template_report.md)
-(Chinese: [llm_vs_template_report_zh.md](docs/llm_vs_template_report_zh.md)).
+and fills a template. Attacks of the dataset being explained are retrieved first (2 entries), plus one
+entry of the other attack catalog (A12 and SWaT 2015), with a boost for the attacked tags. The
+confidence of an explanation is capped by an evidence score (`calibrate_confidence`).
+`Explainer(backend="claude")` sends the same evidence to Claude (`claude-opus-5-5`) instead; it needs
+`pip install anthropic` and an API key. It was run on the A12 events; the outputs are in
+`outputs/explanations/llm/` and the two back-ends are compared event by event in
+[docs/llm_vs_template_report.md](docs/llm_vs_template_report.md)
+(Chinese: [llm_vs_template_report_zh.md](docs/llm_vs_template_report_zh.md)). The explanation
+layer is also evaluated on synthetic injections
+([docs/synthetic_explanation_eval.md](docs/synthetic_explanation_eval.md)) and on the 36 SWaT 2015
+attacks ([docs/swat2015_explanation_eval.md](docs/swat2015_explanation_eval.md)); code-review fixes and
+their effect on the results are in [docs/review_fixes.md](docs/review_fixes.md).
 
 ## Limitations
 
-- A12 has only 11 attacks (1 day); the 2015 benchmark gives statistical weight.
+- A12 has only 11 attacks (1 day); the 2015 benchmark gives statistical weight. The configuration
+  (A11+A10, noAIT) and the hyper-parameters (rule margin, acknowledgement time, smoothing windows)
+  were chosen by looking at A12, so the A12 numbers are optimistic.
 - After A12 attack #1 the dechlorination pumps (P401/P403/UV401) stay off for the rest of the
   day, so "normal" points between later attacks are not truly normal.
 - The explanation heuristics were designed knowing the A12 attack types; the synthetic
   injections are the less biased check. The A12 attack catalog is part of the knowledge base, so
-  "known attack" matching on A12 is optimistic; a leave-one-out variant is reported too.
+  "known attack" matching on A12 is optimistic; a leave-one-out variant is reported too (0.3-0.5,
+  the more honest number for the explanation layer). On SWaT 2015 the explanations are much weaker
+  than on A12, because the detectors find only about half of the attacks there.
 - The knowledge base is built from public SWaT knowledge; official iTrust tag documentation,
   set points and P&ID would improve it.

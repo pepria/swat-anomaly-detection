@@ -1,430 +1,430 @@
 realisation,model,variant,inj_id,type,tag,stage,kind,start,end,magnitude_sigma,description,detected,delay_s,tag_rank
-0,IForest,model,S0-01,spike,FIT502.Pv,P5,sensor,2026-03-11 10:40:57,2026-03-11 10:44:51,-6.16,short spike of -6 sigma on FIT502.Pv,False,,6.0
+0,IForest,model,S0-01,spike,FIT502.Pv,P5,sensor,2026-03-11 10:40:57,2026-03-11 10:44:51,-6.16,short spike of -6 sigma on FIT502.Pv,False,,4.0
 0,IForest,model,S0-02,bias,LIT301.Pv,P3,sensor,2026-03-11 10:52:01,2026-03-11 10:54:02,3.83,constant offset of +4 sigma on LIT301.Pv,False,,8.0
-0,IForest,model,S0-03,drift,FIT602.Pv,P6,sensor,2026-03-11 11:02:03,2026-03-11 11:05:51,4.63,linear drift reaching +5 sigma on FIT602.Pv,True,157.0,5.0
+0,IForest,model,S0-03,drift,FIT602.Pv,P6,sensor,2026-03-11 11:02:03,2026-03-11 11:05:51,4.63,linear drift reaching +5 sigma on FIT602.Pv,True,157.0,4.0
 0,IForest,model,S0-04,stuck,FIT301.Pv,P3,sensor,2026-03-11 11:13:59,2026-03-11 11:18:47,0.0,FIT301.Pv frozen at its last value,True,25.0,23.0
-0,IForest,model,S0-05,noise,LIT101.Pv,P1,sensor,2026-03-11 11:27:25,2026-03-11 11:31:25,3.71,Gaussian noise of 4 sigma added to LIT101.Pv,False,,8.0
-0,IForest,model,S0-06,actuator_flip,P601.Status,P6,actuator,2026-03-11 11:39:02,2026-03-11 11:43:23,0.0,P601.Status status inverted without physical response,False,,9.0
+0,IForest,model,S0-05,noise,LIT101.Pv,P1,sensor,2026-03-11 11:27:25,2026-03-11 11:31:25,3.71,Gaussian noise of 4 sigma added to LIT101.Pv,False,,7.0
+0,IForest,model,S0-06,actuator_flip,P601.Status,P6,actuator,2026-03-11 11:39:02,2026-03-11 11:43:23,0.0,P601.Status status inverted without physical response,False,,10.0
 0,IForest,model,S0-07,replay,DPIT301.Pv,P3,sensor,2026-03-11 11:51:59,2026-03-11 11:56:03,0.0,DPIT301.Pv replaced by a replay of its values 30 min earlier,False,,16.0
-0,IForest,model,S0-08,spike,PIT501.Pv,P5,sensor,2026-03-11 12:04:16,2026-03-11 12:08:39,-7.45,short spike of -7 sigma on PIT501.Pv,True,111.0,23.0
+0,IForest,model,S0-08,spike,PIT501.Pv,P5,sensor,2026-03-11 12:04:16,2026-03-11 12:08:39,-7.45,short spike of -7 sigma on PIT501.Pv,True,111.0,21.0
 0,IForest,model,S0-09,bias,FIT401.Pv,P4,sensor,2026-03-11 12:17:03,2026-03-11 12:20:17,2.23,constant offset of +2 sigma on FIT401.Pv,False,,1.0
-0,IForest,model,S0-10,drift,LIT301.Pv,P3,sensor,2026-03-11 12:29:08,2026-03-11 12:32:20,-5.23,linear drift reaching -5 sigma on LIT301.Pv,False,,5.0
+0,IForest,model,S0-10,drift,LIT301.Pv,P3,sensor,2026-03-11 12:29:08,2026-03-11 12:32:20,-5.23,linear drift reaching -5 sigma on LIT301.Pv,False,,4.0
 0,IForest,model,S0-11,stuck,LIT301.Pv,P3,sensor,2026-03-11 12:39:56,2026-03-11 12:44:29,0.0,LIT301.Pv frozen at its last value,False,,17.0
 0,IForest,model,S0-12,noise,PIT501.Pv,P5,sensor,2026-03-11 12:51:46,2026-03-11 12:54:55,3.64,Gaussian noise of 4 sigma added to PIT501.Pv,False,,1.0
-0,IForest,model,S0-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:03:24,2026-03-11 13:06:02,0.0,P205.Status status inverted without physical response,False,,11.0
+0,IForest,model,S0-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:03:24,2026-03-11 13:06:02,0.0,P205.Status status inverted without physical response,False,,1.0
 0,IForest,model,,_false_alarms,,,,,,,,3,,
-0,IForest,model+rules,S0-01,spike,FIT502.Pv,P5,sensor,2026-03-11 10:40:57,2026-03-11 10:44:51,-6.16,short spike of -6 sigma on FIT502.Pv,False,,6.0
-0,IForest,model+rules,S0-02,bias,LIT301.Pv,P3,sensor,2026-03-11 10:52:01,2026-03-11 10:54:02,3.83,constant offset of +4 sigma on LIT301.Pv,True,0.0,4.0
-0,IForest,model+rules,S0-03,drift,FIT602.Pv,P6,sensor,2026-03-11 11:02:03,2026-03-11 11:05:51,4.63,linear drift reaching +5 sigma on FIT602.Pv,True,157.0,4.0
+0,IForest,model+rules,S0-01,spike,FIT502.Pv,P5,sensor,2026-03-11 10:40:57,2026-03-11 10:44:51,-6.16,short spike of -6 sigma on FIT502.Pv,False,,4.0
+0,IForest,model+rules,S0-02,bias,LIT301.Pv,P3,sensor,2026-03-11 10:52:01,2026-03-11 10:54:02,3.83,constant offset of +4 sigma on LIT301.Pv,True,0.0,1.0
+0,IForest,model+rules,S0-03,drift,FIT602.Pv,P6,sensor,2026-03-11 11:02:03,2026-03-11 11:05:51,4.63,linear drift reaching +5 sigma on FIT602.Pv,True,157.0,3.0
 0,IForest,model+rules,S0-04,stuck,FIT301.Pv,P3,sensor,2026-03-11 11:13:59,2026-03-11 11:18:47,0.0,FIT301.Pv frozen at its last value,True,25.0,23.0
-0,IForest,model+rules,S0-05,noise,LIT101.Pv,P1,sensor,2026-03-11 11:27:25,2026-03-11 11:31:25,3.71,Gaussian noise of 4 sigma added to LIT101.Pv,True,1.0,4.0
-0,IForest,model+rules,S0-06,actuator_flip,P601.Status,P6,actuator,2026-03-11 11:39:02,2026-03-11 11:43:23,0.0,P601.Status status inverted without physical response,False,,9.0
+0,IForest,model+rules,S0-05,noise,LIT101.Pv,P1,sensor,2026-03-11 11:27:25,2026-03-11 11:31:25,3.71,Gaussian noise of 4 sigma added to LIT101.Pv,True,1.0,1.0
+0,IForest,model+rules,S0-06,actuator_flip,P601.Status,P6,actuator,2026-03-11 11:39:02,2026-03-11 11:43:23,0.0,P601.Status status inverted without physical response,False,,10.0
 0,IForest,model+rules,S0-07,replay,DPIT301.Pv,P3,sensor,2026-03-11 11:51:59,2026-03-11 11:56:03,0.0,DPIT301.Pv replaced by a replay of its values 30 min earlier,False,,16.0
-0,IForest,model+rules,S0-08,spike,PIT501.Pv,P5,sensor,2026-03-11 12:04:16,2026-03-11 12:08:39,-7.45,short spike of -7 sigma on PIT501.Pv,True,111.0,23.0
-0,IForest,model+rules,S0-09,bias,FIT401.Pv,P4,sensor,2026-03-11 12:17:03,2026-03-11 12:20:17,2.23,constant offset of +2 sigma on FIT401.Pv,True,0.0,1.0
-0,IForest,model+rules,S0-10,drift,LIT301.Pv,P3,sensor,2026-03-11 12:29:08,2026-03-11 12:32:20,-5.23,linear drift reaching -5 sigma on LIT301.Pv,True,79.0,5.0
+0,IForest,model+rules,S0-08,spike,PIT501.Pv,P5,sensor,2026-03-11 12:04:16,2026-03-11 12:08:39,-7.45,short spike of -7 sigma on PIT501.Pv,True,111.0,21.0
+0,IForest,model+rules,S0-09,bias,FIT401.Pv,P4,sensor,2026-03-11 12:17:03,2026-03-11 12:20:17,2.23,constant offset of +2 sigma on FIT401.Pv,False,,1.0
+0,IForest,model+rules,S0-10,drift,LIT301.Pv,P3,sensor,2026-03-11 12:29:08,2026-03-11 12:32:20,-5.23,linear drift reaching -5 sigma on LIT301.Pv,True,80.0,2.0
 0,IForest,model+rules,S0-11,stuck,LIT301.Pv,P3,sensor,2026-03-11 12:39:56,2026-03-11 12:44:29,0.0,LIT301.Pv frozen at its last value,False,,17.0
-0,IForest,model+rules,S0-12,noise,PIT501.Pv,P5,sensor,2026-03-11 12:51:46,2026-03-11 12:54:55,3.64,Gaussian noise of 4 sigma added to PIT501.Pv,False,,1.0
-0,IForest,model+rules,S0-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:03:24,2026-03-11 13:06:02,0.0,P205.Status status inverted without physical response,False,,11.0
+0,IForest,model+rules,S0-12,noise,PIT501.Pv,P5,sensor,2026-03-11 12:51:46,2026-03-11 12:54:55,3.64,Gaussian noise of 4 sigma added to PIT501.Pv,True,78.0,1.0
+0,IForest,model+rules,S0-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:03:24,2026-03-11 13:06:02,0.0,P205.Status status inverted without physical response,False,,1.0
 0,IForest,model+rules,,_false_alarms,,,,,,,,2,,
-0,GMM,model,S0-01,spike,FIT502.Pv,P5,sensor,2026-03-11 10:40:57,2026-03-11 10:44:51,-6.16,short spike of -6 sigma on FIT502.Pv,False,,3.0
+0,GMM,model,S0-01,spike,FIT502.Pv,P5,sensor,2026-03-11 10:40:57,2026-03-11 10:44:51,-6.16,short spike of -6 sigma on FIT502.Pv,False,,5.0
 0,GMM,model,S0-02,bias,LIT301.Pv,P3,sensor,2026-03-11 10:52:01,2026-03-11 10:54:02,3.83,constant offset of +4 sigma on LIT301.Pv,False,,1.0
-0,GMM,model,S0-03,drift,FIT602.Pv,P6,sensor,2026-03-11 11:02:03,2026-03-11 11:05:51,4.63,linear drift reaching +5 sigma on FIT602.Pv,True,134.0,11.0
-0,GMM,model,S0-04,stuck,FIT301.Pv,P3,sensor,2026-03-11 11:13:59,2026-03-11 11:18:47,0.0,FIT301.Pv frozen at its last value,False,,19.0
-0,GMM,model,S0-05,noise,LIT101.Pv,P1,sensor,2026-03-11 11:27:25,2026-03-11 11:31:25,3.71,Gaussian noise of 4 sigma added to LIT101.Pv,False,,3.0
-0,GMM,model,S0-06,actuator_flip,P601.Status,P6,actuator,2026-03-11 11:39:02,2026-03-11 11:43:23,0.0,P601.Status status inverted without physical response,True,5.0,3.0
-0,GMM,model,S0-07,replay,DPIT301.Pv,P3,sensor,2026-03-11 11:51:59,2026-03-11 11:56:03,0.0,DPIT301.Pv replaced by a replay of its values 30 min earlier,True,4.0,5.0
-0,GMM,model,S0-08,spike,PIT501.Pv,P5,sensor,2026-03-11 12:04:16,2026-03-11 12:08:39,-7.45,short spike of -7 sigma on PIT501.Pv,True,4.0,2.0
-0,GMM,model,S0-09,bias,FIT401.Pv,P4,sensor,2026-03-11 12:17:03,2026-03-11 12:20:17,2.23,constant offset of +2 sigma on FIT401.Pv,True,4.0,1.0
-0,GMM,model,S0-10,drift,LIT301.Pv,P3,sensor,2026-03-11 12:29:08,2026-03-11 12:32:20,-5.23,linear drift reaching -5 sigma on LIT301.Pv,False,,4.0
-0,GMM,model,S0-11,stuck,LIT301.Pv,P3,sensor,2026-03-11 12:39:56,2026-03-11 12:44:29,0.0,LIT301.Pv frozen at its last value,False,,8.0
+0,GMM,model,S0-03,drift,FIT602.Pv,P6,sensor,2026-03-11 11:02:03,2026-03-11 11:05:51,4.63,linear drift reaching +5 sigma on FIT602.Pv,True,134.0,3.0
+0,GMM,model,S0-04,stuck,FIT301.Pv,P3,sensor,2026-03-11 11:13:59,2026-03-11 11:18:47,0.0,FIT301.Pv frozen at its last value,False,,32.0
+0,GMM,model,S0-05,noise,LIT101.Pv,P1,sensor,2026-03-11 11:27:25,2026-03-11 11:31:25,3.71,Gaussian noise of 4 sigma added to LIT101.Pv,False,,2.0
+0,GMM,model,S0-06,actuator_flip,P601.Status,P6,actuator,2026-03-11 11:39:02,2026-03-11 11:43:23,0.0,P601.Status status inverted without physical response,True,5.0,1.0
+0,GMM,model,S0-07,replay,DPIT301.Pv,P3,sensor,2026-03-11 11:51:59,2026-03-11 11:56:03,0.0,DPIT301.Pv replaced by a replay of its values 30 min earlier,True,4.0,1.0
+0,GMM,model,S0-08,spike,PIT501.Pv,P5,sensor,2026-03-11 12:04:16,2026-03-11 12:08:39,-7.45,short spike of -7 sigma on PIT501.Pv,True,4.0,1.0
+0,GMM,model,S0-09,bias,FIT401.Pv,P4,sensor,2026-03-11 12:17:03,2026-03-11 12:20:17,2.23,constant offset of +2 sigma on FIT401.Pv,True,5.0,1.0
+0,GMM,model,S0-10,drift,LIT301.Pv,P3,sensor,2026-03-11 12:29:08,2026-03-11 12:32:20,-5.23,linear drift reaching -5 sigma on LIT301.Pv,False,,3.0
+0,GMM,model,S0-11,stuck,LIT301.Pv,P3,sensor,2026-03-11 12:39:56,2026-03-11 12:44:29,0.0,LIT301.Pv frozen at its last value,False,,3.0
 0,GMM,model,S0-12,noise,PIT501.Pv,P5,sensor,2026-03-11 12:51:46,2026-03-11 12:54:55,3.64,Gaussian noise of 4 sigma added to PIT501.Pv,True,4.0,2.0
-0,GMM,model,S0-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:03:24,2026-03-11 13:06:02,0.0,P205.Status status inverted without physical response,False,,20.0
+0,GMM,model,S0-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:03:24,2026-03-11 13:06:02,0.0,P205.Status status inverted without physical response,False,,10.0
 0,GMM,model,,_false_alarms,,,,,,,,3,,
-0,GMM,model+rules,S0-01,spike,FIT502.Pv,P5,sensor,2026-03-11 10:40:57,2026-03-11 10:44:51,-6.16,short spike of -6 sigma on FIT502.Pv,False,,3.0
+0,GMM,model+rules,S0-01,spike,FIT502.Pv,P5,sensor,2026-03-11 10:40:57,2026-03-11 10:44:51,-6.16,short spike of -6 sigma on FIT502.Pv,False,,5.0
 0,GMM,model+rules,S0-02,bias,LIT301.Pv,P3,sensor,2026-03-11 10:52:01,2026-03-11 10:54:02,3.83,constant offset of +4 sigma on LIT301.Pv,True,0.0,1.0
-0,GMM,model+rules,S0-03,drift,FIT602.Pv,P6,sensor,2026-03-11 11:02:03,2026-03-11 11:05:51,4.63,linear drift reaching +5 sigma on FIT602.Pv,True,134.0,11.0
-0,GMM,model+rules,S0-04,stuck,FIT301.Pv,P3,sensor,2026-03-11 11:13:59,2026-03-11 11:18:47,0.0,FIT301.Pv frozen at its last value,False,,19.0
-0,GMM,model+rules,S0-05,noise,LIT101.Pv,P1,sensor,2026-03-11 11:27:25,2026-03-11 11:31:25,3.71,Gaussian noise of 4 sigma added to LIT101.Pv,True,1.0,2.0
-0,GMM,model+rules,S0-06,actuator_flip,P601.Status,P6,actuator,2026-03-11 11:39:02,2026-03-11 11:43:23,0.0,P601.Status status inverted without physical response,True,5.0,3.0
-0,GMM,model+rules,S0-07,replay,DPIT301.Pv,P3,sensor,2026-03-11 11:51:59,2026-03-11 11:56:03,0.0,DPIT301.Pv replaced by a replay of its values 30 min earlier,True,4.0,5.0
-0,GMM,model+rules,S0-08,spike,PIT501.Pv,P5,sensor,2026-03-11 12:04:16,2026-03-11 12:08:39,-7.45,short spike of -7 sigma on PIT501.Pv,True,4.0,2.0
-0,GMM,model+rules,S0-09,bias,FIT401.Pv,P4,sensor,2026-03-11 12:17:03,2026-03-11 12:20:17,2.23,constant offset of +2 sigma on FIT401.Pv,True,0.0,1.0
-0,GMM,model+rules,S0-10,drift,LIT301.Pv,P3,sensor,2026-03-11 12:29:08,2026-03-11 12:32:20,-5.23,linear drift reaching -5 sigma on LIT301.Pv,True,79.0,2.0
-0,GMM,model+rules,S0-11,stuck,LIT301.Pv,P3,sensor,2026-03-11 12:39:56,2026-03-11 12:44:29,0.0,LIT301.Pv frozen at its last value,False,,8.0
+0,GMM,model+rules,S0-03,drift,FIT602.Pv,P6,sensor,2026-03-11 11:02:03,2026-03-11 11:05:51,4.63,linear drift reaching +5 sigma on FIT602.Pv,True,134.0,3.0
+0,GMM,model+rules,S0-04,stuck,FIT301.Pv,P3,sensor,2026-03-11 11:13:59,2026-03-11 11:18:47,0.0,FIT301.Pv frozen at its last value,False,,32.0
+0,GMM,model+rules,S0-05,noise,LIT101.Pv,P1,sensor,2026-03-11 11:27:25,2026-03-11 11:31:25,3.71,Gaussian noise of 4 sigma added to LIT101.Pv,True,1.0,1.0
+0,GMM,model+rules,S0-06,actuator_flip,P601.Status,P6,actuator,2026-03-11 11:39:02,2026-03-11 11:43:23,0.0,P601.Status status inverted without physical response,True,5.0,1.0
+0,GMM,model+rules,S0-07,replay,DPIT301.Pv,P3,sensor,2026-03-11 11:51:59,2026-03-11 11:56:03,0.0,DPIT301.Pv replaced by a replay of its values 30 min earlier,True,4.0,1.0
+0,GMM,model+rules,S0-08,spike,PIT501.Pv,P5,sensor,2026-03-11 12:04:16,2026-03-11 12:08:39,-7.45,short spike of -7 sigma on PIT501.Pv,True,4.0,1.0
+0,GMM,model+rules,S0-09,bias,FIT401.Pv,P4,sensor,2026-03-11 12:17:03,2026-03-11 12:20:17,2.23,constant offset of +2 sigma on FIT401.Pv,True,5.0,1.0
+0,GMM,model+rules,S0-10,drift,LIT301.Pv,P3,sensor,2026-03-11 12:29:08,2026-03-11 12:32:20,-5.23,linear drift reaching -5 sigma on LIT301.Pv,True,80.0,1.0
+0,GMM,model+rules,S0-11,stuck,LIT301.Pv,P3,sensor,2026-03-11 12:39:56,2026-03-11 12:44:29,0.0,LIT301.Pv frozen at its last value,False,,3.0
 0,GMM,model+rules,S0-12,noise,PIT501.Pv,P5,sensor,2026-03-11 12:51:46,2026-03-11 12:54:55,3.64,Gaussian noise of 4 sigma added to PIT501.Pv,True,0.0,2.0
-0,GMM,model+rules,S0-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:03:24,2026-03-11 13:06:02,0.0,P205.Status status inverted without physical response,False,,20.0
+0,GMM,model+rules,S0-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:03:24,2026-03-11 13:06:02,0.0,P205.Status status inverted without physical response,False,,10.0
 0,GMM,model+rules,,_false_alarms,,,,,,,,3,,
-0,AE,model,S0-01,spike,FIT502.Pv,P5,sensor,2026-03-11 10:40:57,2026-03-11 10:44:51,-6.16,short spike of -6 sigma on FIT502.Pv,True,4.0,3.0
+0,AE,model,S0-01,spike,FIT502.Pv,P5,sensor,2026-03-11 10:40:57,2026-03-11 10:44:51,-6.16,short spike of -6 sigma on FIT502.Pv,True,4.0,4.0
 0,AE,model,S0-02,bias,LIT301.Pv,P3,sensor,2026-03-11 10:52:01,2026-03-11 10:54:02,3.83,constant offset of +4 sigma on LIT301.Pv,True,4.0,1.0
-0,AE,model,S0-03,drift,FIT602.Pv,P6,sensor,2026-03-11 11:02:03,2026-03-11 11:05:51,4.63,linear drift reaching +5 sigma on FIT602.Pv,True,89.0,2.0
-0,AE,model,S0-04,stuck,FIT301.Pv,P3,sensor,2026-03-11 11:13:59,2026-03-11 11:18:47,0.0,FIT301.Pv frozen at its last value,False,,27.0
-0,AE,model,S0-05,noise,LIT101.Pv,P1,sensor,2026-03-11 11:27:25,2026-03-11 11:31:25,3.71,Gaussian noise of 4 sigma added to LIT101.Pv,True,35.0,1.0
-0,AE,model,S0-06,actuator_flip,P601.Status,P6,actuator,2026-03-11 11:39:02,2026-03-11 11:43:23,0.0,P601.Status status inverted without physical response,False,,3.0
-0,AE,model,S0-07,replay,DPIT301.Pv,P3,sensor,2026-03-11 11:51:59,2026-03-11 11:56:03,0.0,DPIT301.Pv replaced by a replay of its values 30 min earlier,True,5.0,1.0
+0,AE,model,S0-03,drift,FIT602.Pv,P6,sensor,2026-03-11 11:02:03,2026-03-11 11:05:51,4.63,linear drift reaching +5 sigma on FIT602.Pv,True,115.0,2.0
+0,AE,model,S0-04,stuck,FIT301.Pv,P3,sensor,2026-03-11 11:13:59,2026-03-11 11:18:47,0.0,FIT301.Pv frozen at its last value,False,,30.0
+0,AE,model,S0-05,noise,LIT101.Pv,P1,sensor,2026-03-11 11:27:25,2026-03-11 11:31:25,3.71,Gaussian noise of 4 sigma added to LIT101.Pv,False,,2.0
+0,AE,model,S0-06,actuator_flip,P601.Status,P6,actuator,2026-03-11 11:39:02,2026-03-11 11:43:23,0.0,P601.Status status inverted without physical response,False,,2.0
+0,AE,model,S0-07,replay,DPIT301.Pv,P3,sensor,2026-03-11 11:51:59,2026-03-11 11:56:03,0.0,DPIT301.Pv replaced by a replay of its values 30 min earlier,True,313.0,13.0
 0,AE,model,S0-08,spike,PIT501.Pv,P5,sensor,2026-03-11 12:04:16,2026-03-11 12:08:39,-7.45,short spike of -7 sigma on PIT501.Pv,True,4.0,1.0
-0,AE,model,S0-09,bias,FIT401.Pv,P4,sensor,2026-03-11 12:17:03,2026-03-11 12:20:17,2.23,constant offset of +2 sigma on FIT401.Pv,True,4.0,1.0
-0,AE,model,S0-10,drift,LIT301.Pv,P3,sensor,2026-03-11 12:29:08,2026-03-11 12:32:20,-5.23,linear drift reaching -5 sigma on LIT301.Pv,True,168.0,16.0
-0,AE,model,S0-11,stuck,LIT301.Pv,P3,sensor,2026-03-11 12:39:56,2026-03-11 12:44:29,0.0,LIT301.Pv frozen at its last value,False,,7.0
+0,AE,model,S0-09,bias,FIT401.Pv,P4,sensor,2026-03-11 12:17:03,2026-03-11 12:20:17,2.23,constant offset of +2 sigma on FIT401.Pv,False,,1.0
+0,AE,model,S0-10,drift,LIT301.Pv,P3,sensor,2026-03-11 12:29:08,2026-03-11 12:32:20,-5.23,linear drift reaching -5 sigma on LIT301.Pv,True,123.0,1.0
+0,AE,model,S0-11,stuck,LIT301.Pv,P3,sensor,2026-03-11 12:39:56,2026-03-11 12:44:29,0.0,LIT301.Pv frozen at its last value,False,,3.0
 0,AE,model,S0-12,noise,PIT501.Pv,P5,sensor,2026-03-11 12:51:46,2026-03-11 12:54:55,3.64,Gaussian noise of 4 sigma added to PIT501.Pv,True,4.0,1.0
 0,AE,model,S0-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:03:24,2026-03-11 13:06:02,0.0,P205.Status status inverted without physical response,True,4.0,1.0
-0,AE,model,,_false_alarms,,,,,,,,1,,
-0,AE,model+rules,S0-01,spike,FIT502.Pv,P5,sensor,2026-03-11 10:40:57,2026-03-11 10:44:51,-6.16,short spike of -6 sigma on FIT502.Pv,True,4.0,3.0
+0,AE,model,,_false_alarms,,,,,,,,5,,
+0,AE,model+rules,S0-01,spike,FIT502.Pv,P5,sensor,2026-03-11 10:40:57,2026-03-11 10:44:51,-6.16,short spike of -6 sigma on FIT502.Pv,True,4.0,4.0
 0,AE,model+rules,S0-02,bias,LIT301.Pv,P3,sensor,2026-03-11 10:52:01,2026-03-11 10:54:02,3.83,constant offset of +4 sigma on LIT301.Pv,True,0.0,1.0
-0,AE,model+rules,S0-03,drift,FIT602.Pv,P6,sensor,2026-03-11 11:02:03,2026-03-11 11:05:51,4.63,linear drift reaching +5 sigma on FIT602.Pv,True,89.0,2.0
-0,AE,model+rules,S0-04,stuck,FIT301.Pv,P3,sensor,2026-03-11 11:13:59,2026-03-11 11:18:47,0.0,FIT301.Pv frozen at its last value,False,,27.0
+0,AE,model+rules,S0-03,drift,FIT602.Pv,P6,sensor,2026-03-11 11:02:03,2026-03-11 11:05:51,4.63,linear drift reaching +5 sigma on FIT602.Pv,True,115.0,2.0
+0,AE,model+rules,S0-04,stuck,FIT301.Pv,P3,sensor,2026-03-11 11:13:59,2026-03-11 11:18:47,0.0,FIT301.Pv frozen at its last value,False,,30.0
 0,AE,model+rules,S0-05,noise,LIT101.Pv,P1,sensor,2026-03-11 11:27:25,2026-03-11 11:31:25,3.71,Gaussian noise of 4 sigma added to LIT101.Pv,True,1.0,1.0
-0,AE,model+rules,S0-06,actuator_flip,P601.Status,P6,actuator,2026-03-11 11:39:02,2026-03-11 11:43:23,0.0,P601.Status status inverted without physical response,False,,3.0
-0,AE,model+rules,S0-07,replay,DPIT301.Pv,P3,sensor,2026-03-11 11:51:59,2026-03-11 11:56:03,0.0,DPIT301.Pv replaced by a replay of its values 30 min earlier,True,5.0,1.0
+0,AE,model+rules,S0-06,actuator_flip,P601.Status,P6,actuator,2026-03-11 11:39:02,2026-03-11 11:43:23,0.0,P601.Status status inverted without physical response,False,,2.0
+0,AE,model+rules,S0-07,replay,DPIT301.Pv,P3,sensor,2026-03-11 11:51:59,2026-03-11 11:56:03,0.0,DPIT301.Pv replaced by a replay of its values 30 min earlier,True,313.0,13.0
 0,AE,model+rules,S0-08,spike,PIT501.Pv,P5,sensor,2026-03-11 12:04:16,2026-03-11 12:08:39,-7.45,short spike of -7 sigma on PIT501.Pv,True,4.0,1.0
-0,AE,model+rules,S0-09,bias,FIT401.Pv,P4,sensor,2026-03-11 12:17:03,2026-03-11 12:20:17,2.23,constant offset of +2 sigma on FIT401.Pv,True,0.0,1.0
-0,AE,model+rules,S0-10,drift,LIT301.Pv,P3,sensor,2026-03-11 12:29:08,2026-03-11 12:32:20,-5.23,linear drift reaching -5 sigma on LIT301.Pv,True,79.0,13.0
-0,AE,model+rules,S0-11,stuck,LIT301.Pv,P3,sensor,2026-03-11 12:39:56,2026-03-11 12:44:29,0.0,LIT301.Pv frozen at its last value,False,,7.0
+0,AE,model+rules,S0-09,bias,FIT401.Pv,P4,sensor,2026-03-11 12:17:03,2026-03-11 12:20:17,2.23,constant offset of +2 sigma on FIT401.Pv,False,,1.0
+0,AE,model+rules,S0-10,drift,LIT301.Pv,P3,sensor,2026-03-11 12:29:08,2026-03-11 12:32:20,-5.23,linear drift reaching -5 sigma on LIT301.Pv,True,80.0,1.0
+0,AE,model+rules,S0-11,stuck,LIT301.Pv,P3,sensor,2026-03-11 12:39:56,2026-03-11 12:44:29,0.0,LIT301.Pv frozen at its last value,False,,3.0
 0,AE,model+rules,S0-12,noise,PIT501.Pv,P5,sensor,2026-03-11 12:51:46,2026-03-11 12:54:55,3.64,Gaussian noise of 4 sigma added to PIT501.Pv,True,0.0,1.0
 0,AE,model+rules,S0-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:03:24,2026-03-11 13:06:02,0.0,P205.Status status inverted without physical response,True,4.0,1.0
-0,AE,model+rules,,_false_alarms,,,,,,,,1,,
-0,WinAE,model,S0-01,spike,FIT502.Pv,P5,sensor,2026-03-11 10:40:57,2026-03-11 10:44:51,-6.16,short spike of -6 sigma on FIT502.Pv,True,2.0,1.0
-0,WinAE,model,S0-02,bias,LIT301.Pv,P3,sensor,2026-03-11 10:52:01,2026-03-11 10:54:02,3.83,constant offset of +4 sigma on LIT301.Pv,True,34.0,1.0
-0,WinAE,model,S0-03,drift,FIT602.Pv,P6,sensor,2026-03-11 11:02:03,2026-03-11 11:05:51,4.63,linear drift reaching +5 sigma on FIT602.Pv,True,200.0,2.0
-0,WinAE,model,S0-04,stuck,FIT301.Pv,P3,sensor,2026-03-11 11:13:59,2026-03-11 11:18:47,0.0,FIT301.Pv frozen at its last value,False,,15.0
-0,WinAE,model,S0-05,noise,LIT101.Pv,P1,sensor,2026-03-11 11:27:25,2026-03-11 11:31:25,3.71,Gaussian noise of 4 sigma added to LIT101.Pv,True,37.0,1.0
-0,WinAE,model,S0-06,actuator_flip,P601.Status,P6,actuator,2026-03-11 11:39:02,2026-03-11 11:43:23,0.0,P601.Status status inverted without physical response,False,,2.0
+0,AE,model+rules,,_false_alarms,,,,,,,,5,,
+0,WinAE,model,S0-01,spike,FIT502.Pv,P5,sensor,2026-03-11 10:40:57,2026-03-11 10:44:51,-6.16,short spike of -6 sigma on FIT502.Pv,False,,4.0
+0,WinAE,model,S0-02,bias,LIT301.Pv,P3,sensor,2026-03-11 10:52:01,2026-03-11 10:54:02,3.83,constant offset of +4 sigma on LIT301.Pv,True,46.0,1.0
+0,WinAE,model,S0-03,drift,FIT602.Pv,P6,sensor,2026-03-11 11:02:03,2026-03-11 11:05:51,4.63,linear drift reaching +5 sigma on FIT602.Pv,True,215.0,2.0
+0,WinAE,model,S0-04,stuck,FIT301.Pv,P3,sensor,2026-03-11 11:13:59,2026-03-11 11:18:47,0.0,FIT301.Pv frozen at its last value,False,,22.0
+0,WinAE,model,S0-05,noise,LIT101.Pv,P1,sensor,2026-03-11 11:27:25,2026-03-11 11:31:25,3.71,Gaussian noise of 4 sigma added to LIT101.Pv,True,42.0,1.0
+0,WinAE,model,S0-06,actuator_flip,P601.Status,P6,actuator,2026-03-11 11:39:02,2026-03-11 11:43:23,0.0,P601.Status status inverted without physical response,False,,4.0
 0,WinAE,model,S0-07,replay,DPIT301.Pv,P3,sensor,2026-03-11 11:51:59,2026-03-11 11:56:03,0.0,DPIT301.Pv replaced by a replay of its values 30 min earlier,False,,1.0
-0,WinAE,model,S0-08,spike,PIT501.Pv,P5,sensor,2026-03-11 12:04:16,2026-03-11 12:08:39,-7.45,short spike of -7 sigma on PIT501.Pv,True,2.0,1.0
-0,WinAE,model,S0-09,bias,FIT401.Pv,P4,sensor,2026-03-11 12:17:03,2026-03-11 12:20:17,2.23,constant offset of +2 sigma on FIT401.Pv,True,22.0,1.0
-0,WinAE,model,S0-10,drift,LIT301.Pv,P3,sensor,2026-03-11 12:29:08,2026-03-11 12:32:20,-5.23,linear drift reaching -5 sigma on LIT301.Pv,True,146.0,1.0
+0,WinAE,model,S0-08,spike,PIT501.Pv,P5,sensor,2026-03-11 12:04:16,2026-03-11 12:08:39,-7.45,short spike of -7 sigma on PIT501.Pv,False,,1.0
+0,WinAE,model,S0-09,bias,FIT401.Pv,P4,sensor,2026-03-11 12:17:03,2026-03-11 12:20:17,2.23,constant offset of +2 sigma on FIT401.Pv,True,147.0,1.0
+0,WinAE,model,S0-10,drift,LIT301.Pv,P3,sensor,2026-03-11 12:29:08,2026-03-11 12:32:20,-5.23,linear drift reaching -5 sigma on LIT301.Pv,True,197.0,1.0
 0,WinAE,model,S0-11,stuck,LIT301.Pv,P3,sensor,2026-03-11 12:39:56,2026-03-11 12:44:29,0.0,LIT301.Pv frozen at its last value,False,,3.0
-0,WinAE,model,S0-12,noise,PIT501.Pv,P5,sensor,2026-03-11 12:51:46,2026-03-11 12:54:55,3.64,Gaussian noise of 4 sigma added to PIT501.Pv,True,3.0,1.0
-0,WinAE,model,S0-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:03:24,2026-03-11 13:06:02,0.0,P205.Status status inverted without physical response,True,90.0,1.0
+0,WinAE,model,S0-12,noise,PIT501.Pv,P5,sensor,2026-03-11 12:51:46,2026-03-11 12:54:55,3.64,Gaussian noise of 4 sigma added to PIT501.Pv,True,16.0,1.0
+0,WinAE,model,S0-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:03:24,2026-03-11 13:06:02,0.0,P205.Status status inverted without physical response,True,74.0,1.0
 0,WinAE,model,,_false_alarms,,,,,,,,0,,
-0,WinAE,model+rules,S0-01,spike,FIT502.Pv,P5,sensor,2026-03-11 10:40:57,2026-03-11 10:44:51,-6.16,short spike of -6 sigma on FIT502.Pv,True,2.0,1.0
+0,WinAE,model+rules,S0-01,spike,FIT502.Pv,P5,sensor,2026-03-11 10:40:57,2026-03-11 10:44:51,-6.16,short spike of -6 sigma on FIT502.Pv,False,,4.0
 0,WinAE,model+rules,S0-02,bias,LIT301.Pv,P3,sensor,2026-03-11 10:52:01,2026-03-11 10:54:02,3.83,constant offset of +4 sigma on LIT301.Pv,True,0.0,1.0
-0,WinAE,model+rules,S0-03,drift,FIT602.Pv,P6,sensor,2026-03-11 11:02:03,2026-03-11 11:05:51,4.63,linear drift reaching +5 sigma on FIT602.Pv,True,200.0,2.0
-0,WinAE,model+rules,S0-04,stuck,FIT301.Pv,P3,sensor,2026-03-11 11:13:59,2026-03-11 11:18:47,0.0,FIT301.Pv frozen at its last value,False,,15.0
+0,WinAE,model+rules,S0-03,drift,FIT602.Pv,P6,sensor,2026-03-11 11:02:03,2026-03-11 11:05:51,4.63,linear drift reaching +5 sigma on FIT602.Pv,True,215.0,2.0
+0,WinAE,model+rules,S0-04,stuck,FIT301.Pv,P3,sensor,2026-03-11 11:13:59,2026-03-11 11:18:47,0.0,FIT301.Pv frozen at its last value,False,,22.0
 0,WinAE,model+rules,S0-05,noise,LIT101.Pv,P1,sensor,2026-03-11 11:27:25,2026-03-11 11:31:25,3.71,Gaussian noise of 4 sigma added to LIT101.Pv,True,1.0,1.0
-0,WinAE,model+rules,S0-06,actuator_flip,P601.Status,P6,actuator,2026-03-11 11:39:02,2026-03-11 11:43:23,0.0,P601.Status status inverted without physical response,False,,2.0
+0,WinAE,model+rules,S0-06,actuator_flip,P601.Status,P6,actuator,2026-03-11 11:39:02,2026-03-11 11:43:23,0.0,P601.Status status inverted without physical response,False,,4.0
 0,WinAE,model+rules,S0-07,replay,DPIT301.Pv,P3,sensor,2026-03-11 11:51:59,2026-03-11 11:56:03,0.0,DPIT301.Pv replaced by a replay of its values 30 min earlier,False,,1.0
-0,WinAE,model+rules,S0-08,spike,PIT501.Pv,P5,sensor,2026-03-11 12:04:16,2026-03-11 12:08:39,-7.45,short spike of -7 sigma on PIT501.Pv,True,2.0,1.0
-0,WinAE,model+rules,S0-09,bias,FIT401.Pv,P4,sensor,2026-03-11 12:17:03,2026-03-11 12:20:17,2.23,constant offset of +2 sigma on FIT401.Pv,True,0.0,1.0
-0,WinAE,model+rules,S0-10,drift,LIT301.Pv,P3,sensor,2026-03-11 12:29:08,2026-03-11 12:32:20,-5.23,linear drift reaching -5 sigma on LIT301.Pv,True,79.0,1.0
+0,WinAE,model+rules,S0-08,spike,PIT501.Pv,P5,sensor,2026-03-11 12:04:16,2026-03-11 12:08:39,-7.45,short spike of -7 sigma on PIT501.Pv,False,,1.0
+0,WinAE,model+rules,S0-09,bias,FIT401.Pv,P4,sensor,2026-03-11 12:17:03,2026-03-11 12:20:17,2.23,constant offset of +2 sigma on FIT401.Pv,True,147.0,1.0
+0,WinAE,model+rules,S0-10,drift,LIT301.Pv,P3,sensor,2026-03-11 12:29:08,2026-03-11 12:32:20,-5.23,linear drift reaching -5 sigma on LIT301.Pv,True,80.0,1.0
 0,WinAE,model+rules,S0-11,stuck,LIT301.Pv,P3,sensor,2026-03-11 12:39:56,2026-03-11 12:44:29,0.0,LIT301.Pv frozen at its last value,False,,3.0
 0,WinAE,model+rules,S0-12,noise,PIT501.Pv,P5,sensor,2026-03-11 12:51:46,2026-03-11 12:54:55,3.64,Gaussian noise of 4 sigma added to PIT501.Pv,True,0.0,1.0
-0,WinAE,model+rules,S0-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:03:24,2026-03-11 13:06:02,0.0,P205.Status status inverted without physical response,True,90.0,1.0
+0,WinAE,model+rules,S0-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:03:24,2026-03-11 13:06:02,0.0,P205.Status status inverted without physical response,True,74.0,1.0
 0,WinAE,model+rules,,_false_alarms,,,,,,,,0,,
-0,LSTM-AE,model,S0-01,spike,FIT502.Pv,P5,sensor,2026-03-11 10:40:57,2026-03-11 10:44:51,-6.16,short spike of -6 sigma on FIT502.Pv,False,,2.0
-0,LSTM-AE,model,S0-02,bias,LIT301.Pv,P3,sensor,2026-03-11 10:52:01,2026-03-11 10:54:02,3.83,constant offset of +4 sigma on LIT301.Pv,True,76.0,2.0
-0,LSTM-AE,model,S0-03,drift,FIT602.Pv,P6,sensor,2026-03-11 11:02:03,2026-03-11 11:05:51,4.63,linear drift reaching +5 sigma on FIT602.Pv,True,173.0,1.0
-0,LSTM-AE,model,S0-04,stuck,FIT301.Pv,P3,sensor,2026-03-11 11:13:59,2026-03-11 11:18:47,0.0,FIT301.Pv frozen at its last value,False,,18.0
-0,LSTM-AE,model,S0-05,noise,LIT101.Pv,P1,sensor,2026-03-11 11:27:25,2026-03-11 11:31:25,3.71,Gaussian noise of 4 sigma added to LIT101.Pv,True,69.0,1.0
-0,LSTM-AE,model,S0-06,actuator_flip,P601.Status,P6,actuator,2026-03-11 11:39:02,2026-03-11 11:43:23,0.0,P601.Status status inverted without physical response,False,,1.0
+0,LSTM-AE,model,S0-01,spike,FIT502.Pv,P5,sensor,2026-03-11 10:40:57,2026-03-11 10:44:51,-6.16,short spike of -6 sigma on FIT502.Pv,False,,7.0
+0,LSTM-AE,model,S0-02,bias,LIT301.Pv,P3,sensor,2026-03-11 10:52:01,2026-03-11 10:54:02,3.83,constant offset of +4 sigma on LIT301.Pv,True,22.0,1.0
+0,LSTM-AE,model,S0-03,drift,FIT602.Pv,P6,sensor,2026-03-11 11:02:03,2026-03-11 11:05:51,4.63,linear drift reaching +5 sigma on FIT602.Pv,True,170.0,2.0
+0,LSTM-AE,model,S0-04,stuck,FIT301.Pv,P3,sensor,2026-03-11 11:13:59,2026-03-11 11:18:47,0.0,FIT301.Pv frozen at its last value,False,,24.0
+0,LSTM-AE,model,S0-05,noise,LIT101.Pv,P1,sensor,2026-03-11 11:27:25,2026-03-11 11:31:25,3.71,Gaussian noise of 4 sigma added to LIT101.Pv,True,86.0,1.0
+0,LSTM-AE,model,S0-06,actuator_flip,P601.Status,P6,actuator,2026-03-11 11:39:02,2026-03-11 11:43:23,0.0,P601.Status status inverted without physical response,False,,5.0
 0,LSTM-AE,model,S0-07,replay,DPIT301.Pv,P3,sensor,2026-03-11 11:51:59,2026-03-11 11:56:03,0.0,DPIT301.Pv replaced by a replay of its values 30 min earlier,False,,1.0
-0,LSTM-AE,model,S0-08,spike,PIT501.Pv,P5,sensor,2026-03-11 12:04:16,2026-03-11 12:08:39,-7.45,short spike of -7 sigma on PIT501.Pv,True,2.0,6.0
-0,LSTM-AE,model,S0-09,bias,FIT401.Pv,P4,sensor,2026-03-11 12:17:03,2026-03-11 12:20:17,2.23,constant offset of +2 sigma on FIT401.Pv,True,62.0,2.0
-0,LSTM-AE,model,S0-10,drift,LIT301.Pv,P3,sensor,2026-03-11 12:29:08,2026-03-11 12:32:20,-5.23,linear drift reaching -5 sigma on LIT301.Pv,True,136.0,1.0
+0,LSTM-AE,model,S0-08,spike,PIT501.Pv,P5,sensor,2026-03-11 12:04:16,2026-03-11 12:08:39,-7.45,short spike of -7 sigma on PIT501.Pv,False,,1.0
+0,LSTM-AE,model,S0-09,bias,FIT401.Pv,P4,sensor,2026-03-11 12:17:03,2026-03-11 12:20:17,2.23,constant offset of +2 sigma on FIT401.Pv,False,,1.0
+0,LSTM-AE,model,S0-10,drift,LIT301.Pv,P3,sensor,2026-03-11 12:29:08,2026-03-11 12:32:20,-5.23,linear drift reaching -5 sigma on LIT301.Pv,True,157.0,1.0
 0,LSTM-AE,model,S0-11,stuck,LIT301.Pv,P3,sensor,2026-03-11 12:39:56,2026-03-11 12:44:29,0.0,LIT301.Pv frozen at its last value,False,,3.0
-0,LSTM-AE,model,S0-12,noise,PIT501.Pv,P5,sensor,2026-03-11 12:51:46,2026-03-11 12:54:55,3.64,Gaussian noise of 4 sigma added to PIT501.Pv,True,12.0,1.0
+0,LSTM-AE,model,S0-12,noise,PIT501.Pv,P5,sensor,2026-03-11 12:51:46,2026-03-11 12:54:55,3.64,Gaussian noise of 4 sigma added to PIT501.Pv,True,18.0,1.0
 0,LSTM-AE,model,S0-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:03:24,2026-03-11 13:06:02,0.0,P205.Status status inverted without physical response,False,,1.0
 0,LSTM-AE,model,,_false_alarms,,,,,,,,2,,
-0,LSTM-AE,model+rules,S0-01,spike,FIT502.Pv,P5,sensor,2026-03-11 10:40:57,2026-03-11 10:44:51,-6.16,short spike of -6 sigma on FIT502.Pv,False,,2.0
+0,LSTM-AE,model+rules,S0-01,spike,FIT502.Pv,P5,sensor,2026-03-11 10:40:57,2026-03-11 10:44:51,-6.16,short spike of -6 sigma on FIT502.Pv,False,,7.0
 0,LSTM-AE,model+rules,S0-02,bias,LIT301.Pv,P3,sensor,2026-03-11 10:52:01,2026-03-11 10:54:02,3.83,constant offset of +4 sigma on LIT301.Pv,True,0.0,1.0
-0,LSTM-AE,model+rules,S0-03,drift,FIT602.Pv,P6,sensor,2026-03-11 11:02:03,2026-03-11 11:05:51,4.63,linear drift reaching +5 sigma on FIT602.Pv,True,173.0,1.0
-0,LSTM-AE,model+rules,S0-04,stuck,FIT301.Pv,P3,sensor,2026-03-11 11:13:59,2026-03-11 11:18:47,0.0,FIT301.Pv frozen at its last value,False,,18.0
+0,LSTM-AE,model+rules,S0-03,drift,FIT602.Pv,P6,sensor,2026-03-11 11:02:03,2026-03-11 11:05:51,4.63,linear drift reaching +5 sigma on FIT602.Pv,True,170.0,2.0
+0,LSTM-AE,model+rules,S0-04,stuck,FIT301.Pv,P3,sensor,2026-03-11 11:13:59,2026-03-11 11:18:47,0.0,FIT301.Pv frozen at its last value,False,,24.0
 0,LSTM-AE,model+rules,S0-05,noise,LIT101.Pv,P1,sensor,2026-03-11 11:27:25,2026-03-11 11:31:25,3.71,Gaussian noise of 4 sigma added to LIT101.Pv,True,1.0,1.0
-0,LSTM-AE,model+rules,S0-06,actuator_flip,P601.Status,P6,actuator,2026-03-11 11:39:02,2026-03-11 11:43:23,0.0,P601.Status status inverted without physical response,False,,1.0
+0,LSTM-AE,model+rules,S0-06,actuator_flip,P601.Status,P6,actuator,2026-03-11 11:39:02,2026-03-11 11:43:23,0.0,P601.Status status inverted without physical response,False,,5.0
 0,LSTM-AE,model+rules,S0-07,replay,DPIT301.Pv,P3,sensor,2026-03-11 11:51:59,2026-03-11 11:56:03,0.0,DPIT301.Pv replaced by a replay of its values 30 min earlier,False,,1.0
-0,LSTM-AE,model+rules,S0-08,spike,PIT501.Pv,P5,sensor,2026-03-11 12:04:16,2026-03-11 12:08:39,-7.45,short spike of -7 sigma on PIT501.Pv,True,2.0,6.0
-0,LSTM-AE,model+rules,S0-09,bias,FIT401.Pv,P4,sensor,2026-03-11 12:17:03,2026-03-11 12:20:17,2.23,constant offset of +2 sigma on FIT401.Pv,True,0.0,2.0
-0,LSTM-AE,model+rules,S0-10,drift,LIT301.Pv,P3,sensor,2026-03-11 12:29:08,2026-03-11 12:32:20,-5.23,linear drift reaching -5 sigma on LIT301.Pv,True,79.0,1.0
+0,LSTM-AE,model+rules,S0-08,spike,PIT501.Pv,P5,sensor,2026-03-11 12:04:16,2026-03-11 12:08:39,-7.45,short spike of -7 sigma on PIT501.Pv,False,,1.0
+0,LSTM-AE,model+rules,S0-09,bias,FIT401.Pv,P4,sensor,2026-03-11 12:17:03,2026-03-11 12:20:17,2.23,constant offset of +2 sigma on FIT401.Pv,False,,1.0
+0,LSTM-AE,model+rules,S0-10,drift,LIT301.Pv,P3,sensor,2026-03-11 12:29:08,2026-03-11 12:32:20,-5.23,linear drift reaching -5 sigma on LIT301.Pv,True,80.0,1.0
 0,LSTM-AE,model+rules,S0-11,stuck,LIT301.Pv,P3,sensor,2026-03-11 12:39:56,2026-03-11 12:44:29,0.0,LIT301.Pv frozen at its last value,False,,3.0
 0,LSTM-AE,model+rules,S0-12,noise,PIT501.Pv,P5,sensor,2026-03-11 12:51:46,2026-03-11 12:54:55,3.64,Gaussian noise of 4 sigma added to PIT501.Pv,True,0.0,1.0
 0,LSTM-AE,model+rules,S0-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:03:24,2026-03-11 13:06:02,0.0,P205.Status status inverted without physical response,False,,1.0
 0,LSTM-AE,model+rules,,_false_alarms,,,,,,,,2,,
-1,IForest,model,S1-01,spike,PIT502.Pv,P5,sensor,2026-03-11 10:38:18,2026-03-11 10:41:49,6.58,short spike of 7 sigma on PIT502.Pv,False,,8.0
-1,IForest,model,S1-02,bias,FIT301.Pv,P3,sensor,2026-03-11 10:50:28,2026-03-11 10:55:18,-2.85,constant offset of -3 sigma on FIT301.Pv,False,,5.0
+1,IForest,model,S1-01,spike,PIT502.Pv,P5,sensor,2026-03-11 10:38:18,2026-03-11 10:41:49,6.58,short spike of 7 sigma on PIT502.Pv,False,,1.0
+1,IForest,model,S1-02,bias,FIT301.Pv,P3,sensor,2026-03-11 10:50:28,2026-03-11 10:55:18,-2.85,constant offset of -3 sigma on FIT301.Pv,False,,3.0
 1,IForest,model,S1-03,drift,FIT301.Pv,P3,sensor,2026-03-11 11:02:51,2026-03-11 11:07:19,-4.65,linear drift reaching -5 sigma on FIT301.Pv,False,,16.0
-1,IForest,model,S1-04,stuck,LIT601.Pv,P6,sensor,2026-03-11 11:14:30,2026-03-11 11:16:33,0.0,LIT601.Pv frozen at its last value,False,,18.0
-1,IForest,model,S1-05,noise,FIT502.Pv,P5,sensor,2026-03-11 11:25:04,2026-03-11 11:29:34,2.66,Gaussian noise of 3 sigma added to FIT502.Pv,False,,4.0
+1,IForest,model,S1-04,stuck,LIT601.Pv,P6,sensor,2026-03-11 11:14:30,2026-03-11 11:16:33,0.0,LIT601.Pv frozen at its last value,False,,19.0
+1,IForest,model,S1-05,noise,FIT502.Pv,P5,sensor,2026-03-11 11:25:04,2026-03-11 11:29:34,2.66,Gaussian noise of 3 sigma added to FIT502.Pv,False,,1.0
 1,IForest,model,S1-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:37:36,2026-03-11 11:41:40,0.0,MV501.Status status inverted without physical response,False,,1.0
-1,IForest,model,S1-07,replay,LIT101.Pv,P1,sensor,2026-03-11 11:49:00,2026-03-11 11:53:20,0.0,LIT101.Pv replaced by a replay of its values 30 min earlier,False,,13.0
+1,IForest,model,S1-07,replay,LIT101.Pv,P1,sensor,2026-03-11 11:49:00,2026-03-11 11:53:20,0.0,LIT101.Pv replaced by a replay of its values 30 min earlier,False,,14.0
 1,IForest,model,S1-08,spike,FIT301.Pv,P3,sensor,2026-03-11 12:01:16,2026-03-11 12:03:26,8.58,short spike of 9 sigma on FIT301.Pv,False,,20.0
-1,IForest,model,S1-09,bias,FIT101.Pv,P1,sensor,2026-03-11 12:12:21,2026-03-11 12:17:11,-3.51,constant offset of -4 sigma on FIT101.Pv,False,,4.0
-1,IForest,model,S1-10,drift,FIT504.Pv,P5,sensor,2026-03-11 12:25:02,2026-03-11 12:27:12,-3.83,linear drift reaching -4 sigma on FIT504.Pv,False,,4.0
-1,IForest,model,S1-11,stuck,FIT501.Pv,P5,sensor,2026-03-11 12:35:06,2026-03-11 12:38:44,0.0,FIT501.Pv frozen at its last value,False,,8.0
+1,IForest,model,S1-09,bias,FIT101.Pv,P1,sensor,2026-03-11 12:12:21,2026-03-11 12:17:11,-3.51,constant offset of -4 sigma on FIT101.Pv,False,,1.0
+1,IForest,model,S1-10,drift,FIT504.Pv,P5,sensor,2026-03-11 12:25:02,2026-03-11 12:27:12,-3.83,linear drift reaching -4 sigma on FIT504.Pv,False,,7.0
+1,IForest,model,S1-11,stuck,FIT501.Pv,P5,sensor,2026-03-11 12:35:06,2026-03-11 12:38:44,0.0,FIT501.Pv frozen at its last value,False,,6.0
 1,IForest,model,S1-12,noise,FIT501.Pv,P5,sensor,2026-03-11 12:46:51,2026-03-11 12:51:15,2.85,Gaussian noise of 3 sigma added to FIT501.Pv,True,214.0,1.0
-1,IForest,model,S1-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:00:12,2026-03-11 13:03:42,0.0,P205.Status status inverted without physical response,False,,8.0
+1,IForest,model,S1-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:00:12,2026-03-11 13:03:42,0.0,P205.Status status inverted without physical response,False,,1.0
 1,IForest,model,,_false_alarms,,,,,,,,3,,
-1,IForest,model+rules,S1-01,spike,PIT502.Pv,P5,sensor,2026-03-11 10:38:18,2026-03-11 10:41:49,6.58,short spike of 7 sigma on PIT502.Pv,False,,8.0
-1,IForest,model+rules,S1-02,bias,FIT301.Pv,P3,sensor,2026-03-11 10:50:28,2026-03-11 10:55:18,-2.85,constant offset of -3 sigma on FIT301.Pv,True,0.0,5.0
-1,IForest,model+rules,S1-03,drift,FIT301.Pv,P3,sensor,2026-03-11 11:02:51,2026-03-11 11:07:19,-4.65,linear drift reaching -5 sigma on FIT301.Pv,True,143.0,5.0
-1,IForest,model+rules,S1-04,stuck,LIT601.Pv,P6,sensor,2026-03-11 11:14:30,2026-03-11 11:16:33,0.0,LIT601.Pv frozen at its last value,False,,18.0
-1,IForest,model+rules,S1-05,noise,FIT502.Pv,P5,sensor,2026-03-11 11:25:04,2026-03-11 11:29:34,2.66,Gaussian noise of 3 sigma added to FIT502.Pv,True,111.0,1.0
+1,IForest,model+rules,S1-01,spike,PIT502.Pv,P5,sensor,2026-03-11 10:38:18,2026-03-11 10:41:49,6.58,short spike of 7 sigma on PIT502.Pv,False,,1.0
+1,IForest,model+rules,S1-02,bias,FIT301.Pv,P3,sensor,2026-03-11 10:50:28,2026-03-11 10:55:18,-2.85,constant offset of -3 sigma on FIT301.Pv,True,0.0,2.0
+1,IForest,model+rules,S1-03,drift,FIT301.Pv,P3,sensor,2026-03-11 11:02:51,2026-03-11 11:07:19,-4.65,linear drift reaching -5 sigma on FIT301.Pv,True,143.0,4.0
+1,IForest,model+rules,S1-04,stuck,LIT601.Pv,P6,sensor,2026-03-11 11:14:30,2026-03-11 11:16:33,0.0,LIT601.Pv frozen at its last value,False,,19.0
+1,IForest,model+rules,S1-05,noise,FIT502.Pv,P5,sensor,2026-03-11 11:25:04,2026-03-11 11:29:34,2.66,Gaussian noise of 3 sigma added to FIT502.Pv,False,,1.0
 1,IForest,model+rules,S1-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:37:36,2026-03-11 11:41:40,0.0,MV501.Status status inverted without physical response,False,,1.0
-1,IForest,model+rules,S1-07,replay,LIT101.Pv,P1,sensor,2026-03-11 11:49:00,2026-03-11 11:53:20,0.0,LIT101.Pv replaced by a replay of its values 30 min earlier,False,,13.0
+1,IForest,model+rules,S1-07,replay,LIT101.Pv,P1,sensor,2026-03-11 11:49:00,2026-03-11 11:53:20,0.0,LIT101.Pv replaced by a replay of its values 30 min earlier,False,,14.0
 1,IForest,model+rules,S1-08,spike,FIT301.Pv,P3,sensor,2026-03-11 12:01:16,2026-03-11 12:03:26,8.58,short spike of 9 sigma on FIT301.Pv,True,0.0,1.0
 1,IForest,model+rules,S1-09,bias,FIT101.Pv,P1,sensor,2026-03-11 12:12:21,2026-03-11 12:17:11,-3.51,constant offset of -4 sigma on FIT101.Pv,True,0.0,1.0
-1,IForest,model+rules,S1-10,drift,FIT504.Pv,P5,sensor,2026-03-11 12:25:02,2026-03-11 12:27:12,-3.83,linear drift reaching -4 sigma on FIT504.Pv,False,,4.0
-1,IForest,model+rules,S1-11,stuck,FIT501.Pv,P5,sensor,2026-03-11 12:35:06,2026-03-11 12:38:44,0.0,FIT501.Pv frozen at its last value,False,,8.0
+1,IForest,model+rules,S1-10,drift,FIT504.Pv,P5,sensor,2026-03-11 12:25:02,2026-03-11 12:27:12,-3.83,linear drift reaching -4 sigma on FIT504.Pv,False,,7.0
+1,IForest,model+rules,S1-11,stuck,FIT501.Pv,P5,sensor,2026-03-11 12:35:06,2026-03-11 12:38:44,0.0,FIT501.Pv frozen at its last value,False,,6.0
 1,IForest,model+rules,S1-12,noise,FIT501.Pv,P5,sensor,2026-03-11 12:46:51,2026-03-11 12:51:15,2.85,Gaussian noise of 3 sigma added to FIT501.Pv,True,6.0,1.0
-1,IForest,model+rules,S1-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:00:12,2026-03-11 13:03:42,0.0,P205.Status status inverted without physical response,False,,8.0
+1,IForest,model+rules,S1-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:00:12,2026-03-11 13:03:42,0.0,P205.Status status inverted without physical response,False,,1.0
 1,IForest,model+rules,,_false_alarms,,,,,,,,3,,
 1,GMM,model,S1-01,spike,PIT502.Pv,P5,sensor,2026-03-11 10:38:18,2026-03-11 10:41:49,6.58,short spike of 7 sigma on PIT502.Pv,True,4.0,2.0
 1,GMM,model,S1-02,bias,FIT301.Pv,P3,sensor,2026-03-11 10:50:28,2026-03-11 10:55:18,-2.85,constant offset of -3 sigma on FIT301.Pv,True,4.0,1.0
-1,GMM,model,S1-03,drift,FIT301.Pv,P3,sensor,2026-03-11 11:02:51,2026-03-11 11:07:19,-4.65,linear drift reaching -5 sigma on FIT301.Pv,True,105.0,4.0
-1,GMM,model,S1-04,stuck,LIT601.Pv,P6,sensor,2026-03-11 11:14:30,2026-03-11 11:16:33,0.0,LIT601.Pv frozen at its last value,False,,11.0
+1,GMM,model,S1-03,drift,FIT301.Pv,P3,sensor,2026-03-11 11:02:51,2026-03-11 11:07:19,-4.65,linear drift reaching -5 sigma on FIT301.Pv,True,105.0,1.0
+1,GMM,model,S1-04,stuck,LIT601.Pv,P6,sensor,2026-03-11 11:14:30,2026-03-11 11:16:33,0.0,LIT601.Pv frozen at its last value,False,,7.0
 1,GMM,model,S1-05,noise,FIT502.Pv,P5,sensor,2026-03-11 11:25:04,2026-03-11 11:29:34,2.66,Gaussian noise of 3 sigma added to FIT502.Pv,False,,1.0
 1,GMM,model,S1-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:37:36,2026-03-11 11:41:40,0.0,MV501.Status status inverted without physical response,True,4.0,2.0
-1,GMM,model,S1-07,replay,LIT101.Pv,P1,sensor,2026-03-11 11:49:00,2026-03-11 11:53:20,0.0,LIT101.Pv replaced by a replay of its values 30 min earlier,False,,18.0
-1,GMM,model,S1-08,spike,FIT301.Pv,P3,sensor,2026-03-11 12:01:16,2026-03-11 12:03:26,8.58,short spike of 9 sigma on FIT301.Pv,True,4.0,3.0
+1,GMM,model,S1-07,replay,LIT101.Pv,P1,sensor,2026-03-11 11:49:00,2026-03-11 11:53:20,0.0,LIT101.Pv replaced by a replay of its values 30 min earlier,False,,9.0
+1,GMM,model,S1-08,spike,FIT301.Pv,P3,sensor,2026-03-11 12:01:16,2026-03-11 12:03:26,8.58,short spike of 9 sigma on FIT301.Pv,True,4.0,2.0
 1,GMM,model,S1-09,bias,FIT101.Pv,P1,sensor,2026-03-11 12:12:21,2026-03-11 12:17:11,-3.51,constant offset of -4 sigma on FIT101.Pv,True,5.0,1.0
-1,GMM,model,S1-10,drift,FIT504.Pv,P5,sensor,2026-03-11 12:25:02,2026-03-11 12:27:12,-3.83,linear drift reaching -4 sigma on FIT504.Pv,True,104.0,1.0
-1,GMM,model,S1-11,stuck,FIT501.Pv,P5,sensor,2026-03-11 12:35:06,2026-03-11 12:38:44,0.0,FIT501.Pv frozen at its last value,False,,4.0
-1,GMM,model,S1-12,noise,FIT501.Pv,P5,sensor,2026-03-11 12:46:51,2026-03-11 12:51:15,2.85,Gaussian noise of 3 sigma added to FIT501.Pv,True,8.0,1.0
-1,GMM,model,S1-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:00:12,2026-03-11 13:03:42,0.0,P205.Status status inverted without physical response,False,,19.0
+1,GMM,model,S1-10,drift,FIT504.Pv,P5,sensor,2026-03-11 12:25:02,2026-03-11 12:27:12,-3.83,linear drift reaching -4 sigma on FIT504.Pv,True,113.0,1.0
+1,GMM,model,S1-11,stuck,FIT501.Pv,P5,sensor,2026-03-11 12:35:06,2026-03-11 12:38:44,0.0,FIT501.Pv frozen at its last value,False,,5.0
+1,GMM,model,S1-12,noise,FIT501.Pv,P5,sensor,2026-03-11 12:46:51,2026-03-11 12:51:15,2.85,Gaussian noise of 3 sigma added to FIT501.Pv,True,12.0,1.0
+1,GMM,model,S1-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:00:12,2026-03-11 13:03:42,0.0,P205.Status status inverted without physical response,False,,10.0
 1,GMM,model,,_false_alarms,,,,,,,,4,,
 1,GMM,model+rules,S1-01,spike,PIT502.Pv,P5,sensor,2026-03-11 10:38:18,2026-03-11 10:41:49,6.58,short spike of 7 sigma on PIT502.Pv,True,4.0,2.0
 1,GMM,model+rules,S1-02,bias,FIT301.Pv,P3,sensor,2026-03-11 10:50:28,2026-03-11 10:55:18,-2.85,constant offset of -3 sigma on FIT301.Pv,True,0.0,1.0
-1,GMM,model+rules,S1-03,drift,FIT301.Pv,P3,sensor,2026-03-11 11:02:51,2026-03-11 11:07:19,-4.65,linear drift reaching -5 sigma on FIT301.Pv,True,105.0,4.0
-1,GMM,model+rules,S1-04,stuck,LIT601.Pv,P6,sensor,2026-03-11 11:14:30,2026-03-11 11:16:33,0.0,LIT601.Pv frozen at its last value,False,,11.0
-1,GMM,model+rules,S1-05,noise,FIT502.Pv,P5,sensor,2026-03-11 11:25:04,2026-03-11 11:29:34,2.66,Gaussian noise of 3 sigma added to FIT502.Pv,True,111.0,1.0
+1,GMM,model+rules,S1-03,drift,FIT301.Pv,P3,sensor,2026-03-11 11:02:51,2026-03-11 11:07:19,-4.65,linear drift reaching -5 sigma on FIT301.Pv,True,105.0,1.0
+1,GMM,model+rules,S1-04,stuck,LIT601.Pv,P6,sensor,2026-03-11 11:14:30,2026-03-11 11:16:33,0.0,LIT601.Pv frozen at its last value,False,,7.0
+1,GMM,model+rules,S1-05,noise,FIT502.Pv,P5,sensor,2026-03-11 11:25:04,2026-03-11 11:29:34,2.66,Gaussian noise of 3 sigma added to FIT502.Pv,False,,1.0
 1,GMM,model+rules,S1-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:37:36,2026-03-11 11:41:40,0.0,MV501.Status status inverted without physical response,True,4.0,2.0
-1,GMM,model+rules,S1-07,replay,LIT101.Pv,P1,sensor,2026-03-11 11:49:00,2026-03-11 11:53:20,0.0,LIT101.Pv replaced by a replay of its values 30 min earlier,False,,18.0
-1,GMM,model+rules,S1-08,spike,FIT301.Pv,P3,sensor,2026-03-11 12:01:16,2026-03-11 12:03:26,8.58,short spike of 9 sigma on FIT301.Pv,True,0.0,3.0
+1,GMM,model+rules,S1-07,replay,LIT101.Pv,P1,sensor,2026-03-11 11:49:00,2026-03-11 11:53:20,0.0,LIT101.Pv replaced by a replay of its values 30 min earlier,False,,9.0
+1,GMM,model+rules,S1-08,spike,FIT301.Pv,P3,sensor,2026-03-11 12:01:16,2026-03-11 12:03:26,8.58,short spike of 9 sigma on FIT301.Pv,True,0.0,2.0
 1,GMM,model+rules,S1-09,bias,FIT101.Pv,P1,sensor,2026-03-11 12:12:21,2026-03-11 12:17:11,-3.51,constant offset of -4 sigma on FIT101.Pv,True,0.0,1.0
-1,GMM,model+rules,S1-10,drift,FIT504.Pv,P5,sensor,2026-03-11 12:25:02,2026-03-11 12:27:12,-3.83,linear drift reaching -4 sigma on FIT504.Pv,True,104.0,1.0
-1,GMM,model+rules,S1-11,stuck,FIT501.Pv,P5,sensor,2026-03-11 12:35:06,2026-03-11 12:38:44,0.0,FIT501.Pv frozen at its last value,False,,4.0
+1,GMM,model+rules,S1-10,drift,FIT504.Pv,P5,sensor,2026-03-11 12:25:02,2026-03-11 12:27:12,-3.83,linear drift reaching -4 sigma on FIT504.Pv,True,113.0,1.0
+1,GMM,model+rules,S1-11,stuck,FIT501.Pv,P5,sensor,2026-03-11 12:35:06,2026-03-11 12:38:44,0.0,FIT501.Pv frozen at its last value,False,,5.0
 1,GMM,model+rules,S1-12,noise,FIT501.Pv,P5,sensor,2026-03-11 12:46:51,2026-03-11 12:51:15,2.85,Gaussian noise of 3 sigma added to FIT501.Pv,True,6.0,1.0
-1,GMM,model+rules,S1-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:00:12,2026-03-11 13:03:42,0.0,P205.Status status inverted without physical response,False,,19.0
+1,GMM,model+rules,S1-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:00:12,2026-03-11 13:03:42,0.0,P205.Status status inverted without physical response,False,,10.0
 1,GMM,model+rules,,_false_alarms,,,,,,,,4,,
-1,AE,model,S1-01,spike,PIT502.Pv,P5,sensor,2026-03-11 10:38:18,2026-03-11 10:41:49,6.58,short spike of 7 sigma on PIT502.Pv,True,4.0,1.0
+1,AE,model,S1-01,spike,PIT502.Pv,P5,sensor,2026-03-11 10:38:18,2026-03-11 10:41:49,6.58,short spike of 7 sigma on PIT502.Pv,False,,1.0
 1,AE,model,S1-02,bias,FIT301.Pv,P3,sensor,2026-03-11 10:50:28,2026-03-11 10:55:18,-2.85,constant offset of -3 sigma on FIT301.Pv,True,4.0,1.0
-1,AE,model,S1-03,drift,FIT301.Pv,P3,sensor,2026-03-11 11:02:51,2026-03-11 11:07:19,-4.65,linear drift reaching -5 sigma on FIT301.Pv,True,81.0,1.0
-1,AE,model,S1-04,stuck,LIT601.Pv,P6,sensor,2026-03-11 11:14:30,2026-03-11 11:16:33,0.0,LIT601.Pv frozen at its last value,False,,7.0
-1,AE,model,S1-05,noise,FIT502.Pv,P5,sensor,2026-03-11 11:25:04,2026-03-11 11:29:34,2.66,Gaussian noise of 3 sigma added to FIT502.Pv,True,17.0,1.0
+1,AE,model,S1-03,drift,FIT301.Pv,P3,sensor,2026-03-11 11:02:51,2026-03-11 11:07:19,-4.65,linear drift reaching -5 sigma on FIT301.Pv,True,73.0,1.0
+1,AE,model,S1-04,stuck,LIT601.Pv,P6,sensor,2026-03-11 11:14:30,2026-03-11 11:16:33,0.0,LIT601.Pv frozen at its last value,False,,4.0
+1,AE,model,S1-05,noise,FIT502.Pv,P5,sensor,2026-03-11 11:25:04,2026-03-11 11:29:34,2.66,Gaussian noise of 3 sigma added to FIT502.Pv,False,,2.0
 1,AE,model,S1-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:37:36,2026-03-11 11:41:40,0.0,MV501.Status status inverted without physical response,True,4.0,1.0
-1,AE,model,S1-07,replay,LIT101.Pv,P1,sensor,2026-03-11 11:49:00,2026-03-11 11:53:20,0.0,LIT101.Pv replaced by a replay of its values 30 min earlier,False,,8.0
+1,AE,model,S1-07,replay,LIT101.Pv,P1,sensor,2026-03-11 11:49:00,2026-03-11 11:53:20,0.0,LIT101.Pv replaced by a replay of its values 30 min earlier,False,,10.0
 1,AE,model,S1-08,spike,FIT301.Pv,P3,sensor,2026-03-11 12:01:16,2026-03-11 12:03:26,8.58,short spike of 9 sigma on FIT301.Pv,True,4.0,1.0
 1,AE,model,S1-09,bias,FIT101.Pv,P1,sensor,2026-03-11 12:12:21,2026-03-11 12:17:11,-3.51,constant offset of -4 sigma on FIT101.Pv,True,4.0,2.0
-1,AE,model,S1-10,drift,FIT504.Pv,P5,sensor,2026-03-11 12:25:02,2026-03-11 12:27:12,-3.83,linear drift reaching -4 sigma on FIT504.Pv,True,102.0,1.0
+1,AE,model,S1-10,drift,FIT504.Pv,P5,sensor,2026-03-11 12:25:02,2026-03-11 12:27:12,-3.83,linear drift reaching -4 sigma on FIT504.Pv,True,120.0,1.0
 1,AE,model,S1-11,stuck,FIT501.Pv,P5,sensor,2026-03-11 12:35:06,2026-03-11 12:38:44,0.0,FIT501.Pv frozen at its last value,False,,7.0
-1,AE,model,S1-12,noise,FIT501.Pv,P5,sensor,2026-03-11 12:46:51,2026-03-11 12:51:15,2.85,Gaussian noise of 3 sigma added to FIT501.Pv,True,9.0,1.0
+1,AE,model,S1-12,noise,FIT501.Pv,P5,sensor,2026-03-11 12:46:51,2026-03-11 12:51:15,2.85,Gaussian noise of 3 sigma added to FIT501.Pv,True,34.0,1.0
 1,AE,model,S1-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:00:12,2026-03-11 13:03:42,0.0,P205.Status status inverted without physical response,True,4.0,1.0
-1,AE,model,,_false_alarms,,,,,,,,2,,
-1,AE,model+rules,S1-01,spike,PIT502.Pv,P5,sensor,2026-03-11 10:38:18,2026-03-11 10:41:49,6.58,short spike of 7 sigma on PIT502.Pv,True,4.0,1.0
+1,AE,model,,_false_alarms,,,,,,,,6,,
+1,AE,model+rules,S1-01,spike,PIT502.Pv,P5,sensor,2026-03-11 10:38:18,2026-03-11 10:41:49,6.58,short spike of 7 sigma on PIT502.Pv,False,,1.0
 1,AE,model+rules,S1-02,bias,FIT301.Pv,P3,sensor,2026-03-11 10:50:28,2026-03-11 10:55:18,-2.85,constant offset of -3 sigma on FIT301.Pv,True,0.0,1.0
-1,AE,model+rules,S1-03,drift,FIT301.Pv,P3,sensor,2026-03-11 11:02:51,2026-03-11 11:07:19,-4.65,linear drift reaching -5 sigma on FIT301.Pv,True,81.0,1.0
-1,AE,model+rules,S1-04,stuck,LIT601.Pv,P6,sensor,2026-03-11 11:14:30,2026-03-11 11:16:33,0.0,LIT601.Pv frozen at its last value,False,,7.0
-1,AE,model+rules,S1-05,noise,FIT502.Pv,P5,sensor,2026-03-11 11:25:04,2026-03-11 11:29:34,2.66,Gaussian noise of 3 sigma added to FIT502.Pv,True,17.0,1.0
+1,AE,model+rules,S1-03,drift,FIT301.Pv,P3,sensor,2026-03-11 11:02:51,2026-03-11 11:07:19,-4.65,linear drift reaching -5 sigma on FIT301.Pv,True,73.0,1.0
+1,AE,model+rules,S1-04,stuck,LIT601.Pv,P6,sensor,2026-03-11 11:14:30,2026-03-11 11:16:33,0.0,LIT601.Pv frozen at its last value,False,,4.0
+1,AE,model+rules,S1-05,noise,FIT502.Pv,P5,sensor,2026-03-11 11:25:04,2026-03-11 11:29:34,2.66,Gaussian noise of 3 sigma added to FIT502.Pv,False,,2.0
 1,AE,model+rules,S1-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:37:36,2026-03-11 11:41:40,0.0,MV501.Status status inverted without physical response,True,4.0,1.0
-1,AE,model+rules,S1-07,replay,LIT101.Pv,P1,sensor,2026-03-11 11:49:00,2026-03-11 11:53:20,0.0,LIT101.Pv replaced by a replay of its values 30 min earlier,False,,8.0
+1,AE,model+rules,S1-07,replay,LIT101.Pv,P1,sensor,2026-03-11 11:49:00,2026-03-11 11:53:20,0.0,LIT101.Pv replaced by a replay of its values 30 min earlier,False,,10.0
 1,AE,model+rules,S1-08,spike,FIT301.Pv,P3,sensor,2026-03-11 12:01:16,2026-03-11 12:03:26,8.58,short spike of 9 sigma on FIT301.Pv,True,0.0,1.0
 1,AE,model+rules,S1-09,bias,FIT101.Pv,P1,sensor,2026-03-11 12:12:21,2026-03-11 12:17:11,-3.51,constant offset of -4 sigma on FIT101.Pv,True,0.0,2.0
-1,AE,model+rules,S1-10,drift,FIT504.Pv,P5,sensor,2026-03-11 12:25:02,2026-03-11 12:27:12,-3.83,linear drift reaching -4 sigma on FIT504.Pv,True,102.0,1.0
+1,AE,model+rules,S1-10,drift,FIT504.Pv,P5,sensor,2026-03-11 12:25:02,2026-03-11 12:27:12,-3.83,linear drift reaching -4 sigma on FIT504.Pv,True,120.0,1.0
 1,AE,model+rules,S1-11,stuck,FIT501.Pv,P5,sensor,2026-03-11 12:35:06,2026-03-11 12:38:44,0.0,FIT501.Pv frozen at its last value,False,,7.0
 1,AE,model+rules,S1-12,noise,FIT501.Pv,P5,sensor,2026-03-11 12:46:51,2026-03-11 12:51:15,2.85,Gaussian noise of 3 sigma added to FIT501.Pv,True,6.0,1.0
 1,AE,model+rules,S1-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:00:12,2026-03-11 13:03:42,0.0,P205.Status status inverted without physical response,True,4.0,1.0
-1,AE,model+rules,,_false_alarms,,,,,,,,2,,
-1,WinAE,model,S1-01,spike,PIT502.Pv,P5,sensor,2026-03-11 10:38:18,2026-03-11 10:41:49,6.58,short spike of 7 sigma on PIT502.Pv,True,2.0,1.0
+1,AE,model+rules,,_false_alarms,,,,,,,,6,,
+1,WinAE,model,S1-01,spike,PIT502.Pv,P5,sensor,2026-03-11 10:38:18,2026-03-11 10:41:49,6.58,short spike of 7 sigma on PIT502.Pv,False,,1.0
 1,WinAE,model,S1-02,bias,FIT301.Pv,P3,sensor,2026-03-11 10:50:28,2026-03-11 10:55:18,-2.85,constant offset of -3 sigma on FIT301.Pv,True,46.0,1.0
-1,WinAE,model,S1-03,drift,FIT301.Pv,P3,sensor,2026-03-11 11:02:51,2026-03-11 11:07:19,-4.65,linear drift reaching -5 sigma on FIT301.Pv,True,142.0,1.0
-1,WinAE,model,S1-04,stuck,LIT601.Pv,P6,sensor,2026-03-11 11:14:30,2026-03-11 11:16:33,0.0,LIT601.Pv frozen at its last value,False,,1.0
-1,WinAE,model,S1-05,noise,FIT502.Pv,P5,sensor,2026-03-11 11:25:04,2026-03-11 11:29:34,2.66,Gaussian noise of 3 sigma added to FIT502.Pv,True,19.0,1.0
-1,WinAE,model,S1-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:37:36,2026-03-11 11:41:40,0.0,MV501.Status status inverted without physical response,True,18.0,1.0
-1,WinAE,model,S1-07,replay,LIT101.Pv,P1,sensor,2026-03-11 11:49:00,2026-03-11 11:53:20,0.0,LIT101.Pv replaced by a replay of its values 30 min earlier,False,,1.0
+1,WinAE,model,S1-03,drift,FIT301.Pv,P3,sensor,2026-03-11 11:02:51,2026-03-11 11:07:19,-4.65,linear drift reaching -5 sigma on FIT301.Pv,True,159.0,1.0
+1,WinAE,model,S1-04,stuck,LIT601.Pv,P6,sensor,2026-03-11 11:14:30,2026-03-11 11:16:33,0.0,LIT601.Pv frozen at its last value,False,,3.0
+1,WinAE,model,S1-05,noise,FIT502.Pv,P5,sensor,2026-03-11 11:25:04,2026-03-11 11:29:34,2.66,Gaussian noise of 3 sigma added to FIT502.Pv,True,97.0,2.0
+1,WinAE,model,S1-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:37:36,2026-03-11 11:41:40,0.0,MV501.Status status inverted without physical response,True,22.0,1.0
+1,WinAE,model,S1-07,replay,LIT101.Pv,P1,sensor,2026-03-11 11:49:00,2026-03-11 11:53:20,0.0,LIT101.Pv replaced by a replay of its values 30 min earlier,False,,2.0
 1,WinAE,model,S1-08,spike,FIT301.Pv,P3,sensor,2026-03-11 12:01:16,2026-03-11 12:03:26,8.58,short spike of 9 sigma on FIT301.Pv,False,,1.0
-1,WinAE,model,S1-09,bias,FIT101.Pv,P1,sensor,2026-03-11 12:12:21,2026-03-11 12:17:11,-3.51,constant offset of -4 sigma on FIT101.Pv,True,30.0,1.0
+1,WinAE,model,S1-09,bias,FIT101.Pv,P1,sensor,2026-03-11 12:12:21,2026-03-11 12:17:11,-3.51,constant offset of -4 sigma on FIT101.Pv,True,26.0,1.0
 1,WinAE,model,S1-10,drift,FIT504.Pv,P5,sensor,2026-03-11 12:25:02,2026-03-11 12:27:12,-3.83,linear drift reaching -4 sigma on FIT504.Pv,False,,1.0
-1,WinAE,model,S1-11,stuck,FIT501.Pv,P5,sensor,2026-03-11 12:35:06,2026-03-11 12:38:44,0.0,FIT501.Pv frozen at its last value,False,,25.0
-1,WinAE,model,S1-12,noise,FIT501.Pv,P5,sensor,2026-03-11 12:46:51,2026-03-11 12:51:15,2.85,Gaussian noise of 3 sigma added to FIT501.Pv,True,22.0,1.0
-1,WinAE,model,S1-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:00:12,2026-03-11 13:03:42,0.0,P205.Status status inverted without physical response,True,92.0,1.0
-1,WinAE,model,,_false_alarms,,,,,,,,1,,
-1,WinAE,model+rules,S1-01,spike,PIT502.Pv,P5,sensor,2026-03-11 10:38:18,2026-03-11 10:41:49,6.58,short spike of 7 sigma on PIT502.Pv,True,2.0,1.0
+1,WinAE,model,S1-11,stuck,FIT501.Pv,P5,sensor,2026-03-11 12:35:06,2026-03-11 12:38:44,0.0,FIT501.Pv frozen at its last value,False,,5.0
+1,WinAE,model,S1-12,noise,FIT501.Pv,P5,sensor,2026-03-11 12:46:51,2026-03-11 12:51:15,2.85,Gaussian noise of 3 sigma added to FIT501.Pv,True,74.0,1.0
+1,WinAE,model,S1-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:00:12,2026-03-11 13:03:42,0.0,P205.Status status inverted without physical response,True,74.0,1.0
+1,WinAE,model,,_false_alarms,,,,,,,,0,,
+1,WinAE,model+rules,S1-01,spike,PIT502.Pv,P5,sensor,2026-03-11 10:38:18,2026-03-11 10:41:49,6.58,short spike of 7 sigma on PIT502.Pv,False,,1.0
 1,WinAE,model+rules,S1-02,bias,FIT301.Pv,P3,sensor,2026-03-11 10:50:28,2026-03-11 10:55:18,-2.85,constant offset of -3 sigma on FIT301.Pv,True,0.0,1.0
-1,WinAE,model+rules,S1-03,drift,FIT301.Pv,P3,sensor,2026-03-11 11:02:51,2026-03-11 11:07:19,-4.65,linear drift reaching -5 sigma on FIT301.Pv,True,142.0,1.0
-1,WinAE,model+rules,S1-04,stuck,LIT601.Pv,P6,sensor,2026-03-11 11:14:30,2026-03-11 11:16:33,0.0,LIT601.Pv frozen at its last value,False,,1.0
-1,WinAE,model+rules,S1-05,noise,FIT502.Pv,P5,sensor,2026-03-11 11:25:04,2026-03-11 11:29:34,2.66,Gaussian noise of 3 sigma added to FIT502.Pv,True,19.0,1.0
-1,WinAE,model+rules,S1-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:37:36,2026-03-11 11:41:40,0.0,MV501.Status status inverted without physical response,True,18.0,1.0
-1,WinAE,model+rules,S1-07,replay,LIT101.Pv,P1,sensor,2026-03-11 11:49:00,2026-03-11 11:53:20,0.0,LIT101.Pv replaced by a replay of its values 30 min earlier,False,,1.0
+1,WinAE,model+rules,S1-03,drift,FIT301.Pv,P3,sensor,2026-03-11 11:02:51,2026-03-11 11:07:19,-4.65,linear drift reaching -5 sigma on FIT301.Pv,True,143.0,1.0
+1,WinAE,model+rules,S1-04,stuck,LIT601.Pv,P6,sensor,2026-03-11 11:14:30,2026-03-11 11:16:33,0.0,LIT601.Pv frozen at its last value,False,,3.0
+1,WinAE,model+rules,S1-05,noise,FIT502.Pv,P5,sensor,2026-03-11 11:25:04,2026-03-11 11:29:34,2.66,Gaussian noise of 3 sigma added to FIT502.Pv,True,97.0,2.0
+1,WinAE,model+rules,S1-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:37:36,2026-03-11 11:41:40,0.0,MV501.Status status inverted without physical response,True,22.0,1.0
+1,WinAE,model+rules,S1-07,replay,LIT101.Pv,P1,sensor,2026-03-11 11:49:00,2026-03-11 11:53:20,0.0,LIT101.Pv replaced by a replay of its values 30 min earlier,False,,2.0
 1,WinAE,model+rules,S1-08,spike,FIT301.Pv,P3,sensor,2026-03-11 12:01:16,2026-03-11 12:03:26,8.58,short spike of 9 sigma on FIT301.Pv,True,0.0,1.0
 1,WinAE,model+rules,S1-09,bias,FIT101.Pv,P1,sensor,2026-03-11 12:12:21,2026-03-11 12:17:11,-3.51,constant offset of -4 sigma on FIT101.Pv,True,0.0,1.0
 1,WinAE,model+rules,S1-10,drift,FIT504.Pv,P5,sensor,2026-03-11 12:25:02,2026-03-11 12:27:12,-3.83,linear drift reaching -4 sigma on FIT504.Pv,False,,1.0
-1,WinAE,model+rules,S1-11,stuck,FIT501.Pv,P5,sensor,2026-03-11 12:35:06,2026-03-11 12:38:44,0.0,FIT501.Pv frozen at its last value,False,,25.0
+1,WinAE,model+rules,S1-11,stuck,FIT501.Pv,P5,sensor,2026-03-11 12:35:06,2026-03-11 12:38:44,0.0,FIT501.Pv frozen at its last value,False,,5.0
 1,WinAE,model+rules,S1-12,noise,FIT501.Pv,P5,sensor,2026-03-11 12:46:51,2026-03-11 12:51:15,2.85,Gaussian noise of 3 sigma added to FIT501.Pv,True,6.0,1.0
-1,WinAE,model+rules,S1-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:00:12,2026-03-11 13:03:42,0.0,P205.Status status inverted without physical response,True,92.0,1.0
-1,WinAE,model+rules,,_false_alarms,,,,,,,,1,,
-1,LSTM-AE,model,S1-01,spike,PIT502.Pv,P5,sensor,2026-03-11 10:38:18,2026-03-11 10:41:49,6.58,short spike of 7 sigma on PIT502.Pv,False,,3.0
-1,LSTM-AE,model,S1-02,bias,FIT301.Pv,P3,sensor,2026-03-11 10:50:28,2026-03-11 10:55:18,-2.85,constant offset of -3 sigma on FIT301.Pv,True,169.0,1.0
-1,LSTM-AE,model,S1-03,drift,FIT301.Pv,P3,sensor,2026-03-11 11:02:51,2026-03-11 11:07:19,-4.65,linear drift reaching -5 sigma on FIT301.Pv,True,216.0,1.0
+1,WinAE,model+rules,S1-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:00:12,2026-03-11 13:03:42,0.0,P205.Status status inverted without physical response,True,74.0,1.0
+1,WinAE,model+rules,,_false_alarms,,,,,,,,0,,
+1,LSTM-AE,model,S1-01,spike,PIT502.Pv,P5,sensor,2026-03-11 10:38:18,2026-03-11 10:41:49,6.58,short spike of 7 sigma on PIT502.Pv,False,,1.0
+1,LSTM-AE,model,S1-02,bias,FIT301.Pv,P3,sensor,2026-03-11 10:50:28,2026-03-11 10:55:18,-2.85,constant offset of -3 sigma on FIT301.Pv,True,173.0,1.0
+1,LSTM-AE,model,S1-03,drift,FIT301.Pv,P3,sensor,2026-03-11 11:02:51,2026-03-11 11:07:19,-4.65,linear drift reaching -5 sigma on FIT301.Pv,True,240.0,1.0
 1,LSTM-AE,model,S1-04,stuck,LIT601.Pv,P6,sensor,2026-03-11 11:14:30,2026-03-11 11:16:33,0.0,LIT601.Pv frozen at its last value,False,,5.0
-1,LSTM-AE,model,S1-05,noise,FIT502.Pv,P5,sensor,2026-03-11 11:25:04,2026-03-11 11:29:34,2.66,Gaussian noise of 3 sigma added to FIT502.Pv,True,59.0,1.0
-1,LSTM-AE,model,S1-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:37:36,2026-03-11 11:41:40,0.0,MV501.Status status inverted without physical response,True,58.0,1.0
-1,LSTM-AE,model,S1-07,replay,LIT101.Pv,P1,sensor,2026-03-11 11:49:00,2026-03-11 11:53:20,0.0,LIT101.Pv replaced by a replay of its values 30 min earlier,False,,1.0
+1,LSTM-AE,model,S1-05,noise,FIT502.Pv,P5,sensor,2026-03-11 11:25:04,2026-03-11 11:29:34,2.66,Gaussian noise of 3 sigma added to FIT502.Pv,False,,1.0
+1,LSTM-AE,model,S1-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:37:36,2026-03-11 11:41:40,0.0,MV501.Status status inverted without physical response,True,62.0,1.0
+1,LSTM-AE,model,S1-07,replay,LIT101.Pv,P1,sensor,2026-03-11 11:49:00,2026-03-11 11:53:20,0.0,LIT101.Pv replaced by a replay of its values 30 min earlier,False,,3.0
 1,LSTM-AE,model,S1-08,spike,FIT301.Pv,P3,sensor,2026-03-11 12:01:16,2026-03-11 12:03:26,8.58,short spike of 9 sigma on FIT301.Pv,False,,1.0
-1,LSTM-AE,model,S1-09,bias,FIT101.Pv,P1,sensor,2026-03-11 12:12:21,2026-03-11 12:17:11,-3.51,constant offset of -4 sigma on FIT101.Pv,True,62.0,1.0
+1,LSTM-AE,model,S1-09,bias,FIT101.Pv,P1,sensor,2026-03-11 12:12:21,2026-03-11 12:17:11,-3.51,constant offset of -4 sigma on FIT101.Pv,True,82.0,1.0
 1,LSTM-AE,model,S1-10,drift,FIT504.Pv,P5,sensor,2026-03-11 12:25:02,2026-03-11 12:27:12,-3.83,linear drift reaching -4 sigma on FIT504.Pv,False,,1.0
-1,LSTM-AE,model,S1-11,stuck,FIT501.Pv,P5,sensor,2026-03-11 12:35:06,2026-03-11 12:38:44,0.0,FIT501.Pv frozen at its last value,False,,20.0
-1,LSTM-AE,model,S1-12,noise,FIT501.Pv,P5,sensor,2026-03-11 12:46:51,2026-03-11 12:51:15,2.85,Gaussian noise of 3 sigma added to FIT501.Pv,True,38.0,1.0
+1,LSTM-AE,model,S1-11,stuck,FIT501.Pv,P5,sensor,2026-03-11 12:35:06,2026-03-11 12:38:44,0.0,FIT501.Pv frozen at its last value,False,,10.0
+1,LSTM-AE,model,S1-12,noise,FIT501.Pv,P5,sensor,2026-03-11 12:46:51,2026-03-11 12:51:15,2.85,Gaussian noise of 3 sigma added to FIT501.Pv,True,232.0,1.0
 1,LSTM-AE,model,S1-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:00:12,2026-03-11 13:03:42,0.0,P205.Status status inverted without physical response,False,,1.0
-1,LSTM-AE,model,,_false_alarms,,,,,,,,3,,
-1,LSTM-AE,model+rules,S1-01,spike,PIT502.Pv,P5,sensor,2026-03-11 10:38:18,2026-03-11 10:41:49,6.58,short spike of 7 sigma on PIT502.Pv,False,,3.0
+1,LSTM-AE,model,,_false_alarms,,,,,,,,1,,
+1,LSTM-AE,model+rules,S1-01,spike,PIT502.Pv,P5,sensor,2026-03-11 10:38:18,2026-03-11 10:41:49,6.58,short spike of 7 sigma on PIT502.Pv,False,,1.0
 1,LSTM-AE,model+rules,S1-02,bias,FIT301.Pv,P3,sensor,2026-03-11 10:50:28,2026-03-11 10:55:18,-2.85,constant offset of -3 sigma on FIT301.Pv,True,0.0,1.0
 1,LSTM-AE,model+rules,S1-03,drift,FIT301.Pv,P3,sensor,2026-03-11 11:02:51,2026-03-11 11:07:19,-4.65,linear drift reaching -5 sigma on FIT301.Pv,True,143.0,1.0
 1,LSTM-AE,model+rules,S1-04,stuck,LIT601.Pv,P6,sensor,2026-03-11 11:14:30,2026-03-11 11:16:33,0.0,LIT601.Pv frozen at its last value,False,,5.0
-1,LSTM-AE,model+rules,S1-05,noise,FIT502.Pv,P5,sensor,2026-03-11 11:25:04,2026-03-11 11:29:34,2.66,Gaussian noise of 3 sigma added to FIT502.Pv,True,59.0,1.0
-1,LSTM-AE,model+rules,S1-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:37:36,2026-03-11 11:41:40,0.0,MV501.Status status inverted without physical response,True,58.0,1.0
-1,LSTM-AE,model+rules,S1-07,replay,LIT101.Pv,P1,sensor,2026-03-11 11:49:00,2026-03-11 11:53:20,0.0,LIT101.Pv replaced by a replay of its values 30 min earlier,False,,1.0
+1,LSTM-AE,model+rules,S1-05,noise,FIT502.Pv,P5,sensor,2026-03-11 11:25:04,2026-03-11 11:29:34,2.66,Gaussian noise of 3 sigma added to FIT502.Pv,False,,1.0
+1,LSTM-AE,model+rules,S1-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:37:36,2026-03-11 11:41:40,0.0,MV501.Status status inverted without physical response,True,62.0,1.0
+1,LSTM-AE,model+rules,S1-07,replay,LIT101.Pv,P1,sensor,2026-03-11 11:49:00,2026-03-11 11:53:20,0.0,LIT101.Pv replaced by a replay of its values 30 min earlier,False,,3.0
 1,LSTM-AE,model+rules,S1-08,spike,FIT301.Pv,P3,sensor,2026-03-11 12:01:16,2026-03-11 12:03:26,8.58,short spike of 9 sigma on FIT301.Pv,True,0.0,1.0
 1,LSTM-AE,model+rules,S1-09,bias,FIT101.Pv,P1,sensor,2026-03-11 12:12:21,2026-03-11 12:17:11,-3.51,constant offset of -4 sigma on FIT101.Pv,True,0.0,1.0
 1,LSTM-AE,model+rules,S1-10,drift,FIT504.Pv,P5,sensor,2026-03-11 12:25:02,2026-03-11 12:27:12,-3.83,linear drift reaching -4 sigma on FIT504.Pv,False,,1.0
-1,LSTM-AE,model+rules,S1-11,stuck,FIT501.Pv,P5,sensor,2026-03-11 12:35:06,2026-03-11 12:38:44,0.0,FIT501.Pv frozen at its last value,False,,20.0
+1,LSTM-AE,model+rules,S1-11,stuck,FIT501.Pv,P5,sensor,2026-03-11 12:35:06,2026-03-11 12:38:44,0.0,FIT501.Pv frozen at its last value,False,,10.0
 1,LSTM-AE,model+rules,S1-12,noise,FIT501.Pv,P5,sensor,2026-03-11 12:46:51,2026-03-11 12:51:15,2.85,Gaussian noise of 3 sigma added to FIT501.Pv,True,6.0,1.0
 1,LSTM-AE,model+rules,S1-13,actuator_flip,P205.Status,P2,actuator,2026-03-11 13:00:12,2026-03-11 13:03:42,0.0,P205.Status status inverted without physical response,False,,1.0
-1,LSTM-AE,model+rules,,_false_alarms,,,,,,,,3,,
-2,IForest,model,S2-01,spike,FIT101.Pv,P1,sensor,2026-03-11 10:40:51,2026-03-11 10:43:37,-9.26,short spike of -9 sigma on FIT101.Pv,False,,17.0
-2,IForest,model,S2-02,bias,LIT401.Pv,P4,sensor,2026-03-11 10:51:32,2026-03-11 10:53:47,3.46,constant offset of +3 sigma on LIT401.Pv,False,,9.0
-2,IForest,model,S2-03,drift,LIT601.Pv,P6,sensor,2026-03-11 11:02:47,2026-03-11 11:05:20,-3.82,linear drift reaching -4 sigma on LIT601.Pv,False,,17.0
+1,LSTM-AE,model+rules,,_false_alarms,,,,,,,,1,,
+2,IForest,model,S2-01,spike,FIT101.Pv,P1,sensor,2026-03-11 10:40:51,2026-03-11 10:43:37,-9.26,short spike of -9 sigma on FIT101.Pv,False,,16.0
+2,IForest,model,S2-02,bias,LIT401.Pv,P4,sensor,2026-03-11 10:51:32,2026-03-11 10:53:47,3.46,constant offset of +3 sigma on LIT401.Pv,False,,10.0
+2,IForest,model,S2-03,drift,LIT601.Pv,P6,sensor,2026-03-11 11:02:47,2026-03-11 11:05:20,-3.82,linear drift reaching -4 sigma on LIT601.Pv,False,,16.0
 2,IForest,model,S2-04,stuck,DPIT301.Pv,P3,sensor,2026-03-11 11:12:45,2026-03-11 11:16:42,0.0,DPIT301.Pv frozen at its last value,True,101.0,22.0
 2,IForest,model,S2-05,noise,FIT201.Pv,P2,sensor,2026-03-11 11:24:50,2026-03-11 11:27:36,2.87,Gaussian noise of 3 sigma added to FIT201.Pv,False,,15.0
 2,IForest,model,S2-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:34:58,2026-03-11 11:37:08,0.0,MV501.Status status inverted without physical response,False,,1.0
 2,IForest,model,S2-07,replay,FIT602.Pv,P6,sensor,2026-03-11 11:45:48,2026-03-11 11:49:05,0.0,FIT602.Pv replaced by a replay of its values 30 min earlier,False,,5.0
-2,IForest,model,S2-08,spike,PIT501.Pv,P5,sensor,2026-03-11 11:57:36,2026-03-11 11:59:37,8.91,short spike of 9 sigma on PIT501.Pv,False,,8.0
+2,IForest,model,S2-08,spike,PIT501.Pv,P5,sensor,2026-03-11 11:57:36,2026-03-11 11:59:37,8.91,short spike of 9 sigma on PIT501.Pv,False,,11.0
 2,IForest,model,S2-09,bias,FIT602.Pv,P6,sensor,2026-03-11 12:07:43,2026-03-11 12:12:26,-3.43,constant offset of -3 sigma on FIT602.Pv,False,,7.0
-2,IForest,model,S2-10,drift,FIT503.Pv,P5,sensor,2026-03-11 12:19:54,2026-03-11 12:22:35,-5.24,linear drift reaching -5 sigma on FIT503.Pv,False,,1.0
-2,IForest,model,S2-11,stuck,PIT502.Pv,P5,sensor,2026-03-11 12:30:53,2026-03-11 12:32:59,0.0,PIT502.Pv frozen at its last value,False,,29.0
-2,IForest,model,S2-12,noise,DPIT301.Pv,P3,sensor,2026-03-11 12:41:23,2026-03-11 12:44:59,2.97,Gaussian noise of 3 sigma added to DPIT301.Pv,False,,16.0
+2,IForest,model,S2-10,drift,FIT503.Pv,P5,sensor,2026-03-11 12:19:54,2026-03-11 12:22:35,-5.24,linear drift reaching -5 sigma on FIT503.Pv,False,,3.0
+2,IForest,model,S2-11,stuck,PIT502.Pv,P5,sensor,2026-03-11 12:30:53,2026-03-11 12:32:59,0.0,PIT502.Pv frozen at its last value,False,,27.0
+2,IForest,model,S2-12,noise,DPIT301.Pv,P3,sensor,2026-03-11 12:41:23,2026-03-11 12:44:59,2.97,Gaussian noise of 3 sigma added to DPIT301.Pv,False,,17.0
 2,IForest,model,S2-13,actuator_flip,P301.Status,P3,actuator,2026-03-11 12:52:48,2026-03-11 12:55:13,0.0,P301.Status status inverted without physical response,False,,14.0
-2,IForest,model,S2-14,replay,FIT504.Pv,P5,sensor,2026-03-11 13:04:04,2026-03-11 13:06:08,0.0,FIT504.Pv replaced by a replay of its values 30 min earlier,False,,1.0
+2,IForest,model,S2-14,replay,FIT504.Pv,P5,sensor,2026-03-11 13:04:04,2026-03-11 13:06:08,0.0,FIT504.Pv replaced by a replay of its values 30 min earlier,False,,2.0
 2,IForest,model,,_false_alarms,,,,,,,,4,,
 2,IForest,model+rules,S2-01,spike,FIT101.Pv,P1,sensor,2026-03-11 10:40:51,2026-03-11 10:43:37,-9.26,short spike of -9 sigma on FIT101.Pv,True,0.0,1.0
-2,IForest,model+rules,S2-02,bias,LIT401.Pv,P4,sensor,2026-03-11 10:51:32,2026-03-11 10:53:47,3.46,constant offset of +3 sigma on LIT401.Pv,False,,9.0
-2,IForest,model+rules,S2-03,drift,LIT601.Pv,P6,sensor,2026-03-11 11:02:47,2026-03-11 11:05:20,-3.82,linear drift reaching -4 sigma on LIT601.Pv,False,,17.0
+2,IForest,model+rules,S2-02,bias,LIT401.Pv,P4,sensor,2026-03-11 10:51:32,2026-03-11 10:53:47,3.46,constant offset of +3 sigma on LIT401.Pv,False,,10.0
+2,IForest,model+rules,S2-03,drift,LIT601.Pv,P6,sensor,2026-03-11 11:02:47,2026-03-11 11:05:20,-3.82,linear drift reaching -4 sigma on LIT601.Pv,False,,16.0
 2,IForest,model+rules,S2-04,stuck,DPIT301.Pv,P3,sensor,2026-03-11 11:12:45,2026-03-11 11:16:42,0.0,DPIT301.Pv frozen at its last value,True,101.0,22.0
-2,IForest,model+rules,S2-05,noise,FIT201.Pv,P2,sensor,2026-03-11 11:24:50,2026-03-11 11:27:36,2.87,Gaussian noise of 3 sigma added to FIT201.Pv,True,0.0,4.0
+2,IForest,model+rules,S2-05,noise,FIT201.Pv,P2,sensor,2026-03-11 11:24:50,2026-03-11 11:27:36,2.87,Gaussian noise of 3 sigma added to FIT201.Pv,True,0.0,1.0
 2,IForest,model+rules,S2-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:34:58,2026-03-11 11:37:08,0.0,MV501.Status status inverted without physical response,False,,1.0
 2,IForest,model+rules,S2-07,replay,FIT602.Pv,P6,sensor,2026-03-11 11:45:48,2026-03-11 11:49:05,0.0,FIT602.Pv replaced by a replay of its values 30 min earlier,False,,5.0
 2,IForest,model+rules,S2-08,spike,PIT501.Pv,P5,sensor,2026-03-11 11:57:36,2026-03-11 11:59:37,8.91,short spike of 9 sigma on PIT501.Pv,True,0.0,1.0
-2,IForest,model+rules,S2-09,bias,FIT602.Pv,P6,sensor,2026-03-11 12:07:43,2026-03-11 12:12:26,-3.43,constant offset of -3 sigma on FIT602.Pv,True,52.0,4.0
-2,IForest,model+rules,S2-10,drift,FIT503.Pv,P5,sensor,2026-03-11 12:19:54,2026-03-11 12:22:35,-5.24,linear drift reaching -5 sigma on FIT503.Pv,False,,1.0
-2,IForest,model+rules,S2-11,stuck,PIT502.Pv,P5,sensor,2026-03-11 12:30:53,2026-03-11 12:32:59,0.0,PIT502.Pv frozen at its last value,False,,29.0
+2,IForest,model+rules,S2-09,bias,FIT602.Pv,P6,sensor,2026-03-11 12:07:43,2026-03-11 12:12:26,-3.43,constant offset of -3 sigma on FIT602.Pv,True,52.0,1.0
+2,IForest,model+rules,S2-10,drift,FIT503.Pv,P5,sensor,2026-03-11 12:19:54,2026-03-11 12:22:35,-5.24,linear drift reaching -5 sigma on FIT503.Pv,False,,3.0
+2,IForest,model+rules,S2-11,stuck,PIT502.Pv,P5,sensor,2026-03-11 12:30:53,2026-03-11 12:32:59,0.0,PIT502.Pv frozen at its last value,False,,27.0
 2,IForest,model+rules,S2-12,noise,DPIT301.Pv,P3,sensor,2026-03-11 12:41:23,2026-03-11 12:44:59,2.97,Gaussian noise of 3 sigma added to DPIT301.Pv,True,0.0,6.0
 2,IForest,model+rules,S2-13,actuator_flip,P301.Status,P3,actuator,2026-03-11 12:52:48,2026-03-11 12:55:13,0.0,P301.Status status inverted without physical response,False,,14.0
-2,IForest,model+rules,S2-14,replay,FIT504.Pv,P5,sensor,2026-03-11 13:04:04,2026-03-11 13:06:08,0.0,FIT504.Pv replaced by a replay of its values 30 min earlier,False,,1.0
+2,IForest,model+rules,S2-14,replay,FIT504.Pv,P5,sensor,2026-03-11 13:04:04,2026-03-11 13:06:08,0.0,FIT504.Pv replaced by a replay of its values 30 min earlier,False,,2.0
 2,IForest,model+rules,,_false_alarms,,,,,,,,4,,
 2,GMM,model,S2-01,spike,FIT101.Pv,P1,sensor,2026-03-11 10:40:51,2026-03-11 10:43:37,-9.26,short spike of -9 sigma on FIT101.Pv,True,4.0,1.0
-2,GMM,model,S2-02,bias,LIT401.Pv,P4,sensor,2026-03-11 10:51:32,2026-03-11 10:53:47,3.46,constant offset of +3 sigma on LIT401.Pv,False,,15.0
-2,GMM,model,S2-03,drift,LIT601.Pv,P6,sensor,2026-03-11 11:02:47,2026-03-11 11:05:20,-3.82,linear drift reaching -4 sigma on LIT601.Pv,False,,8.0
-2,GMM,model,S2-04,stuck,DPIT301.Pv,P3,sensor,2026-03-11 11:12:45,2026-03-11 11:16:42,0.0,DPIT301.Pv frozen at its last value,False,,16.0
+2,GMM,model,S2-02,bias,LIT401.Pv,P4,sensor,2026-03-11 10:51:32,2026-03-11 10:53:47,3.46,constant offset of +3 sigma on LIT401.Pv,False,,4.0
+2,GMM,model,S2-03,drift,LIT601.Pv,P6,sensor,2026-03-11 11:02:47,2026-03-11 11:05:20,-3.82,linear drift reaching -4 sigma on LIT601.Pv,False,,3.0
+2,GMM,model,S2-04,stuck,DPIT301.Pv,P3,sensor,2026-03-11 11:12:45,2026-03-11 11:16:42,0.0,DPIT301.Pv frozen at its last value,False,,5.0
 2,GMM,model,S2-05,noise,FIT201.Pv,P2,sensor,2026-03-11 11:24:50,2026-03-11 11:27:36,2.87,Gaussian noise of 3 sigma added to FIT201.Pv,True,12.0,1.0
-2,GMM,model,S2-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:34:58,2026-03-11 11:37:08,0.0,MV501.Status status inverted without physical response,True,4.0,3.0
-2,GMM,model,S2-07,replay,FIT602.Pv,P6,sensor,2026-03-11 11:45:48,2026-03-11 11:49:05,0.0,FIT602.Pv replaced by a replay of its values 30 min earlier,True,181.0,14.0
-2,GMM,model,S2-08,spike,PIT501.Pv,P5,sensor,2026-03-11 11:57:36,2026-03-11 11:59:37,8.91,short spike of 9 sigma on PIT501.Pv,True,4.0,2.0
-2,GMM,model,S2-09,bias,FIT602.Pv,P6,sensor,2026-03-11 12:07:43,2026-03-11 12:12:26,-3.43,constant offset of -3 sigma on FIT602.Pv,False,,6.0
-2,GMM,model,S2-10,drift,FIT503.Pv,P5,sensor,2026-03-11 12:19:54,2026-03-11 12:22:35,-5.24,linear drift reaching -5 sigma on FIT503.Pv,True,16.0,1.0
-2,GMM,model,S2-11,stuck,PIT502.Pv,P5,sensor,2026-03-11 12:30:53,2026-03-11 12:32:59,0.0,PIT502.Pv frozen at its last value,False,,29.0
-2,GMM,model,S2-12,noise,DPIT301.Pv,P3,sensor,2026-03-11 12:41:23,2026-03-11 12:44:59,2.97,Gaussian noise of 3 sigma added to DPIT301.Pv,True,6.0,6.0
+2,GMM,model,S2-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:34:58,2026-03-11 11:37:08,0.0,MV501.Status status inverted without physical response,True,4.0,2.0
+2,GMM,model,S2-07,replay,FIT602.Pv,P6,sensor,2026-03-11 11:45:48,2026-03-11 11:49:05,0.0,FIT602.Pv replaced by a replay of its values 30 min earlier,True,181.0,3.0
+2,GMM,model,S2-08,spike,PIT501.Pv,P5,sensor,2026-03-11 11:57:36,2026-03-11 11:59:37,8.91,short spike of 9 sigma on PIT501.Pv,True,4.0,1.0
+2,GMM,model,S2-09,bias,FIT602.Pv,P6,sensor,2026-03-11 12:07:43,2026-03-11 12:12:26,-3.43,constant offset of -3 sigma on FIT602.Pv,False,,2.0
+2,GMM,model,S2-10,drift,FIT503.Pv,P5,sensor,2026-03-11 12:19:54,2026-03-11 12:22:35,-5.24,linear drift reaching -5 sigma on FIT503.Pv,True,26.0,1.0
+2,GMM,model,S2-11,stuck,PIT502.Pv,P5,sensor,2026-03-11 12:30:53,2026-03-11 12:32:59,0.0,PIT502.Pv frozen at its last value,False,,30.0
+2,GMM,model,S2-12,noise,DPIT301.Pv,P3,sensor,2026-03-11 12:41:23,2026-03-11 12:44:59,2.97,Gaussian noise of 3 sigma added to DPIT301.Pv,True,6.0,1.0
 2,GMM,model,S2-13,actuator_flip,P301.Status,P3,actuator,2026-03-11 12:52:48,2026-03-11 12:55:13,0.0,P301.Status status inverted without physical response,False,,1.0
 2,GMM,model,S2-14,replay,FIT504.Pv,P5,sensor,2026-03-11 13:04:04,2026-03-11 13:06:08,0.0,FIT504.Pv replaced by a replay of its values 30 min earlier,False,,1.0
 2,GMM,model,,_false_alarms,,,,,,,,2,,
 2,GMM,model+rules,S2-01,spike,FIT101.Pv,P1,sensor,2026-03-11 10:40:51,2026-03-11 10:43:37,-9.26,short spike of -9 sigma on FIT101.Pv,True,0.0,1.0
-2,GMM,model+rules,S2-02,bias,LIT401.Pv,P4,sensor,2026-03-11 10:51:32,2026-03-11 10:53:47,3.46,constant offset of +3 sigma on LIT401.Pv,False,,15.0
-2,GMM,model+rules,S2-03,drift,LIT601.Pv,P6,sensor,2026-03-11 11:02:47,2026-03-11 11:05:20,-3.82,linear drift reaching -4 sigma on LIT601.Pv,False,,8.0
-2,GMM,model+rules,S2-04,stuck,DPIT301.Pv,P3,sensor,2026-03-11 11:12:45,2026-03-11 11:16:42,0.0,DPIT301.Pv frozen at its last value,False,,16.0
+2,GMM,model+rules,S2-02,bias,LIT401.Pv,P4,sensor,2026-03-11 10:51:32,2026-03-11 10:53:47,3.46,constant offset of +3 sigma on LIT401.Pv,False,,4.0
+2,GMM,model+rules,S2-03,drift,LIT601.Pv,P6,sensor,2026-03-11 11:02:47,2026-03-11 11:05:20,-3.82,linear drift reaching -4 sigma on LIT601.Pv,False,,3.0
+2,GMM,model+rules,S2-04,stuck,DPIT301.Pv,P3,sensor,2026-03-11 11:12:45,2026-03-11 11:16:42,0.0,DPIT301.Pv frozen at its last value,False,,5.0
 2,GMM,model+rules,S2-05,noise,FIT201.Pv,P2,sensor,2026-03-11 11:24:50,2026-03-11 11:27:36,2.87,Gaussian noise of 3 sigma added to FIT201.Pv,True,0.0,1.0
-2,GMM,model+rules,S2-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:34:58,2026-03-11 11:37:08,0.0,MV501.Status status inverted without physical response,True,4.0,3.0
-2,GMM,model+rules,S2-07,replay,FIT602.Pv,P6,sensor,2026-03-11 11:45:48,2026-03-11 11:49:05,0.0,FIT602.Pv replaced by a replay of its values 30 min earlier,True,181.0,14.0
-2,GMM,model+rules,S2-08,spike,PIT501.Pv,P5,sensor,2026-03-11 11:57:36,2026-03-11 11:59:37,8.91,short spike of 9 sigma on PIT501.Pv,True,0.0,2.0
-2,GMM,model+rules,S2-09,bias,FIT602.Pv,P6,sensor,2026-03-11 12:07:43,2026-03-11 12:12:26,-3.43,constant offset of -3 sigma on FIT602.Pv,False,,4.0
-2,GMM,model+rules,S2-10,drift,FIT503.Pv,P5,sensor,2026-03-11 12:19:54,2026-03-11 12:22:35,-5.24,linear drift reaching -5 sigma on FIT503.Pv,True,16.0,1.0
-2,GMM,model+rules,S2-11,stuck,PIT502.Pv,P5,sensor,2026-03-11 12:30:53,2026-03-11 12:32:59,0.0,PIT502.Pv frozen at its last value,False,,29.0
-2,GMM,model+rules,S2-12,noise,DPIT301.Pv,P3,sensor,2026-03-11 12:41:23,2026-03-11 12:44:59,2.97,Gaussian noise of 3 sigma added to DPIT301.Pv,True,0.0,5.0
+2,GMM,model+rules,S2-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:34:58,2026-03-11 11:37:08,0.0,MV501.Status status inverted without physical response,True,4.0,2.0
+2,GMM,model+rules,S2-07,replay,FIT602.Pv,P6,sensor,2026-03-11 11:45:48,2026-03-11 11:49:05,0.0,FIT602.Pv replaced by a replay of its values 30 min earlier,True,181.0,3.0
+2,GMM,model+rules,S2-08,spike,PIT501.Pv,P5,sensor,2026-03-11 11:57:36,2026-03-11 11:59:37,8.91,short spike of 9 sigma on PIT501.Pv,True,0.0,1.0
+2,GMM,model+rules,S2-09,bias,FIT602.Pv,P6,sensor,2026-03-11 12:07:43,2026-03-11 12:12:26,-3.43,constant offset of -3 sigma on FIT602.Pv,False,,1.0
+2,GMM,model+rules,S2-10,drift,FIT503.Pv,P5,sensor,2026-03-11 12:19:54,2026-03-11 12:22:35,-5.24,linear drift reaching -5 sigma on FIT503.Pv,True,26.0,1.0
+2,GMM,model+rules,S2-11,stuck,PIT502.Pv,P5,sensor,2026-03-11 12:30:53,2026-03-11 12:32:59,0.0,PIT502.Pv frozen at its last value,False,,30.0
+2,GMM,model+rules,S2-12,noise,DPIT301.Pv,P3,sensor,2026-03-11 12:41:23,2026-03-11 12:44:59,2.97,Gaussian noise of 3 sigma added to DPIT301.Pv,True,0.0,1.0
 2,GMM,model+rules,S2-13,actuator_flip,P301.Status,P3,actuator,2026-03-11 12:52:48,2026-03-11 12:55:13,0.0,P301.Status status inverted without physical response,False,,1.0
 2,GMM,model+rules,S2-14,replay,FIT504.Pv,P5,sensor,2026-03-11 13:04:04,2026-03-11 13:06:08,0.0,FIT504.Pv replaced by a replay of its values 30 min earlier,False,,1.0
 2,GMM,model+rules,,_false_alarms,,,,,,,,2,,
 2,AE,model,S2-01,spike,FIT101.Pv,P1,sensor,2026-03-11 10:40:51,2026-03-11 10:43:37,-9.26,short spike of -9 sigma on FIT101.Pv,True,4.0,2.0
-2,AE,model,S2-02,bias,LIT401.Pv,P4,sensor,2026-03-11 10:51:32,2026-03-11 10:53:47,3.46,constant offset of +3 sigma on LIT401.Pv,False,,2.0
-2,AE,model,S2-03,drift,LIT601.Pv,P6,sensor,2026-03-11 11:02:47,2026-03-11 11:05:20,-3.82,linear drift reaching -4 sigma on LIT601.Pv,True,78.0,1.0
-2,AE,model,S2-04,stuck,DPIT301.Pv,P3,sensor,2026-03-11 11:12:45,2026-03-11 11:16:42,0.0,DPIT301.Pv frozen at its last value,False,,29.0
-2,AE,model,S2-05,noise,FIT201.Pv,P2,sensor,2026-03-11 11:24:50,2026-03-11 11:27:36,2.87,Gaussian noise of 3 sigma added to FIT201.Pv,True,13.0,1.0
+2,AE,model,S2-02,bias,LIT401.Pv,P4,sensor,2026-03-11 10:51:32,2026-03-11 10:53:47,3.46,constant offset of +3 sigma on LIT401.Pv,True,164.0,16.0
+2,AE,model,S2-03,drift,LIT601.Pv,P6,sensor,2026-03-11 11:02:47,2026-03-11 11:05:20,-3.82,linear drift reaching -4 sigma on LIT601.Pv,True,89.0,2.0
+2,AE,model,S2-04,stuck,DPIT301.Pv,P3,sensor,2026-03-11 11:12:45,2026-03-11 11:16:42,0.0,DPIT301.Pv frozen at its last value,False,,11.0
+2,AE,model,S2-05,noise,FIT201.Pv,P2,sensor,2026-03-11 11:24:50,2026-03-11 11:27:36,2.87,Gaussian noise of 3 sigma added to FIT201.Pv,True,14.0,1.0
 2,AE,model,S2-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:34:58,2026-03-11 11:37:08,0.0,MV501.Status status inverted without physical response,True,4.0,1.0
 2,AE,model,S2-07,replay,FIT602.Pv,P6,sensor,2026-03-11 11:45:48,2026-03-11 11:49:05,0.0,FIT602.Pv replaced by a replay of its values 30 min earlier,True,5.0,2.0
-2,AE,model,S2-08,spike,PIT501.Pv,P5,sensor,2026-03-11 11:57:36,2026-03-11 11:59:37,8.91,short spike of 9 sigma on PIT501.Pv,True,4.0,1.0
-2,AE,model,S2-09,bias,FIT602.Pv,P6,sensor,2026-03-11 12:07:43,2026-03-11 12:12:26,-3.43,constant offset of -3 sigma on FIT602.Pv,False,,3.0
-2,AE,model,S2-10,drift,FIT503.Pv,P5,sensor,2026-03-11 12:19:54,2026-03-11 12:22:35,-5.24,linear drift reaching -5 sigma on FIT503.Pv,True,39.0,1.0
-2,AE,model,S2-11,stuck,PIT502.Pv,P5,sensor,2026-03-11 12:30:53,2026-03-11 12:32:59,0.0,PIT502.Pv frozen at its last value,False,,30.0
-2,AE,model,S2-12,noise,DPIT301.Pv,P3,sensor,2026-03-11 12:41:23,2026-03-11 12:44:59,2.97,Gaussian noise of 3 sigma added to DPIT301.Pv,True,7.0,1.0
-2,AE,model,S2-13,actuator_flip,P301.Status,P3,actuator,2026-03-11 12:52:48,2026-03-11 12:55:13,0.0,P301.Status status inverted without physical response,True,4.0,1.0
+2,AE,model,S2-08,spike,PIT501.Pv,P5,sensor,2026-03-11 11:57:36,2026-03-11 11:59:37,8.91,short spike of 9 sigma on PIT501.Pv,False,,1.0
+2,AE,model,S2-09,bias,FIT602.Pv,P6,sensor,2026-03-11 12:07:43,2026-03-11 12:12:26,-3.43,constant offset of -3 sigma on FIT602.Pv,True,52.0,1.0
+2,AE,model,S2-10,drift,FIT503.Pv,P5,sensor,2026-03-11 12:19:54,2026-03-11 12:22:35,-5.24,linear drift reaching -5 sigma on FIT503.Pv,True,76.0,2.0
+2,AE,model,S2-11,stuck,PIT502.Pv,P5,sensor,2026-03-11 12:30:53,2026-03-11 12:32:59,0.0,PIT502.Pv frozen at its last value,False,,25.0
+2,AE,model,S2-12,noise,DPIT301.Pv,P3,sensor,2026-03-11 12:41:23,2026-03-11 12:44:59,2.97,Gaussian noise of 3 sigma added to DPIT301.Pv,True,8.0,1.0
+2,AE,model,S2-13,actuator_flip,P301.Status,P3,actuator,2026-03-11 12:52:48,2026-03-11 12:55:13,0.0,P301.Status status inverted without physical response,True,5.0,1.0
 2,AE,model,S2-14,replay,FIT504.Pv,P5,sensor,2026-03-11 13:04:04,2026-03-11 13:06:08,0.0,FIT504.Pv replaced by a replay of its values 30 min earlier,False,,2.0
-2,AE,model,,_false_alarms,,,,,,,,1,,
+2,AE,model,,_false_alarms,,,,,,,,6,,
 2,AE,model+rules,S2-01,spike,FIT101.Pv,P1,sensor,2026-03-11 10:40:51,2026-03-11 10:43:37,-9.26,short spike of -9 sigma on FIT101.Pv,True,0.0,2.0
-2,AE,model+rules,S2-02,bias,LIT401.Pv,P4,sensor,2026-03-11 10:51:32,2026-03-11 10:53:47,3.46,constant offset of +3 sigma on LIT401.Pv,False,,2.0
-2,AE,model+rules,S2-03,drift,LIT601.Pv,P6,sensor,2026-03-11 11:02:47,2026-03-11 11:05:20,-3.82,linear drift reaching -4 sigma on LIT601.Pv,True,78.0,1.0
-2,AE,model+rules,S2-04,stuck,DPIT301.Pv,P3,sensor,2026-03-11 11:12:45,2026-03-11 11:16:42,0.0,DPIT301.Pv frozen at its last value,False,,29.0
+2,AE,model+rules,S2-02,bias,LIT401.Pv,P4,sensor,2026-03-11 10:51:32,2026-03-11 10:53:47,3.46,constant offset of +3 sigma on LIT401.Pv,True,164.0,16.0
+2,AE,model+rules,S2-03,drift,LIT601.Pv,P6,sensor,2026-03-11 11:02:47,2026-03-11 11:05:20,-3.82,linear drift reaching -4 sigma on LIT601.Pv,True,89.0,2.0
+2,AE,model+rules,S2-04,stuck,DPIT301.Pv,P3,sensor,2026-03-11 11:12:45,2026-03-11 11:16:42,0.0,DPIT301.Pv frozen at its last value,False,,11.0
 2,AE,model+rules,S2-05,noise,FIT201.Pv,P2,sensor,2026-03-11 11:24:50,2026-03-11 11:27:36,2.87,Gaussian noise of 3 sigma added to FIT201.Pv,True,0.0,1.0
 2,AE,model+rules,S2-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:34:58,2026-03-11 11:37:08,0.0,MV501.Status status inverted without physical response,True,4.0,1.0
 2,AE,model+rules,S2-07,replay,FIT602.Pv,P6,sensor,2026-03-11 11:45:48,2026-03-11 11:49:05,0.0,FIT602.Pv replaced by a replay of its values 30 min earlier,True,5.0,2.0
-2,AE,model+rules,S2-08,spike,PIT501.Pv,P5,sensor,2026-03-11 11:57:36,2026-03-11 11:59:37,8.91,short spike of 9 sigma on PIT501.Pv,True,0.0,1.0
-2,AE,model+rules,S2-09,bias,FIT602.Pv,P6,sensor,2026-03-11 12:07:43,2026-03-11 12:12:26,-3.43,constant offset of -3 sigma on FIT602.Pv,False,,1.0
-2,AE,model+rules,S2-10,drift,FIT503.Pv,P5,sensor,2026-03-11 12:19:54,2026-03-11 12:22:35,-5.24,linear drift reaching -5 sigma on FIT503.Pv,True,39.0,1.0
-2,AE,model+rules,S2-11,stuck,PIT502.Pv,P5,sensor,2026-03-11 12:30:53,2026-03-11 12:32:59,0.0,PIT502.Pv frozen at its last value,False,,30.0
+2,AE,model+rules,S2-08,spike,PIT501.Pv,P5,sensor,2026-03-11 11:57:36,2026-03-11 11:59:37,8.91,short spike of 9 sigma on PIT501.Pv,False,,1.0
+2,AE,model+rules,S2-09,bias,FIT602.Pv,P6,sensor,2026-03-11 12:07:43,2026-03-11 12:12:26,-3.43,constant offset of -3 sigma on FIT602.Pv,True,52.0,1.0
+2,AE,model+rules,S2-10,drift,FIT503.Pv,P5,sensor,2026-03-11 12:19:54,2026-03-11 12:22:35,-5.24,linear drift reaching -5 sigma on FIT503.Pv,True,76.0,2.0
+2,AE,model+rules,S2-11,stuck,PIT502.Pv,P5,sensor,2026-03-11 12:30:53,2026-03-11 12:32:59,0.0,PIT502.Pv frozen at its last value,False,,25.0
 2,AE,model+rules,S2-12,noise,DPIT301.Pv,P3,sensor,2026-03-11 12:41:23,2026-03-11 12:44:59,2.97,Gaussian noise of 3 sigma added to DPIT301.Pv,True,0.0,1.0
-2,AE,model+rules,S2-13,actuator_flip,P301.Status,P3,actuator,2026-03-11 12:52:48,2026-03-11 12:55:13,0.0,P301.Status status inverted without physical response,True,4.0,1.0
+2,AE,model+rules,S2-13,actuator_flip,P301.Status,P3,actuator,2026-03-11 12:52:48,2026-03-11 12:55:13,0.0,P301.Status status inverted without physical response,True,5.0,1.0
 2,AE,model+rules,S2-14,replay,FIT504.Pv,P5,sensor,2026-03-11 13:04:04,2026-03-11 13:06:08,0.0,FIT504.Pv replaced by a replay of its values 30 min earlier,False,,2.0
-2,AE,model+rules,,_false_alarms,,,,,,,,1,,
-2,WinAE,model,S2-01,spike,FIT101.Pv,P1,sensor,2026-03-11 10:40:51,2026-03-11 10:43:37,-9.26,short spike of -9 sigma on FIT101.Pv,False,,1.0
-2,WinAE,model,S2-02,bias,LIT401.Pv,P4,sensor,2026-03-11 10:51:32,2026-03-11 10:53:47,3.46,constant offset of +3 sigma on LIT401.Pv,True,169.0,1.0
-2,WinAE,model,S2-03,drift,LIT601.Pv,P6,sensor,2026-03-11 11:02:47,2026-03-11 11:05:20,-3.82,linear drift reaching -4 sigma on LIT601.Pv,True,103.0,1.0
-2,WinAE,model,S2-04,stuck,DPIT301.Pv,P3,sensor,2026-03-11 11:12:45,2026-03-11 11:16:42,0.0,DPIT301.Pv frozen at its last value,False,,7.0
-2,WinAE,model,S2-05,noise,FIT201.Pv,P2,sensor,2026-03-11 11:24:50,2026-03-11 11:27:36,2.87,Gaussian noise of 3 sigma added to FIT201.Pv,True,54.0,1.0
-2,WinAE,model,S2-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:34:58,2026-03-11 11:37:08,0.0,MV501.Status status inverted without physical response,True,18.0,1.0
+2,AE,model+rules,,_false_alarms,,,,,,,,6,,
+2,WinAE,model,S2-01,spike,FIT101.Pv,P1,sensor,2026-03-11 10:40:51,2026-03-11 10:43:37,-9.26,short spike of -9 sigma on FIT101.Pv,False,,2.0
+2,WinAE,model,S2-02,bias,LIT401.Pv,P4,sensor,2026-03-11 10:51:32,2026-03-11 10:53:47,3.46,constant offset of +3 sigma on LIT401.Pv,True,173.0,1.0
+2,WinAE,model,S2-03,drift,LIT601.Pv,P6,sensor,2026-03-11 11:02:47,2026-03-11 11:05:20,-3.82,linear drift reaching -4 sigma on LIT601.Pv,True,109.0,1.0
+2,WinAE,model,S2-04,stuck,DPIT301.Pv,P3,sensor,2026-03-11 11:12:45,2026-03-11 11:16:42,0.0,DPIT301.Pv frozen at its last value,False,,16.0
+2,WinAE,model,S2-05,noise,FIT201.Pv,P2,sensor,2026-03-11 11:24:50,2026-03-11 11:27:36,2.87,Gaussian noise of 3 sigma added to FIT201.Pv,True,55.0,1.0
+2,WinAE,model,S2-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:34:58,2026-03-11 11:37:08,0.0,MV501.Status status inverted without physical response,True,22.0,1.0
 2,WinAE,model,S2-07,replay,FIT602.Pv,P6,sensor,2026-03-11 11:45:48,2026-03-11 11:49:05,0.0,FIT602.Pv replaced by a replay of its values 30 min earlier,False,,2.0
 2,WinAE,model,S2-08,spike,PIT501.Pv,P5,sensor,2026-03-11 11:57:36,2026-03-11 11:59:37,8.91,short spike of 9 sigma on PIT501.Pv,True,2.0,1.0
-2,WinAE,model,S2-09,bias,FIT602.Pv,P6,sensor,2026-03-11 12:07:43,2026-03-11 12:12:26,-3.43,constant offset of -3 sigma on FIT602.Pv,True,9.0,1.0
-2,WinAE,model,S2-10,drift,FIT503.Pv,P5,sensor,2026-03-11 12:19:54,2026-03-11 12:22:35,-5.24,linear drift reaching -5 sigma on FIT503.Pv,True,67.0,1.0
-2,WinAE,model,S2-11,stuck,PIT502.Pv,P5,sensor,2026-03-11 12:30:53,2026-03-11 12:32:59,0.0,PIT502.Pv frozen at its last value,False,,32.0
+2,WinAE,model,S2-09,bias,FIT602.Pv,P6,sensor,2026-03-11 12:07:43,2026-03-11 12:12:26,-3.43,constant offset of -3 sigma on FIT602.Pv,True,50.0,6.0
+2,WinAE,model,S2-10,drift,FIT503.Pv,P5,sensor,2026-03-11 12:19:54,2026-03-11 12:22:35,-5.24,linear drift reaching -5 sigma on FIT503.Pv,True,105.0,1.0
+2,WinAE,model,S2-11,stuck,PIT502.Pv,P5,sensor,2026-03-11 12:30:53,2026-03-11 12:32:59,0.0,PIT502.Pv frozen at its last value,False,,19.0
 2,WinAE,model,S2-12,noise,DPIT301.Pv,P3,sensor,2026-03-11 12:41:23,2026-03-11 12:44:59,2.97,Gaussian noise of 3 sigma added to DPIT301.Pv,True,39.0,1.0
-2,WinAE,model,S2-13,actuator_flip,P301.Status,P3,actuator,2026-03-11 12:52:48,2026-03-11 12:55:13,0.0,P301.Status status inverted without physical response,False,,1.0
-2,WinAE,model,S2-14,replay,FIT504.Pv,P5,sensor,2026-03-11 13:04:04,2026-03-11 13:06:08,0.0,FIT504.Pv replaced by a replay of its values 30 min earlier,False,,1.0
+2,WinAE,model,S2-13,actuator_flip,P301.Status,P3,actuator,2026-03-11 12:52:48,2026-03-11 12:55:13,0.0,P301.Status status inverted without physical response,False,,3.0
+2,WinAE,model,S2-14,replay,FIT504.Pv,P5,sensor,2026-03-11 13:04:04,2026-03-11 13:06:08,0.0,FIT504.Pv replaced by a replay of its values 30 min earlier,False,,2.0
 2,WinAE,model,,_false_alarms,,,,,,,,0,,
 2,WinAE,model+rules,S2-01,spike,FIT101.Pv,P1,sensor,2026-03-11 10:40:51,2026-03-11 10:43:37,-9.26,short spike of -9 sigma on FIT101.Pv,True,0.0,1.0
-2,WinAE,model+rules,S2-02,bias,LIT401.Pv,P4,sensor,2026-03-11 10:51:32,2026-03-11 10:53:47,3.46,constant offset of +3 sigma on LIT401.Pv,True,169.0,1.0
-2,WinAE,model+rules,S2-03,drift,LIT601.Pv,P6,sensor,2026-03-11 11:02:47,2026-03-11 11:05:20,-3.82,linear drift reaching -4 sigma on LIT601.Pv,True,103.0,1.0
-2,WinAE,model+rules,S2-04,stuck,DPIT301.Pv,P3,sensor,2026-03-11 11:12:45,2026-03-11 11:16:42,0.0,DPIT301.Pv frozen at its last value,False,,7.0
+2,WinAE,model+rules,S2-02,bias,LIT401.Pv,P4,sensor,2026-03-11 10:51:32,2026-03-11 10:53:47,3.46,constant offset of +3 sigma on LIT401.Pv,True,173.0,1.0
+2,WinAE,model+rules,S2-03,drift,LIT601.Pv,P6,sensor,2026-03-11 11:02:47,2026-03-11 11:05:20,-3.82,linear drift reaching -4 sigma on LIT601.Pv,True,109.0,1.0
+2,WinAE,model+rules,S2-04,stuck,DPIT301.Pv,P3,sensor,2026-03-11 11:12:45,2026-03-11 11:16:42,0.0,DPIT301.Pv frozen at its last value,False,,16.0
 2,WinAE,model+rules,S2-05,noise,FIT201.Pv,P2,sensor,2026-03-11 11:24:50,2026-03-11 11:27:36,2.87,Gaussian noise of 3 sigma added to FIT201.Pv,True,0.0,1.0
-2,WinAE,model+rules,S2-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:34:58,2026-03-11 11:37:08,0.0,MV501.Status status inverted without physical response,True,18.0,1.0
+2,WinAE,model+rules,S2-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:34:58,2026-03-11 11:37:08,0.0,MV501.Status status inverted without physical response,True,22.0,1.0
 2,WinAE,model+rules,S2-07,replay,FIT602.Pv,P6,sensor,2026-03-11 11:45:48,2026-03-11 11:49:05,0.0,FIT602.Pv replaced by a replay of its values 30 min earlier,False,,2.0
 2,WinAE,model+rules,S2-08,spike,PIT501.Pv,P5,sensor,2026-03-11 11:57:36,2026-03-11 11:59:37,8.91,short spike of 9 sigma on PIT501.Pv,True,0.0,1.0
-2,WinAE,model+rules,S2-09,bias,FIT602.Pv,P6,sensor,2026-03-11 12:07:43,2026-03-11 12:12:26,-3.43,constant offset of -3 sigma on FIT602.Pv,True,9.0,1.0
-2,WinAE,model+rules,S2-10,drift,FIT503.Pv,P5,sensor,2026-03-11 12:19:54,2026-03-11 12:22:35,-5.24,linear drift reaching -5 sigma on FIT503.Pv,True,67.0,1.0
-2,WinAE,model+rules,S2-11,stuck,PIT502.Pv,P5,sensor,2026-03-11 12:30:53,2026-03-11 12:32:59,0.0,PIT502.Pv frozen at its last value,False,,32.0
+2,WinAE,model+rules,S2-09,bias,FIT602.Pv,P6,sensor,2026-03-11 12:07:43,2026-03-11 12:12:26,-3.43,constant offset of -3 sigma on FIT602.Pv,True,50.0,6.0
+2,WinAE,model+rules,S2-10,drift,FIT503.Pv,P5,sensor,2026-03-11 12:19:54,2026-03-11 12:22:35,-5.24,linear drift reaching -5 sigma on FIT503.Pv,True,105.0,1.0
+2,WinAE,model+rules,S2-11,stuck,PIT502.Pv,P5,sensor,2026-03-11 12:30:53,2026-03-11 12:32:59,0.0,PIT502.Pv frozen at its last value,False,,19.0
 2,WinAE,model+rules,S2-12,noise,DPIT301.Pv,P3,sensor,2026-03-11 12:41:23,2026-03-11 12:44:59,2.97,Gaussian noise of 3 sigma added to DPIT301.Pv,True,0.0,1.0
-2,WinAE,model+rules,S2-13,actuator_flip,P301.Status,P3,actuator,2026-03-11 12:52:48,2026-03-11 12:55:13,0.0,P301.Status status inverted without physical response,False,,1.0
-2,WinAE,model+rules,S2-14,replay,FIT504.Pv,P5,sensor,2026-03-11 13:04:04,2026-03-11 13:06:08,0.0,FIT504.Pv replaced by a replay of its values 30 min earlier,False,,1.0
+2,WinAE,model+rules,S2-13,actuator_flip,P301.Status,P3,actuator,2026-03-11 12:52:48,2026-03-11 12:55:13,0.0,P301.Status status inverted without physical response,False,,3.0
+2,WinAE,model+rules,S2-14,replay,FIT504.Pv,P5,sensor,2026-03-11 13:04:04,2026-03-11 13:06:08,0.0,FIT504.Pv replaced by a replay of its values 30 min earlier,False,,2.0
 2,WinAE,model+rules,,_false_alarms,,,,,,,,0,,
 2,LSTM-AE,model,S2-01,spike,FIT101.Pv,P1,sensor,2026-03-11 10:40:51,2026-03-11 10:43:37,-9.26,short spike of -9 sigma on FIT101.Pv,False,,1.0
-2,LSTM-AE,model,S2-02,bias,LIT401.Pv,P4,sensor,2026-03-11 10:51:32,2026-03-11 10:53:47,3.46,constant offset of +3 sigma on LIT401.Pv,True,142.0,3.0
-2,LSTM-AE,model,S2-03,drift,LIT601.Pv,P6,sensor,2026-03-11 11:02:47,2026-03-11 11:05:20,-3.82,linear drift reaching -4 sigma on LIT601.Pv,True,110.0,2.0
-2,LSTM-AE,model,S2-04,stuck,DPIT301.Pv,P3,sensor,2026-03-11 11:12:45,2026-03-11 11:16:42,0.0,DPIT301.Pv frozen at its last value,False,,12.0
-2,LSTM-AE,model,S2-05,noise,FIT201.Pv,P2,sensor,2026-03-11 11:24:50,2026-03-11 11:27:36,2.87,Gaussian noise of 3 sigma added to FIT201.Pv,True,116.0,1.0
-2,LSTM-AE,model,S2-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:34:58,2026-03-11 11:37:08,0.0,MV501.Status status inverted without physical response,True,58.0,1.0
-2,LSTM-AE,model,S2-07,replay,FIT602.Pv,P6,sensor,2026-03-11 11:45:48,2026-03-11 11:49:05,0.0,FIT602.Pv replaced by a replay of its values 30 min earlier,True,194.0,7.0
-2,LSTM-AE,model,S2-08,spike,PIT501.Pv,P5,sensor,2026-03-11 11:57:36,2026-03-11 11:59:37,8.91,short spike of 9 sigma on PIT501.Pv,True,2.0,2.0
-2,LSTM-AE,model,S2-09,bias,FIT602.Pv,P6,sensor,2026-03-11 12:07:43,2026-03-11 12:12:26,-3.43,constant offset of -3 sigma on FIT602.Pv,True,52.0,1.0
-2,LSTM-AE,model,S2-10,drift,FIT503.Pv,P5,sensor,2026-03-11 12:19:54,2026-03-11 12:22:35,-5.24,linear drift reaching -5 sigma on FIT503.Pv,True,88.0,4.0
-2,LSTM-AE,model,S2-11,stuck,PIT502.Pv,P5,sensor,2026-03-11 12:30:53,2026-03-11 12:32:59,0.0,PIT502.Pv frozen at its last value,False,,32.0
-2,LSTM-AE,model,S2-12,noise,DPIT301.Pv,P3,sensor,2026-03-11 12:41:23,2026-03-11 12:44:59,2.97,Gaussian noise of 3 sigma added to DPIT301.Pv,True,63.0,1.0
+2,LSTM-AE,model,S2-02,bias,LIT401.Pv,P4,sensor,2026-03-11 10:51:32,2026-03-11 10:53:47,3.46,constant offset of +3 sigma on LIT401.Pv,True,145.0,1.0
+2,LSTM-AE,model,S2-03,drift,LIT601.Pv,P6,sensor,2026-03-11 11:02:47,2026-03-11 11:05:20,-3.82,linear drift reaching -4 sigma on LIT601.Pv,True,111.0,1.0
+2,LSTM-AE,model,S2-04,stuck,DPIT301.Pv,P3,sensor,2026-03-11 11:12:45,2026-03-11 11:16:42,0.0,DPIT301.Pv frozen at its last value,False,,14.0
+2,LSTM-AE,model,S2-05,noise,FIT201.Pv,P2,sensor,2026-03-11 11:24:50,2026-03-11 11:27:36,2.87,Gaussian noise of 3 sigma added to FIT201.Pv,False,,1.0
+2,LSTM-AE,model,S2-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:34:58,2026-03-11 11:37:08,0.0,MV501.Status status inverted without physical response,True,70.0,1.0
+2,LSTM-AE,model,S2-07,replay,FIT602.Pv,P6,sensor,2026-03-11 11:45:48,2026-03-11 11:49:05,0.0,FIT602.Pv replaced by a replay of its values 30 min earlier,True,208.0,2.0
+2,LSTM-AE,model,S2-08,spike,PIT501.Pv,P5,sensor,2026-03-11 11:57:36,2026-03-11 11:59:37,8.91,short spike of 9 sigma on PIT501.Pv,False,,1.0
+2,LSTM-AE,model,S2-09,bias,FIT602.Pv,P6,sensor,2026-03-11 12:07:43,2026-03-11 12:12:26,-3.43,constant offset of -3 sigma on FIT602.Pv,False,,1.0
+2,LSTM-AE,model,S2-10,drift,FIT503.Pv,P5,sensor,2026-03-11 12:19:54,2026-03-11 12:22:35,-5.24,linear drift reaching -5 sigma on FIT503.Pv,True,81.0,1.0
+2,LSTM-AE,model,S2-11,stuck,PIT502.Pv,P5,sensor,2026-03-11 12:30:53,2026-03-11 12:32:59,0.0,PIT502.Pv frozen at its last value,False,,16.0
+2,LSTM-AE,model,S2-12,noise,DPIT301.Pv,P3,sensor,2026-03-11 12:41:23,2026-03-11 12:44:59,2.97,Gaussian noise of 3 sigma added to DPIT301.Pv,True,107.0,1.0
 2,LSTM-AE,model,S2-13,actuator_flip,P301.Status,P3,actuator,2026-03-11 12:52:48,2026-03-11 12:55:13,0.0,P301.Status status inverted without physical response,False,,1.0
 2,LSTM-AE,model,S2-14,replay,FIT504.Pv,P5,sensor,2026-03-11 13:04:04,2026-03-11 13:06:08,0.0,FIT504.Pv replaced by a replay of its values 30 min earlier,False,,1.0
 2,LSTM-AE,model,,_false_alarms,,,,,,,,1,,
 2,LSTM-AE,model+rules,S2-01,spike,FIT101.Pv,P1,sensor,2026-03-11 10:40:51,2026-03-11 10:43:37,-9.26,short spike of -9 sigma on FIT101.Pv,True,0.0,1.0
-2,LSTM-AE,model+rules,S2-02,bias,LIT401.Pv,P4,sensor,2026-03-11 10:51:32,2026-03-11 10:53:47,3.46,constant offset of +3 sigma on LIT401.Pv,True,142.0,3.0
-2,LSTM-AE,model+rules,S2-03,drift,LIT601.Pv,P6,sensor,2026-03-11 11:02:47,2026-03-11 11:05:20,-3.82,linear drift reaching -4 sigma on LIT601.Pv,True,110.0,2.0
-2,LSTM-AE,model+rules,S2-04,stuck,DPIT301.Pv,P3,sensor,2026-03-11 11:12:45,2026-03-11 11:16:42,0.0,DPIT301.Pv frozen at its last value,False,,12.0
+2,LSTM-AE,model+rules,S2-02,bias,LIT401.Pv,P4,sensor,2026-03-11 10:51:32,2026-03-11 10:53:47,3.46,constant offset of +3 sigma on LIT401.Pv,True,145.0,1.0
+2,LSTM-AE,model+rules,S2-03,drift,LIT601.Pv,P6,sensor,2026-03-11 11:02:47,2026-03-11 11:05:20,-3.82,linear drift reaching -4 sigma on LIT601.Pv,True,111.0,1.0
+2,LSTM-AE,model+rules,S2-04,stuck,DPIT301.Pv,P3,sensor,2026-03-11 11:12:45,2026-03-11 11:16:42,0.0,DPIT301.Pv frozen at its last value,False,,14.0
 2,LSTM-AE,model+rules,S2-05,noise,FIT201.Pv,P2,sensor,2026-03-11 11:24:50,2026-03-11 11:27:36,2.87,Gaussian noise of 3 sigma added to FIT201.Pv,True,0.0,1.0
-2,LSTM-AE,model+rules,S2-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:34:58,2026-03-11 11:37:08,0.0,MV501.Status status inverted without physical response,True,58.0,1.0
-2,LSTM-AE,model+rules,S2-07,replay,FIT602.Pv,P6,sensor,2026-03-11 11:45:48,2026-03-11 11:49:05,0.0,FIT602.Pv replaced by a replay of its values 30 min earlier,True,194.0,7.0
-2,LSTM-AE,model+rules,S2-08,spike,PIT501.Pv,P5,sensor,2026-03-11 11:57:36,2026-03-11 11:59:37,8.91,short spike of 9 sigma on PIT501.Pv,True,0.0,2.0
+2,LSTM-AE,model+rules,S2-06,actuator_flip,MV501.Status,P5,actuator,2026-03-11 11:34:58,2026-03-11 11:37:08,0.0,MV501.Status status inverted without physical response,True,70.0,1.0
+2,LSTM-AE,model+rules,S2-07,replay,FIT602.Pv,P6,sensor,2026-03-11 11:45:48,2026-03-11 11:49:05,0.0,FIT602.Pv replaced by a replay of its values 30 min earlier,True,208.0,2.0
+2,LSTM-AE,model+rules,S2-08,spike,PIT501.Pv,P5,sensor,2026-03-11 11:57:36,2026-03-11 11:59:37,8.91,short spike of 9 sigma on PIT501.Pv,True,0.0,1.0
 2,LSTM-AE,model+rules,S2-09,bias,FIT602.Pv,P6,sensor,2026-03-11 12:07:43,2026-03-11 12:12:26,-3.43,constant offset of -3 sigma on FIT602.Pv,True,52.0,1.0
-2,LSTM-AE,model+rules,S2-10,drift,FIT503.Pv,P5,sensor,2026-03-11 12:19:54,2026-03-11 12:22:35,-5.24,linear drift reaching -5 sigma on FIT503.Pv,True,88.0,4.0
-2,LSTM-AE,model+rules,S2-11,stuck,PIT502.Pv,P5,sensor,2026-03-11 12:30:53,2026-03-11 12:32:59,0.0,PIT502.Pv frozen at its last value,False,,32.0
+2,LSTM-AE,model+rules,S2-10,drift,FIT503.Pv,P5,sensor,2026-03-11 12:19:54,2026-03-11 12:22:35,-5.24,linear drift reaching -5 sigma on FIT503.Pv,True,81.0,1.0
+2,LSTM-AE,model+rules,S2-11,stuck,PIT502.Pv,P5,sensor,2026-03-11 12:30:53,2026-03-11 12:32:59,0.0,PIT502.Pv frozen at its last value,False,,16.0
 2,LSTM-AE,model+rules,S2-12,noise,DPIT301.Pv,P3,sensor,2026-03-11 12:41:23,2026-03-11 12:44:59,2.97,Gaussian noise of 3 sigma added to DPIT301.Pv,True,0.0,1.0
 2,LSTM-AE,model+rules,S2-13,actuator_flip,P301.Status,P3,actuator,2026-03-11 12:52:48,2026-03-11 12:55:13,0.0,P301.Status status inverted without physical response,False,,1.0
 2,LSTM-AE,model+rules,S2-14,replay,FIT504.Pv,P5,sensor,2026-03-11 13:04:04,2026-03-11 13:06:08,0.0,FIT504.Pv replaced by a replay of its values 30 min earlier,False,,1.0
