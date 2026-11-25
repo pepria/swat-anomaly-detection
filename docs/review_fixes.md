@@ -89,3 +89,36 @@ is not (0.72), and on SWaT 2015 the WinAE "high" confidence (1 attack among 7 ev
 - `outputs/` (metrics, tables, figures, synthetic results, anomaly JSON and explanations) and the numbers in RESULTS.md, RESULTS_zh.md and
   the README were regenerated after these fixes (all A12 configurations and the SWaT 2015 setup with 3 seeds, the synthetic injections
   and the explanations of the main configuration).
+
+## Second review: three further points
+
+| Point | Verdict | What was done |
+|---|---|---|
+| The frozen-sensor rule fires during communication gaps (reproduced: 181 flagged rows in a simulated 300 s outage) | **correct** | rows with `_gap == 1` break a run and are never reported; test added. The explainer also crashed on a stuck hit; fixed. See `docs/stuck_rule_evaluation.md` |
+| The A12 knowledge base contains the attack times, so the explainer (and the Claude back-end) can match an event to an attack by time; the label file was rebuilt from the same lines | **correct** | the times now live only in `labels/A12_attack_list.csv`; the A12 catalog gives durations only (as the 2015 catalog already did; clock times inside the 2015 attack texts were removed too); `scripts/build_kb.py` and `scripts/rebuild_a12_labels.py` read the attack list, the labels are identical to the files used so far. The template results do not change (the template does not use the times) |
+| The training-time threshold is still computed on the data the models were fitted on (in-sample), so the 4-8% FPR is too high | **right in principle, small in practice** | `scripts/eval_heldout_threshold.py` keeps 4 blocks of 4 h of A10 out of the training and takes the threshold there (below) |
+
+### In-sample against held-out threshold (A12, A11+A10, noAIT, 3 seeds, LSTM-AE 1 seed)
+
+| Model | Threshold | FPR clean | False-alarm events | Event recall |
+|---|---|---|---|---|
+| GMM | calibration hour | 0.003 | 2.3 | 0.42 |
+| | in-sample | 0.137 | 20.3 | 0.33 |
+| | held-out | 0.132 | 20.3 | 0.30 |
+| AE | calibration hour | 0.009 | 10.7 | 0.79 |
+| | in-sample | 0.016 | 18.0 | 0.73 |
+| | held-out | 0.014 | 15.3 | 0.73 |
+| WinAE | calibration hour | 0.002 | 2.7 | 0.91 |
+| | in-sample | 0.032 | 13.7 | 0.82 |
+| | held-out | 0.038 | 14.3 | 0.79 |
+| LSTM-AE | calibration hour | 0.009 | 8.0 | 0.91 |
+| | in-sample | 0.084 | 17.0 | 0.73 |
+| | held-out | 0.083 | 17.0 | 0.73 |
+| IForest | calibration hour | 0.024 | 7.3 | 0.49 |
+| | in-sample | 0.103 | 15.7 | 0.52 |
+| | held-out | 0.428 | 14.3 | 0.64 |
+
+For GMM, AE, WinAE and LSTM-AE the held-out threshold is practically the same as the in-sample one, so the in-sample bias is not the reason for the gap
+to the calibration hour; the gap comes from the change between the training recordings and A12 (domain shift), and the statement in
+RESULTS.md stays as it is. IForest is erratic (its score level differs between the blocks). Removing 16 hours of A10 changes the models themselves
+(for instance the GMM event recall with the calibration hour is 0.42 here against 0.73 in the main run), so only compare the rows of this table with each other.

@@ -70,10 +70,13 @@ SWaT.A11_OTDataset_Feb_26.zip
 SWaT.A10_Dec 2023 Historian Data.csv
 <A12 zip>                         # set SWAT_A12_ZIP to its path (the default is our shared folder)
 swat_eda/A12_labels_shifted.csv   # per-second A12 labels; not in the repository, rebuild them with
-swat_eda/A12_attack_list.csv      #   python scripts/rebuild_a12_labels.py   (11 attacks, 3,139 attack seconds)
+                                  #   python scripts/rebuild_a12_labels.py   (11 attacks, 3,139 attack seconds)
 swat2015_csv/SWaT2015_normal_v1.csv
 swat2015_csv/SWaT2015_attack_v0.csv
 ```
+
+The attack windows of A12 are in the repository (`labels/A12_attack_list.csv`, override with `SWAT_A12_ATTACKS`), not in the knowledge base: the
+attack catalogs the explainer reads contain durations but no clock times, so an event cannot be matched to an attack by its time.
 
 Example: `export SWAT_RAW_DIR=~/swat_raw SWAT_A12_ZIP=~/swat_raw/SWaT.A12.zip`.
 
@@ -123,7 +126,9 @@ Tags that already fire on the calibration window are disabled (drift). A persist
 alarms for 10 minutes and is then considered acknowledged. An optional third rule, (3) a continuous sensor frozen at
 exactly the same value for longer than both `stuck_s` seconds and its longest flat run in
 training, targets the frozen-sensor case that no model detects (RESULTS §3). It is off by
-default so the published numbers are unchanged; enable it with `RuleMonitor(stuck_s=120)`,
+default so the published numbers are unchanged. Rows of a communication gap (`_gap == 1`) are ignored by it. It was evaluated in
+[docs/stuck_rule_evaluation.md](docs/stuck_rule_evaluation.md): the frozen-sensor recall on the synthetic data rises from 0 to 0.17 and nothing changes on
+real A12. Enable it with `RuleMonitor(stuck_s=120)`,
 `run(..., rule_kwargs={"stuck_s": 120})` or `python scripts/run_synthetic.py --stuck-rule 120`.
 
 **Evaluation.** Point level: AUC-ROC, AUC-PR, precision/recall/F1 at the calibrated threshold,

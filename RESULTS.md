@@ -135,7 +135,8 @@ features (root-cause localisation, checks the input given to the explainer).
 
 - A **stuck/frozen** sensor is invisible to every model when the frozen value is plausible:
   each sample is normal and the window is short. A dedicated "zero variance for N minutes"
-  rule would be the natural fix (implemented as an opt-in rule, see section 5).
+  rule would be the natural fix. It is implemented as an opt-in rule; switched on (120 s) it raises the frozen-sensor recall from 0 to 0.17
+  (IForest 0.33 -> 0.50) and adds no false alarm on real A12 ([docs/stuck_rule_evaluation.md](docs/stuck_rule_evaluation.md)).
 - **Replay** is hard for all models (<= 0.5), as expected: values and dynamics are normal.
 - The window AE has no false alarm on the clean part and the best recall on noise and bias; the point AE has
   the highest overall recall but 17 false-alarm events; the LSTM-AE localises the injected tag best (hit@1 0.73).
@@ -188,9 +189,9 @@ but not on SWaT 2015.
    run and the same attacks were still recognised). The outputs are in `outputs/explanations/llm/`.
 2. ~~Get the 2015 attack list.~~ Done: 36 attacks are in the knowledge base and evaluated
    ([docs/swat2015_explanation_eval.md](docs/swat2015_explanation_eval.md)). Still open: the tag documentation and set points from iTrust.
-3. Frozen-sensor rule: implemented as an opt-in rule (`RuleMonitor(stuck_s=...)`, unit-tested on
-   synthetic data) but not yet run on the real data:
-   `python scripts/run_synthetic.py --stuck-rule 120`. AIT detrending (to bring back attack #11)
+3. Frozen-sensor rule: implemented as an opt-in rule (`RuleMonitor(stuck_s=...)`), evaluated on the synthetic injections and on real A12
+   ([docs/stuck_rule_evaluation.md](docs/stuck_rule_evaluation.md)): it is safe (no extra alarm on A12, communication gaps ignored) but catches only 1 of
+   6 frozen injections with the current limit (1.2 x the longest flat run); a better limit is open. AIT detrending (to bring back attack #11)
    is still open.
 4. Sweep the window length (1-5 min) and the calibration window length for the threshold.
 5. ~~Retrieve known-attack chunks by the affected tags.~~ Done (stronger tag boost, tag ranges expanded);
