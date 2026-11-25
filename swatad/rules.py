@@ -87,7 +87,8 @@ class RuleMonitor:
                 out[c] = (v < self.lo[c]) | (v > self.hi[c])
         for c, limit in self._stuck_limits().items():
             if c in df:
-                st = self._stuck(df[c].values, limit)
+                gap = df["_gap"].values if "_gap" in df else None
+                st = self._stuck(df[c].values, limit, gap)
                 out[c] = out[c] | st if c in out else st
         return pd.DataFrame(out, index=df.index)
 
@@ -98,9 +99,18 @@ class RuleMonitor:
         return self.stuck_limit
 
     @staticmethod
-    def _stuck(v: np.ndarray, limit: int) -> np.ndarray:
-        """True from the moment a flat run exceeds ``limit`` samples until it ends."""
-        return flat_run_length(v) > limit
+    def _stuck(v: np.ndarray, limit: int, gap: np.ndarray | None = None) -> np.ndarray:
+        """True from the moment a flat run exceeds ``limit`` samples until it ends.
+
+        Rows flagged as a communication gap (``_gap == 1``) are forward-filled by the loader and
+        look frozen, although the training data (which excludes them) never contained such a run.
+        They break a run and are never reported."""
+        if gap is None or not np.any(gap):
+            return flat_run_length(v) > limit
+        g = np.asarray(gap).astype(bool)
+        v = np.asarray(v, dtype="float64").copy()
+        v[g] = -1e300 - np.arange(int(g.sum()))              # distinct values: runs cannot span a gap row
+        return (flat_run_length(v) > limit) & ~g
 
     def alarm(self, df: pd.DataFrame, ack_s: int = 600) -> tuple[np.ndarray, pd.DataFrame]:
         """Rule alarm with operator acknowledgement.

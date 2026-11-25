@@ -35,8 +35,13 @@ def tags(text: str) -> list[str]:
     return out
 
 
+CLOCK = re.compile(r"\s+(?:till|until|at around|at|after|around)\s+\d{1,2}:\d{2}(?::\d{2})?(?:\s*[AP]M)?", re.I)
+
+
 def clean(s):
-    return re.sub(r"\s+", " ", str(s).replace("‐", "-").replace("‑", "-")).strip() if s else ""
+    """Normalise a cell and drop clock times inside the text (they would identify the attack)."""
+    t = re.sub(r"\s+", " ", str(s).replace("\u2010", "-").replace("\u2011", "-")).strip() if s else ""
+    return CLOCK.sub(" later", t)
 
 
 def category(targets, action):

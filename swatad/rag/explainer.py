@@ -37,6 +37,8 @@ CATEGORIES = {
                          "drift in-range spoofing rate of change slow deviation"),
     "multivariate": ("broken relation between correlated sensors",
                      "relation between sensors broken replay correlation invariant"),
+    "frozen_sensor": ("sensor frozen at a constant value (stuck sensor)",
+                      "stuck frozen sensor constant value zero variance flat"),
 }
 
 CHECKS = {
@@ -58,6 +60,8 @@ CHECKS = {
                                "Check the actuators that control this variable."],
     "drift_or_inrange": ["Check the instrument calibration and compare with a reference measurement.",
                          "Check the mass balance between inflow, outflow and level."],
+    "frozen_sensor": ["Check whether the transmitter or its communication is frozen (a real process always moves a little).",
+                      "Compare the frozen reading with physically related tags and put the loop in manual if it drives an actuator."],
     "multivariate": ["Check the physical invariants of the stage (actuator state vs flow).",
                      "Consider a replay attack if values look normal but disagree with actuators."],
 }
@@ -95,6 +99,12 @@ def classify(ev: dict) -> tuple[str, list[str]]:
             reasons.append(f"{r['tag'].split('.')[0]} outside normal range and flat "
                            f"({r['signal']['flat_fraction']:.0%} of steps unchanged)")
             return "spoof_out_of_range", reasons
+    stuck = [r for r in new_rules if r["rule"] == "stuck"]
+    if stuck:
+        r = stuck[0]
+        reasons.append(f"{r['tag'].split('.')[0]} stayed exactly at {r['frozen_value']} for longer than "
+                       f"{r['limit_s']} s, longer than any flat run in normal operation")
+        return "frozen_sensor", reasons
     acts = [t for t in top[:3] if t["kind"] == "actuator"]
     if len(acts) >= 2 or (acts and top[0]["kind"] == "actuator"):
         reasons.append("top contributors are actuators: " + ", ".join(t["tag"] for t in acts))
@@ -217,6 +227,9 @@ class TemplateBackend:
             if r["rule"] == "unseen_state":
                 evidence.append(f"Rule: {r['tag'].split('.')[0]} took value(s) {r['observed_values']} "
                                 f"never seen in normal operation (normal {r['normal_values']}).")
+            elif r["rule"] == "stuck":
+                evidence.append(f"Rule: {r['tag'].split('.')[0]} stayed at exactly {r['frozen_value']} for longer than "
+                                f"{r['limit_s']} s (longer than any flat run in normal operation).")
             else:
                 evidence.append(f"Rule: {r['tag'].split('.')[0]} left its normal range "
                                 f"{r['normal_range']} (observed {r['observed_min']} to {r['observed_max']}).")

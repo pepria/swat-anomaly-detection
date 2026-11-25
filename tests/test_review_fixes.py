@@ -77,3 +77,43 @@ def test_train_scores_selects_valid_rows_of_contiguous_blocks():
     # blocks are rows 0-29 and 20-49; rows 10-14 are invalid, rows 20-29 are in both blocks
     assert len(s) == len(c) == (30 - 5) + 30
     assert c.shape[1] == 2
+
+
+def test_stuck_rule_ignores_forward_filled_communication_gaps():
+    import pandas as pd
+    from swatad.rules import RuleMonitor
+    rng = np.random.default_rng(0)
+    idx = pd.date_range("2026-03-11 09:00:00", periods=4000, freq="s")
+
+    def frame(gap=None, frozen=None):
+        df = pd.DataFrame({"LIT101.Pv": np.round(rng.normal(500, 5, len(idx)), 1)}, index=idx)
+        df["_gap"] = 0
+        if gap:       # outage: the loader forward-fills the value and flags the rows (and 15 s around)
+            a, b = gap
+            df.iloc[a:b, 0] = df.iloc[a - 1, 0]
+            df.iloc[a - 15:b + 15, df.columns.get_loc("_gap")] = 1
+        if frozen:    # a real frozen sensor: same value, not flagged as a gap
+            a, b = frozen
+            df.iloc[a:b, 0] = df.iloc[a - 1, 0]
+        return df
+    rm = RuleMonitor(stuck_s=120).fit(frame())
+    _, h = rm.alarm(frame(gap=(2000, 2300)))
+    assert int(h.values.sum()) == 0                                   # outage is not a frozen sensor
+    _, h = rm.alarm(frame(frozen=(2000, 2300)))
+    assert h.values[2200:2300].all() and h.values[:1900].sum() == 0    # a real frozen sensor still is
+
+
+def test_explainer_handles_a_stuck_sensor_hit():
+    import json
+    from swatad.rag.explainer import Explainer, classify
+    ev = json.loads((Path(__file__).resolve().parents[1] / "outputs/anomalies/a12_A11-A10_noAIT__WinAE.json").read_text())[2]
+    ev.pop("ground_truth_eval_only", None)
+    ev["rule_hits"] = [{"rule": "stuck", "tag": "LIT301.Pv", "kind": "sensor", "frozen_value": 812.5, "limit_s": 140,
+                        "first_seen": ev["start"], "stage": "P3", "description": "UF feed tank T301 level",
+                        "already_active_before": False}]
+    ev["top_contributors"] = [t for t in ev["top_contributors"] if t["kind"] == "sensor"][:3] or ev["top_contributors"]
+    category, reasons = classify(ev)
+    assert category == "frozen_sensor" and "812.5" in reasons[0]
+    ex = Explainer(backend="template").explain(ev)
+    assert any("stayed at exactly 812.5" in e for e in ex["evidence"])
+    assert ex["confidence"] in ("low", "medium", "high")
