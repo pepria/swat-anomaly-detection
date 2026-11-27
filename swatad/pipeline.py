@@ -8,7 +8,6 @@ Two independent setups (never mixed, see EDA report section 6.3):
 from __future__ import annotations
 
 import json
-import pickle
 import time
 from dataclasses import dataclass
 
@@ -20,6 +19,7 @@ from . import data as D
 from .evaluate import full_report, score_ratio, smooth
 from .features import FeatureSpace
 from .models import MODELS
+from .persist import save_run_state
 from .rules import RuleMonitor
 
 
@@ -178,8 +178,7 @@ def run(setup: str = "a12", train_sets: str = "A11+A10", drop_ait: bool = True,
                    "features": fs.cols, "thresholds": thresholds,
                    "rules_fpr_on_calibration": r_cal_fpr,
                    "rules_disabled_after_calibration": rules.disabled}, f, indent=1)
-    with open(out / "feature_space.pkl", "wb") as f:
-        pickle.dump({"fs": fs, "rules": rules}, f)
+    save_run_state(out, fs, rules)
     return res
 
 

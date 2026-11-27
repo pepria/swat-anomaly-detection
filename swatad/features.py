@@ -67,6 +67,16 @@ class FeatureSpace:
                 self.std[i] = max(self.std[i], 0.25)
         return self
 
+    def to_dict(self) -> dict:
+        """JSON-serialisable state (the run state is stored as JSON, not pickle)."""
+        return {"drop_ait": self.drop_ait, "cols": list(self.cols), "clip": self.clip,
+                "mean": [float(x) for x in self.mean], "std": [float(x) for x in self.std]}
+
+    @classmethod
+    def from_dict(cls, d: dict) -> "FeatureSpace":
+        return cls(drop_ait=d["drop_ait"], cols=list(d["cols"]), clip=d["clip"],
+                   mean=np.asarray(d["mean"], dtype="float32"), std=np.asarray(d["std"], dtype="float32"))
+
     def transform(self, df: pd.DataFrame) -> np.ndarray:
         Z = (df[self.cols].values.astype("float32") - self.mean) / self.std
         return np.clip(Z, -self.clip, self.clip)

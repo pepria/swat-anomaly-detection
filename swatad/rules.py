@@ -75,6 +75,24 @@ class RuleMonitor:
             self._stuck_limits().pop(c, None)
         return self
 
+    def to_dict(self) -> dict:
+        """JSON-serialisable state (the run state is stored as JSON, not pickle)."""
+        return {"margin": self.margin, "max_calib_rate": self.max_calib_rate,
+                "seen": {c: sorted(float(x) for x in v) for c, v in self.seen.items()},
+                "disabled": list(self.disabled), "lo": {c: float(x) for c, x in self.lo.items()},
+                "hi": {c: float(x) for c, x in self.hi.items()}, "stuck_s": self.stuck_s,
+                "stuck_slack": self.stuck_slack, "stuck_max_s": self.stuck_max_s,
+                "stuck_limit": {c: int(x) for c, x in self._stuck_limits().items()}}
+
+    @classmethod
+    def from_dict(cls, d: dict) -> "RuleMonitor":
+        rm = cls(margin=d["margin"], max_calib_rate=d["max_calib_rate"], stuck_s=d.get("stuck_s"),
+                 stuck_slack=d.get("stuck_slack", 1.2), stuck_max_s=d.get("stuck_max_s", 3600))
+        rm.seen = {c: set(v) for c, v in d["seen"].items()}
+        rm.disabled, rm.lo, rm.hi = list(d["disabled"]), dict(d["lo"]), dict(d["hi"])
+        rm.stuck_limit = dict(d.get("stuck_limit", {}))
+        return rm
+
     def hits(self, df: pd.DataFrame) -> pd.DataFrame:
         """Boolean DataFrame (time x tag): True where a rule fires for that tag."""
         out = {}
@@ -104,13 +122,15 @@ class RuleMonitor:
 
         Rows flagged as a communication gap (``_gap == 1``) are forward-filled by the loader and
         look frozen, although the training data (which excludes them) never contained such a run.
-        They break a run and are never reported."""
+        The count *pauses* over them: they are dropped before the run lengths are computed, so
+        they neither add to a run nor end it, and they are never reported. (Resetting the count at
+        a gap would let a frozen sensor escape by short, repeated dropouts of the link.)"""
         if gap is None or not np.any(gap):
             return flat_run_length(v) > limit
-        g = np.asarray(gap).astype(bool)
-        v = np.asarray(v, dtype="float64").copy()
-        v[g] = -1e300 - np.arange(int(g.sum()))              # distinct values: runs cannot span a gap row
-        return (flat_run_length(v) > limit) & ~g
+        keep = ~np.asarray(gap).astype(bool)
+        run = np.zeros(len(v), dtype=int)
+        run[keep] = flat_run_length(np.asarray(v)[keep])
+        return run > limit
 
     def alarm(self, df: pd.DataFrame, ack_s: int = 600) -> tuple[np.ndarray, pd.DataFrame]:
         """Rule alarm with operator acknowledgement.
