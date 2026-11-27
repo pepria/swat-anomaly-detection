@@ -1,7 +1,10 @@
 """Export per-anomaly JSON events from a finished run and explain them with the RAG layer.
 
-    python scripts/export_and_explain.py [run_name] [model]
-    (defaults: a12_A11-A10_noAIT GMM)
+    python scripts/export_and_explain.py [run_name] [model] [backend]
+    (defaults: a12_A11-A10_noAIT GMM auto)
+
+backend: ``template`` (local, default) or ``claude`` (sends the events to the Anthropic API; needs ANTHROPIC_API_KEY).
+``auto`` uses Claude only if ANTHROPIC_API_KEY *and* SWAT_ALLOW_EXTERNAL_LLM=1 are set.
 
 Writes
     outputs/anomalies/<run>__<model>.json        list of anomaly events (detector -> explainer interface)
@@ -26,6 +29,7 @@ from swatad.rag.explainer import Explainer  # noqa: E402
 
 run = sys.argv[1] if len(sys.argv) > 1 else "a12_A11-A10_noAIT"
 model = sys.argv[2] if len(sys.argv) > 2 else "GMM"
+backend = sys.argv[3] if len(sys.argv) > 3 else "auto"      # "template" | "claude" (sends data to the Anthropic API)
 C.ensure_dirs()
 meta = json.loads((C.OUT_DIR / "runs" / run / "meta.json").read_text())
 S = make_setup(meta["setup"], meta["train_sets"])
@@ -35,7 +39,7 @@ name = f"{run}__{model}"
 (C.OUT_DIR / "anomalies" / f"{name}.json").write_text(json.dumps(events, indent=1, default=str))
 print(f"{len(events)} anomaly events")
 
-E = Explainer()
+E = Explainer(backend=backend)
 _saved = C.OUT_DIR / "explanations" / f"{name}.json"
 if os.environ.get("REUSE_EXPL") and _saved.exists():   # skip repeated LLM calls
     expl = json.loads(_saved.read_text())

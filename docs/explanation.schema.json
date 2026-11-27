@@ -1,0 +1,52 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "Explanation returned by the LLM back-end (after validation)",
+  "description": "The text of the LLM is validated against this schema by swatad.rag.explainer.sanitize_llm_output: unknown fields are dropped, strings are length-limited and HTML/markdown links are neutralised. 'category' and 'sources' are set by the pipeline, never by the model.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "summary",
+    "confidence"
+  ],
+  "properties": {
+    "summary": {
+      "type": "string",
+      "maxLength": 1500
+    },
+    "category_label": {
+      "type": "string",
+      "maxLength": 300
+    },
+    "evidence": {
+      "type": "array",
+      "maxItems": 12,
+      "items": {
+        "type": "string",
+        "maxLength": 800
+      }
+    },
+    "similar_known_attacks": {
+      "type": "array",
+      "maxItems": 5,
+      "items": {
+        "type": "string",
+        "maxLength": 400
+      }
+    },
+    "recommended_checks": {
+      "type": "array",
+      "maxItems": 8,
+      "items": {
+        "type": "string",
+        "maxLength": 400
+      }
+    },
+    "confidence": {
+      "enum": [
+        "low",
+        "medium",
+        "high"
+      ]
+    }
+  }
+}

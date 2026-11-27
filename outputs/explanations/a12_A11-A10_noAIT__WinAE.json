@@ -220,7 +220,7 @@
   ],
   "similar_known_attacks": [
    "A12 attack 6: Tank overflow via LIT101 spoofing (Schneider demo attack 01)",
-   "A12 attack 2: Stage 1 flow disruption: MV101 open, P101 & P102 stop"
+   "A12 attack 3: Florida water plant scenario: dosing pump activation & sensor spoofing"
   ],
   "pattern": "Sensor spoofing within the normal range",
   "process_context": [
@@ -241,7 +241,7 @@
    "02_tag_dictionary#13",
    "03_attack_and_fault_patterns#2",
    "04_a12_attack_catalog#6",
-   "04_a12_attack_catalog#2",
+   "04_a12_attack_catalog#3",
    "04_swat2015_attack_catalog#36",
    "05_mined_invariants#4",
    "05_mined_invariants#11",

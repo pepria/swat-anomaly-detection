@@ -23,7 +23,7 @@ A10_CSV = RAW_DIR / "SWaT.A10_Dec 2023 Historian Data.csv"
 A12_ZIP = Path(os.environ.get(
     "SWAT_A12_ZIP", RAW_DIR / "SWaT.A12_OTDataset_Mar_26.zip"))
 A12_LABELS = RAW_DIR / "swat_eda/A12_labels_shifted.csv"
-A12_ATTACKS = RAW_DIR / "swat_eda/A12_attack_list.csv"
+A12_ATTACKS = Path(os.environ.get("SWAT_A12_ATTACKS", PROJECT_DIR / "labels/A12_attack_list.csv"))
 S2015_NORMAL = RAW_DIR / "swat2015_csv/SWaT2015_normal_v1.csv"
 S2015_ATTACK = RAW_DIR / "swat2015_csv/SWaT2015_attack_v0.csv"
 

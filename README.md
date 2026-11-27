@@ -70,10 +70,13 @@ SWaT.A11_OTDataset_Feb_26.zip
 SWaT.A10_Dec 2023 Historian Data.csv
 <A12 zip>                         # set SWAT_A12_ZIP to its path (the default is our shared folder)
 swat_eda/A12_labels_shifted.csv   # per-second A12 labels; not in the repository, rebuild them with
-swat_eda/A12_attack_list.csv      #   python scripts/rebuild_a12_labels.py   (11 attacks, 3,139 attack seconds)
+                                  #   python scripts/rebuild_a12_labels.py   (11 attacks, 3,139 attack seconds)
 swat2015_csv/SWaT2015_normal_v1.csv
 swat2015_csv/SWaT2015_attack_v0.csv
 ```
+
+The attack windows of A12 are in the repository (`labels/A12_attack_list.csv`, override with `SWAT_A12_ATTACKS`), not in the knowledge base: the
+attack catalogs the explainer reads contain durations but no clock times, so an event cannot be matched to an attack by its time.
 
 Example: `export SWAT_RAW_DIR=~/swat_raw SWAT_A12_ZIP=~/swat_raw/SWaT.A12.zip`.
 
@@ -123,7 +126,9 @@ Tags that already fire on the calibration window are disabled (drift). A persist
 alarms for 10 minutes and is then considered acknowledged. An optional third rule, (3) a continuous sensor frozen at
 exactly the same value for longer than both `stuck_s` seconds and its longest flat run in
 training, targets the frozen-sensor case that no model detects (RESULTS §3). It is off by
-default so the published numbers are unchanged; enable it with `RuleMonitor(stuck_s=120)`,
+default so the published numbers are unchanged. Rows of a communication gap (`_gap == 1`) are ignored by it. It was evaluated in
+[docs/stuck_rule_evaluation.md](docs/stuck_rule_evaluation.md): the frozen-sensor recall on the synthetic data rises from 0 to 0.17 and nothing changes on
+real A12. Enable it with `RuleMonitor(stuck_s=120)`,
 `run(..., rule_kwargs={"stuck_s": 120})` or `python scripts/run_synthetic.py --stuck-rule 120`.
 
 **Evaluation.** Point level: AUC-ROC, AUC-PR, precision/recall/F1 at the calibrated threshold,
@@ -141,7 +146,9 @@ and fills a template. Attacks of the dataset being explained are retrieved first
 entry of the other attack catalog (A12 and SWaT 2015), with a boost for the attacked tags. The
 confidence of an explanation is capped by an evidence score (`calibrate_confidence`).
 `Explainer(backend="claude")` sends the same evidence to Claude (`claude-opus-5-5`) instead; it needs
-`pip install anthropic` and an API key. It was run on the A12 events; the outputs are in
+`pip install anthropic` and an API key, and it **sends the event data to an external API** (`python scripts/export_and_explain.py <run> <model> claude`;
+`auto` uses Claude only if `SWAT_ALLOW_EXTERNAL_LLM=1` is set as well). The reply is validated against `docs/explanation.schema.json` and escaped; the
+category and the sources come from the rules, never from the model (see [docs/threat_model.md](docs/threat_model.md)). It was run on the A12 events; the outputs are in
 `outputs/explanations/llm/` and the two back-ends are compared event by event in
 [docs/llm_vs_template_report.md](docs/llm_vs_template_report.md)
 (Chinese: [llm_vs_template_report_zh.md](docs/llm_vs_template_report_zh.md)). The explanation
@@ -162,5 +169,10 @@ their effect on the results are in [docs/review_fixes.md](docs/review_fixes.md).
   "known attack" matching on A12 is optimistic; a leave-one-out variant is reported too (0.3-0.5,
   the more honest number for the explanation layer). On SWaT 2015 the explanations are much weaker
   than on A12, because the detectors find only about half of the attacks there.
+- The training data matters: without 16 hours of A10 in the training the GMM event recall falls from 0.73 to 0.42 and the AE has 10.7 instead of 6.7 false-alarm events
+  (window AE unchanged); the held-out blocks of that experiment are all from A10. The attack catalogs give durations but no clock times; three A12 attacks have a
+  unique duration. The rule layer has known blind spots (alarm latch, poisoned calibration window, communication gaps), listed in
+  [docs/threat_model.md](docs/threat_model.md).
+- The run state (`feature_space.json`) is JSON, no pickle is ever loaded.
 - The knowledge base is built from public SWaT knowledge; official iTrust tag documentation,
   set points and P&ID would improve it.

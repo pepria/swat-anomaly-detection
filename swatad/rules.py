@@ -75,6 +75,24 @@ class RuleMonitor:
             self._stuck_limits().pop(c, None)
         return self
 
+    def to_dict(self) -> dict:
+        """JSON-serialisable state (the run state is stored as JSON, not pickle)."""
+        return {"margin": self.margin, "max_calib_rate": self.max_calib_rate,
+                "seen": {c: sorted(float(x) for x in v) for c, v in self.seen.items()},
+                "disabled": list(self.disabled), "lo": {c: float(x) for c, x in self.lo.items()},
+                "hi": {c: float(x) for c, x in self.hi.items()}, "stuck_s": self.stuck_s,
+                "stuck_slack": self.stuck_slack, "stuck_max_s": self.stuck_max_s,
+                "stuck_limit": {c: int(x) for c, x in self._stuck_limits().items()}}
+
+    @classmethod
+    def from_dict(cls, d: dict) -> "RuleMonitor":
+        rm = cls(margin=d["margin"], max_calib_rate=d["max_calib_rate"], stuck_s=d.get("stuck_s"),
+                 stuck_slack=d.get("stuck_slack", 1.2), stuck_max_s=d.get("stuck_max_s", 3600))
+        rm.seen = {c: set(v) for c, v in d["seen"].items()}
+        rm.disabled, rm.lo, rm.hi = list(d["disabled"]), dict(d["lo"]), dict(d["hi"])
+        rm.stuck_limit = dict(d.get("stuck_limit", {}))
+        return rm
+
     def hits(self, df: pd.DataFrame) -> pd.DataFrame:
         """Boolean DataFrame (time x tag): True where a rule fires for that tag."""
         out = {}
@@ -87,7 +105,8 @@ class RuleMonitor:
                 out[c] = (v < self.lo[c]) | (v > self.hi[c])
         for c, limit in self._stuck_limits().items():
             if c in df:
-                st = self._stuck(df[c].values, limit)
+                gap = df["_gap"].values if "_gap" in df else None
+                st = self._stuck(df[c].values, limit, gap)
                 out[c] = out[c] | st if c in out else st
         return pd.DataFrame(out, index=df.index)
 
@@ -98,9 +117,20 @@ class RuleMonitor:
         return self.stuck_limit
 
     @staticmethod
-    def _stuck(v: np.ndarray, limit: int) -> np.ndarray:
-        """True from the moment a flat run exceeds ``limit`` samples until it ends."""
-        return flat_run_length(v) > limit
+    def _stuck(v: np.ndarray, limit: int, gap: np.ndarray | None = None) -> np.ndarray:
+        """True from the moment a flat run exceeds ``limit`` samples until it ends.
+
+        Rows flagged as a communication gap (``_gap == 1``) are forward-filled by the loader and
+        look frozen, although the training data (which excludes them) never contained such a run.
+        The count *pauses* over them: they are dropped before the run lengths are computed, so
+        they neither add to a run nor end it, and they are never reported. (Resetting the count at
+        a gap would let a frozen sensor escape by short, repeated dropouts of the link.)"""
+        if gap is None or not np.any(gap):
+            return flat_run_length(v) > limit
+        keep = ~np.asarray(gap).astype(bool)
+        run = np.zeros(len(v), dtype=int)
+        run[keep] = flat_run_length(np.asarray(v)[keep])
+        return run > limit
 
     def alarm(self, df: pd.DataFrame, ack_s: int = 600) -> tuple[np.ndarray, pd.DataFrame]:
         """Rule alarm with operator acknowledgement.

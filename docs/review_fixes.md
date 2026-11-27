@@ -89,3 +89,52 @@ is not (0.72), and on SWaT 2015 the WinAE "high" confidence (1 attack among 7 ev
 - `outputs/` (metrics, tables, figures, synthetic results, anomaly JSON and explanations) and the numbers in RESULTS.md, RESULTS_zh.md and
   the README were regenerated after these fixes (all A12 configurations and the SWaT 2015 setup with 3 seeds, the synthetic injections
   and the explanations of the main configuration).
+
+## Third review: security and the second pull request
+
+| Point | Verdict | What was done |
+|---|---|---|
+| `pickle.load` of the run state (`events.py`) can execute arbitrary code | correct | the state is JSON (`swatad/persist.py`, `feature_space.json`); no pickle is loaded any more, the tracked pickles were converted (the JSON content equals the pickled content) and removed; `scripts/convert_run_state.py` converts your own old pickles |
+| the LLM output is parsed without validation and put into markdown | correct | `sanitize_llm_output`: fixed fields, types and lengths, HTML escaped, markdown links and images broken, category and sources never taken from the model; `docs/explanation.schema.json`; tests |
+| good design that should be stressed in the report | correct | `docs/threat_model.md` section 1 and RESULTS section 5 |
+| data leaves the plant through the Claude back-end | correct | `auto` no longer uses Claude just because an API key is set: it needs `SWAT_ALLOW_EXTERNAL_LLM=1`; a notice is printed; documented |
+| the sentinel values `-1e300 - arange(n)` are not distinct in float64 (1 of 5 values), the comment is wrong | correct; the result was right only because of `& ~g` | replaced by a cleaner implementation |
+| resetting the count at a gap lets a frozen sensor escape with short repeated dropouts | **correct, reproduced** (15 min frozen, 3 s dropout every 100 s: 0 flagged rows) | the count now pauses over gap rows (0 -> 484 flagged rows); test added; a "too many gaps" alarm is still open (`docs/threat_model.md`) |
+| the durations of the attacks identify #6, #7, #11 | correct, small | documented as a limitation |
+| the held-out blocks come only from A10 | correct | documented; the conclusion is unchanged |
+| training-data sensitivity (GMM recall 0.64 -> 0.42) | the effect is real, but **0.64 is the old value**: the regenerated RESULTS (since PR #5) has 0.73 for the GMM and 6.7 (not 3.3) false-alarm events for the AE, so the correct figures are 0.73 -> 0.42 and 6.7 -> 10.7 | moved to the limitations of README and RESULTS |
+| the PR title is duplicated | correct | edited |
+| three blind spots of the rule layer (latch, poisoned calibration window, silent gaps) and a threat model | correct (checked in `rules.py`) | `docs/threat_model.md`; no code change, no published number changes |
+
+## Second review: three further points
+
+| Point | Verdict | What was done |
+|---|---|---|
+| The frozen-sensor rule fires during communication gaps (reproduced: 181 flagged rows in a simulated 300 s outage) | **correct** | rows with `_gap == 1` break a run and are never reported; test added. The explainer also crashed on a stuck hit; fixed. See `docs/stuck_rule_evaluation.md` |
+| The A12 knowledge base contains the attack times, so the explainer (and the Claude back-end) can match an event to an attack by time; the label file was rebuilt from the same lines | **correct** | the times now live only in `labels/A12_attack_list.csv`; the A12 catalog gives durations only (as the 2015 catalog already did; clock times inside the 2015 attack texts were removed too); `scripts/build_kb.py` and `scripts/rebuild_a12_labels.py` read the attack list, the labels are identical to the files used so far. The template results do not change (the template does not use the times) |
+| The training-time threshold is still computed on the data the models were fitted on (in-sample), so the 4-8% FPR is too high | **right in principle, small in practice** | `scripts/eval_heldout_threshold.py` keeps 4 blocks of 4 h of A10 out of the training and takes the threshold there (below) |
+
+### In-sample against held-out threshold (A12, A11+A10, noAIT, 3 seeds, LSTM-AE 1 seed)
+
+| Model | Threshold | FPR clean | False-alarm events | Event recall |
+|---|---|---|---|---|
+| GMM | calibration hour | 0.003 | 2.3 | 0.42 |
+| | in-sample | 0.137 | 20.3 | 0.33 |
+| | held-out | 0.132 | 20.3 | 0.30 |
+| AE | calibration hour | 0.009 | 10.7 | 0.79 |
+| | in-sample | 0.016 | 18.0 | 0.73 |
+| | held-out | 0.014 | 15.3 | 0.73 |
+| WinAE | calibration hour | 0.002 | 2.7 | 0.91 |
+| | in-sample | 0.032 | 13.7 | 0.82 |
+| | held-out | 0.038 | 14.3 | 0.79 |
+| LSTM-AE | calibration hour | 0.009 | 8.0 | 0.91 |
+| | in-sample | 0.084 | 17.0 | 0.73 |
+| | held-out | 0.083 | 17.0 | 0.73 |
+| IForest | calibration hour | 0.024 | 7.3 | 0.49 |
+| | in-sample | 0.103 | 15.7 | 0.52 |
+| | held-out | 0.428 | 14.3 | 0.64 |
+
+For GMM, AE, WinAE and LSTM-AE the held-out threshold is practically the same as the in-sample one, so the in-sample bias is not the reason for the gap
+to the calibration hour; the gap comes from the change between the training recordings and A12 (domain shift), and the statement in
+RESULTS.md stays as it is. IForest is erratic (its score level differs between the blocks). Removing 16 hours of A10 changes the models themselves
+(for instance the GMM event recall with the calibration hour is 0.42 here against 0.73 in the main run), so only compare the rows of this table with each other.

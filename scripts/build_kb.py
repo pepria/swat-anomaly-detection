@@ -81,13 +81,14 @@ OBS = {
 al = D.a12_attacks()
 lines = ["# Known attack catalog: SWaT.A12 (11 March 2026)", "",
          "From the iTrust A12 dataset information sheet (attack list), with the effects observed in "
-         "the data (EDA report, section 4). Times in the data are about 25 minutes later than in the "
-         "sheet; the label windows below already include this shift.", ""]
+         "the data (EDA report, section 4). The clock times of the attacks are deliberately not part "
+         "of the knowledge base (they are in labels/A12_attack_list.csv), so that an explainer cannot "
+         "identify an attack by the time of an event; only the durations are given.", ""]
 for _, r in al.iterrows():
     cat, obs = OBS[str(r.attack_id)]
     lines += [f"## A12 attack {r.attack_id}: {r['name']}",
-              f"Targets: {r.targets}. Category: {cat}. Time in data: {r.label_start} to {r.label_end} "
-              f"({r.seconds_in_data} s). Observed effect: {obs}", ""]
+              f"Targets: {r.targets}. Category: {cat}. Duration: {r.seconds_in_data} s. "
+              f"Observed effect: {obs}", ""]
 (C.KB_DIR / "04_a12_attack_catalog.md").write_text("\n".join(lines))
 
 # ------------------------------------------------------------------ mined invariants

@@ -17,6 +17,8 @@ from __future__ import annotations
 
 import json
 import os
+import sys
+import re
 
 from .retriever import Retriever
 from .tags import STAGE_NAMES
@@ -37,6 +39,8 @@ CATEGORIES = {
                          "drift in-range spoofing rate of change slow deviation"),
     "multivariate": ("broken relation between correlated sensors",
                      "relation between sensors broken replay correlation invariant"),
+    "frozen_sensor": ("sensor frozen at a constant value (stuck sensor)",
+                      "stuck frozen sensor constant value zero variance flat"),
 }
 
 CHECKS = {
@@ -58,6 +62,8 @@ CHECKS = {
                                "Check the actuators that control this variable."],
     "drift_or_inrange": ["Check the instrument calibration and compare with a reference measurement.",
                          "Check the mass balance between inflow, outflow and level."],
+    "frozen_sensor": ["Check whether the transmitter or its communication is frozen (a real process always moves a little).",
+                      "Compare the frozen reading with physically related tags and put the loop in manual if it drives an actuator."],
     "multivariate": ["Check the physical invariants of the stage (actuator state vs flow).",
                      "Consider a replay attack if values look normal but disagree with actuators."],
 }
@@ -95,6 +101,12 @@ def classify(ev: dict) -> tuple[str, list[str]]:
             reasons.append(f"{r['tag'].split('.')[0]} outside normal range and flat "
                            f"({r['signal']['flat_fraction']:.0%} of steps unchanged)")
             return "spoof_out_of_range", reasons
+    stuck = [r for r in new_rules if r["rule"] == "stuck"]
+    if stuck:
+        r = stuck[0]
+        reasons.append(f"{r['tag'].split('.')[0]} stayed exactly at {r['frozen_value']} for longer than "
+                       f"{r['limit_s']} s, longer than any flat run in normal operation")
+        return "frozen_sensor", reasons
     acts = [t for t in top[:3] if t["kind"] == "actuator"]
     if len(acts) >= 2 or (acts and top[0]["kind"] == "actuator"):
         reasons.append("top contributors are actuators: " + ", ".join(t["tag"] for t in acts))
@@ -217,6 +229,9 @@ class TemplateBackend:
             if r["rule"] == "unseen_state":
                 evidence.append(f"Rule: {r['tag'].split('.')[0]} took value(s) {r['observed_values']} "
                                 f"never seen in normal operation (normal {r['normal_values']}).")
+            elif r["rule"] == "stuck":
+                evidence.append(f"Rule: {r['tag'].split('.')[0]} stayed at exactly {r['frozen_value']} for longer than "
+                                f"{r['limit_s']} s (longer than any flat run in normal operation).")
             else:
                 evidence.append(f"Rule: {r['tag'].split('.')[0]} left its normal range "
                                 f"{r['normal_range']} (observed {r['observed_min']} to {r['observed_max']}).")
@@ -241,6 +256,45 @@ class TemplateBackend:
         return out
 
 
+# ----------------------------------------------------------------- output of an external model
+# The text of the LLM is data, not markup: keep only the expected fields with the expected types and
+# lengths, drop everything else, and neutralise HTML and markdown links so that a rendered report
+# cannot be used to inject content or links. The category and the sources are never taken from the LLM.
+LLM_FIELDS = {"summary": ("str", 1500), "category_label": ("str", 300), "evidence": ("list", 12, 800),
+              "similar_known_attacks": ("list", 5, 400), "recommended_checks": ("list", 8, 400),
+              "confidence": ("conf",)}
+_CTRL = re.compile(r"[\x00-\x08\x0b-\x1f\x7f]")
+
+
+def _clean_text(x, limit: int) -> str:
+    t = _CTRL.sub("", str(x))
+    t = t.replace("&", "&amp;").replace("<", "&lt;").replace(">", "&gt;")
+    t = t.replace("![", "! [").replace("](", "] (")                    # no markdown images or links
+    return re.sub(r"[ \t]+", " ", t).strip()[:limit]
+
+
+def sanitize_llm_output(obj, fallback_text: str = "") -> dict:
+    """Validate and clean the JSON object returned by the LLM (see docs/explanation.schema.json)."""
+    if not isinstance(obj, dict):
+        obj = {"summary": fallback_text or str(obj)}
+    out = {}
+    for key, spec in LLM_FIELDS.items():
+        v = obj.get(key)
+        if v is None:
+            continue
+        if spec[0] == "str":
+            out[key] = _clean_text(v, spec[1])
+        elif spec[0] == "list":
+            items = v if isinstance(v, list) else [v]
+            out[key] = [_clean_text(i, spec[2]).replace("\n", " ") for i in items[:spec[1]] if i is not None]
+        else:
+            c = str(v).strip().lower()
+            out[key] = c if c in ("low", "medium", "high") else "low"
+    out.setdefault("summary", _clean_text(fallback_text, 1500) or "(no explanation returned)")
+    out.setdefault("confidence", "low")
+    return out
+
+
 class ClaudeBackend:
     """LLM hook. Needs `pip install anthropic` and an API key (ANTHROPIC_API_KEY or `ant auth login`)."""
     name = "claude"
@@ -255,6 +309,8 @@ class ClaudeBackend:
 
     def __init__(self, model: str = "claude-opus-5-5"):
         import anthropic  # imported lazily so the package stays optional
+        print("NOTE: the anomaly event (tags, values, signal features) and knowledge-base excerpts "
+              "are sent to the Anthropic API.", file=sys.stderr)
         self.client = anthropic.Anthropic(timeout=180.0, max_retries=2)
         self.model = model
 
@@ -273,8 +329,9 @@ class ClaudeBackend:
         try:
             out = json.loads(text[text.index("{"): text.rindex("}") + 1])
         except ValueError:
-            out = {"summary": text}
-        out.update(category=category, sources=[c.chunk_id for c, _ in retrieved])
+            out = None
+        out = sanitize_llm_output(out, fallback_text=text)
+        out.update(category=category, sources=[c.chunk_id for c, _ in retrieved])   # never from the model
         return out
 
 
@@ -303,8 +360,9 @@ class Explainer:
         self.own_catalog = own_catalog     # catalog of the dataset being explained (top 2) ...
         self.other_catalogs = [c for c in CATALOGS if c != own_catalog]   # ... the others add 1 each
         self.exclude = set(exclude_chunks)   # e.g. leave-one-out evaluation of the catalog
-        if backend == "auto":
-            backend = "claude" if os.environ.get("ANTHROPIC_API_KEY") and _has_anthropic() else "template"
+        if backend == "auto":     # an API key alone never sends data out: external use must be switched on
+            external = os.environ.get("SWAT_ALLOW_EXTERNAL_LLM") == "1"
+            backend = "claude" if external and os.environ.get("ANTHROPIC_API_KEY") and _has_anthropic() else "template"
         self.backend = ClaudeBackend() if backend == "claude" else TemplateBackend()
 
     def retrieve(self, query: str, tags: list[str], category: str):

@@ -106,7 +106,7 @@ Between 14:23:52 and 14:25:19 (88 s) the WinAE detector flagged an anomaly in P1
 - LIT101 (Raw water tank T101 level): 758 to 800.4 mm vs normal 494 to 833.6 -> in-range
 - P201 (NaCl dosing pump (duty)): values [1.0, 2.0] (normal [1.0, 2.0])
 
-**Similar known attacks:** A12 attack 6: Tank overflow via LIT101 spoofing (Schneider demo attack 01); A12 attack 2: Stage 1 flow disruption: MV101 open, P101 & P102 stop
+**Similar known attacks:** A12 attack 6: Tank overflow via LIT101 spoofing (Schneider demo attack 01); A12 attack 3: Florida water plant scenario: dosing pump activation & sensor spoofing
 **Matching pattern:** Sensor spoofing within the normal range
 
 **Relevant physical rules**
@@ -117,7 +117,7 @@ Between 14:23:52 and 14:25:19 (88 s) the WinAE detector flagged an anomaly in P1
 - Check the instrument calibration and compare with a reference measurement.
 - Check the mass balance between inflow, outflow and level.
 
-Confidence: low. Sources: 02_tag_dictionary#29, 02_tag_dictionary#2, 02_tag_dictionary#13, 03_attack_and_fault_patterns#2, 04_a12_attack_catalog#6, 04_a12_attack_catalog#2, 04_swat2015_attack_catalog#36, 05_mined_invariants#4, 05_mined_invariants#11, 01_process_overview#2
+Confidence: low. Sources: 02_tag_dictionary#29, 02_tag_dictionary#2, 02_tag_dictionary#13, 03_attack_and_fault_patterns#2, 04_a12_attack_catalog#6, 04_a12_attack_catalog#3, 04_swat2015_attack_catalog#36, 05_mined_invariants#4, 05_mined_invariants#11, 01_process_overview#2
 _Ground truth (evaluation only, not given to the explainer): none (false alarm)_
 
 ### a12-WinAE-006  (14:45:26 - 14:51:25)

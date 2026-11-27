@@ -298,7 +298,7 @@
   ],
   "relevant_invariants": [
    "When P101 is ON/open (2), FIT201 is normally between 2.34 and 2.39; when P101 is OFF/closed (1), FIT201 is between 0 and 0 (effect size 12.9).",
-   "When P203 is ON/open (2), FIT201 is normally between 2.34 and 2.39; when P203 is OFF/closed (1), FIT201 is between 0 and 0 (effect size 20.6)."
+   "When P201 is ON/open (2), FIT201 is normally between 2.34 and 2.39; when P201 is OFF/closed (1), FIT201 is between 0 and 0 (effect size 20.6)."
   ],
   "recommended_checks": [
    "Check the HMI/PLC command log for who switched the equipment and whether maintenance was scheduled.",
@@ -316,7 +316,7 @@
    "04_a12_attack_catalog#2",
    "04_swat2015_attack_catalog#12",
    "05_mined_invariants#7",
-   "05_mined_invariants#3",
+   "05_mined_invariants#4",
    "01_process_overview#2"
   ],
   "confidence_raw": "medium",

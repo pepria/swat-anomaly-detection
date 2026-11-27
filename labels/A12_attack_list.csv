@@ -1,0 +1,12 @@
+attack_id,name,targets,label_start,label_end,seconds_in_data
+1,"Stage 5 valve manipulation: MV503/504 open, MV501/502 close",MV501-504,13:24:50,13:30:30,341
+2,"Stage 1 flow disruption: MV101 open, P101 & P102 stop","MV101, P101, P102",14:04:50,14:10:30,341
+3,Florida water plant scenario: dosing pump activation & sensor spoofing,"P201-P206, MV201",14:44:50,14:50:30,341
+4,Tank overflow via LIT101 spoofing (Schneider demo attack 01),LIT101,14:54:50,15:00:30,341
+5,Stage 5 valve manipulation (repeat),MV501-504,15:04:50,15:10:30,341
+6,Tank overflow via LIT101 spoofing (Schneider demo attack 01),LIT101,15:24:50,15:27:30,161
+7,"Stage 2 parallel pump override: MV201 open, P101 & P102 run","MV201, P101, P102",15:25:00,15:30:30,331
+8,"RO backwash diversion: MV302 close, MV303 open","MV302, MV303",15:44:50,15:50:30,341
+9,Forced backwash trigger via DPIT301 spoofing (Ensign pre-UAT attack 1),DPIT301,16:09:50,16:15:30,341
+10,Multi-value level oscillation: LIT601 spoofing (Ensign pre-UAT attack 3),LIT601,16:34:50,16:40:30,341
+11,AIT402 high-value spoof (script),AIT402,16:59:50,17:00:59,70

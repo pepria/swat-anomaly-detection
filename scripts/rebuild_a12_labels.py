@@ -1,19 +1,13 @@
-"""Rebuild the two A12 label files that the project needs (they are not in the repository).
+"""Rebuild the per-second A12 label file that the project needs (it is not in the repository).
 
     python scripts/rebuild_a12_labels.py [output dir]       # default: <SWAT_RAW_DIR>/swat_eda
 
-* A12_attack_list.csv    one row per attack (attack_id, name, targets, label_start, label_end, seconds_in_data)
-* A12_labels_shifted.csv one row per second of the A12 recording (t_stamp, label, attack_id)
-
-Both are derived from knowledge_base/04_a12_attack_catalog.md (attack names, targets and the label
-windows in data time, which already include the offset of about 25 minutes between the iTrust
-information sheet and the recording) and from the timestamps of the A12 CSV. Where two attacks
-overlap (6 and 7), the seconds go to the attack that started first. Expected result: 11 attacks,
-3,139 attack seconds.
+Reads labels/A12_attack_list.csv (the attack windows in the time of the recording) and the timestamps
+of the A12 CSV, and writes A12_labels_shifted.csv (t_stamp, label, attack_id; one row per second).
+Where two attacks overlap (6 and 7), the seconds go to the attack that started first. Expected
+result: 11 attacks, 3,139 attack seconds. The attack times are not taken from the knowledge base.
 """
-import csv
 import io
-import re
 import sys
 import zipfile
 from pathlib import Path
@@ -27,16 +21,9 @@ from swatad import config as C  # noqa: E402
 out = Path(sys.argv[1]) if len(sys.argv) > 1 else C.A12_LABELS.parent
 out.mkdir(parents=True, exist_ok=True)
 
-catalog = (C.KB_DIR / "04_a12_attack_catalog.md").read_text()
-pat = re.compile(r"## A12 attack (\d+): (.+?)\nTargets: (.+?)\. Category: .+?"
-                 r"Time in data: (\d\d:\d\d:\d\d) to (\d\d:\d\d:\d\d) \((\d+) s\)", re.S)
-attacks = [m.groups() for m in pat.finditer(catalog)]
-assert len(attacks) == 11, f"expected 11 attacks in the catalog, found {len(attacks)}"
-
-with open(out / "A12_attack_list.csv", "w", newline="") as f:
-    w = csv.writer(f, lineterminator="\n")
-    w.writerow(["attack_id", "name", "targets", "label_start", "label_end", "seconds_in_data"])
-    w.writerows(attacks)
+al = pd.read_csv(C.A12_ATTACKS, dtype=str)
+attacks = [(r.attack_id, r["name"], r.targets, r.label_start, r.label_end, r.seconds_in_data) for _, r in al.iterrows()]
+assert len(attacks) == 11, f"expected 11 attacks in {C.A12_ATTACKS}, found {len(attacks)}"
 
 with zipfile.ZipFile(C.A12_ZIP) as z:
     name = next(n for n in z.namelist() if n.endswith(".csv"))

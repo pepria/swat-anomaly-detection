@@ -15,7 +15,7 @@ Targets: LIT101. Category: sensor spoofing in range. Duration: 382 s. Start stat
 Targets: MV504. Category: actuator manipulation. Duration: 389 s. Start state: MV-504 is closed. Actual change in the process: Yes. Intended impact: Halt RO shut down sequence; Reduce life of RO. Observed outcome: No impact.
 
 ## SWaT2015 attack 6: AIT-202: Set value of AIT-202 as 6
-Targets: AIT202. Category: sensor spoofing out of range. Duration: 195 s. Start state: Value of AIT-202 is >7.05. Actual change in the process: No. Intended impact: P-203 turns off; Change in water quality. Observed outcome: Impact seen on AIT-504 after two hours at around 14:15. It increased above HH but Drainage did not start.
+Targets: AIT202. Category: sensor spoofing out of range. Duration: 195 s. Start state: Value of AIT-202 is >7.05. Actual change in the process: No. Intended impact: P-203 turns off; Change in water quality. Observed outcome: Impact seen on AIT-504 after two hours later. It increased above HH but Drainage did not start.
 
 ## SWaT2015 attack 7: LIT-301: Water level increased above HH
 Targets: LIT301. Category: sensor spoofing out of range. Duration: 428 s. Start state: Water level between L and H. Actual change in the process: No. Intended impact: Stop of inflow; Tank underflow; Damage P-301.
@@ -65,7 +65,7 @@ Targets: LIT401, P401. Category: multi-point attack (actuators and sensor values
 ## SWaT2015 attack 26: P-101, LIT-301: P-101 is turned on continuosly; Set value of LIT-301 as 801 mm
 Targets: P101, LIT301. Category: multi-point attack (actuators and sensor values). Duration: 1444 s. Start state: P-101 is off; P-102 is on; LIT-301 is between L and H. Actual change in the process: Yes. Intended impact: Tank 101 underflow; Tank 301 overflow.
 
-## SWaT2015 attack 27: P-302, LIT-401: Keep P-302 on contineoulsy; Value of LIT401 set as 600 mm till 1:26:01
+## SWaT2015 attack 27: P-302, LIT-401: Keep P-302 on contineoulsy; Value of LIT401 set as 600 mm later
 Targets: P302, LIT401. Category: multi-point attack (actuators and sensor values). Duration: 1690 s. Start state: P302 is on, LIT401 Is between L and H. Actual change in the process: Yes. Intended impact: Tank overflow.
 
 ## SWaT2015 attack 28: P-302: Close P-302
@@ -95,7 +95,7 @@ Targets: P101, P102. Category: actuator manipulation. Duration: 480 s. Start sta
 ## SWaT2015 attack 36: LIT-101: Set LIT-101 to less than LL
 Targets: LIT101. Category: sensor spoofing out of range. Duration: 539 s. Start state: Water level between L and H. Actual change in the process: No. Intended impact: Tank overflow.
 
-## SWaT2015 attack 37: P-501, FIT-502: Close P-501; Set value of FIT-502 to 1.29 at 11:18:36
+## SWaT2015 attack 37: P-501, FIT-502: Close P-501; Set value of FIT-502 to 1.29 later
 Targets: P501, FIT502. Category: multi-point attack (actuators and sensor values). Duration: 468 s. Start state: P-501 is on; FIT-502 in normal range. Actual change in the process: No. Intended impact: Reduced output. Observed outcome: P-501 did not turn off; FIT-502 decreased to 0.8; Speed of P-501 increased to 28.50 Hz from 10 Hz during attack..
 
 ## SWaT2015 attack 38: AIT-402, AIT-502: Set value of AIT402 as 260; Set value of AIT502 to 260
@@ -108,4 +108,4 @@ Targets: FIT401, AIT502. Category: sensor spoofing out of range. Duration: 400 s
 Targets: FIT401. Category: sensor spoofing out of range. Duration: 296 s. Start state: In Normal Range. Actual change in the process: No. Intended impact: UV will shut down and water will go to RO. Observed outcome: P-402 did not close, both should be interlinked.
 
 ## SWaT2015 attack 41: LIT-301: decrease value by 0.5 mm per second
-Targets: LIT301. Category: sensor spoofing in range. Duration: 1674 s. Start state: Water level between L and H. Actual change in the process: No. Intended impact: Tank overflow. Observed outcome: Rate of decrease in water level reduced after 1:33:25 PM.
+Targets: LIT301. Category: sensor spoofing in range. Duration: 1674 s. Start state: Water level between L and H. Actual change in the process: No. Intended impact: Tank overflow. Observed outcome: Rate of decrease in water level reduced later.

@@ -58,13 +58,13 @@ def test_stuck_rule_is_off_by_default_and_detects_frozen_sensor(recording):
     assert "P102.Status" not in rules.stuck_limit
 
 
-def test_old_pickled_monitor_still_works():
-    import pickle
+def test_stored_run_state_loads_from_json_and_still_works():
     from pathlib import Path
-    pkl = Path(__file__).resolve().parents[1] / "outputs/runs/a12_A11-A10_noAIT/feature_space.pkl"
-    rules = pickle.load(open(pkl, "rb"))["rules"]
+    from swatad.persist import load_run_state
+    fs, rules = load_run_state(Path(__file__).resolve().parents[1] / "outputs/runs/a12_A11-A10_noAIT")
+    assert len(fs.cols) > 10 and len(fs.mean) == len(fs.cols)
     if hasattr(rules, "stuck_limit"):
-        del rules.stuck_limit
+        del rules.stuck_limit              # an older monitor without the stuck rule
     df = make_recording()
     df["LIT101.Pv"] = 2000.0
     assert rules.hits(df)["LIT101.Pv"].all()

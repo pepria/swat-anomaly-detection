@@ -57,3 +57,9 @@ Confidence (calibrated, `confidence`) against correctness (fully_ok):
 
 Single tag per injection, magnitudes 2-10 sigma, template backend only (the LLM was not run on these events), judgement-based
 acceptable categories, one seed of the detectors, and the confidence rules were designed with the A12 events in mind.
+
+## With the frozen-sensor rule (`--stuck-rule 120`)
+
+Results in `outputs/synthetic_explain_stuck` (not tracked). Everything above stays within +-0.05 (the networks are retrained). The stuck injections:
+AE and WinAE detect 1 of 10 each, and both are explained as `frozen_sensor` with the right tag, found through the rule hit (the model contributions do not
+rank it). Details and the check on real A12 data: [stuck_rule_evaluation.md](stuck_rule_evaluation.md).

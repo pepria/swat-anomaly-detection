@@ -6,7 +6,6 @@ explanation part (person B). Schema: docs/anomaly_event.schema.json.
 from __future__ import annotations
 
 import json
-import pickle
 from pathlib import Path
 
 import numpy as np
@@ -14,6 +13,7 @@ import pandas as pd
 
 from . import config as C
 from .evaluate import alarm_segments, score_ratio
+from .persist import load_run_state
 from .features import base_tag, is_discrete, tag_kind, tag_stage
 from .rag.tags import STAGE_NAMES, describe
 
@@ -43,9 +43,7 @@ class EventExporter:
                  events_gt: pd.DataFrame | None = None):
         self.run_dir = Path(run_dir)
         self.meta = json.loads((self.run_dir / "meta.json").read_text())
-        with open(self.run_dir / "feature_space.pkl", "rb") as f:
-            obj = pickle.load(f)
-        self.fs, self.rules = obj["fs"], obj["rules"]
+        self.fs, self.rules = load_run_state(self.run_dir)
         self.scores = pd.read_parquet(self.run_dir / "scores.parquet")
         self.test = test
         self.events_gt = events_gt

@@ -1,0 +1,16 @@
+model,threshold,fpr_clean,false_alarm_events,event_recall,seeds
+IForest,calibration,0.024,7.333,0.485,3
+IForest,in-sample,0.103,15.667,0.515,3
+IForest,held-out,0.428,14.333,0.636,3
+GMM,calibration,0.003,2.333,0.424,3
+GMM,in-sample,0.137,20.333,0.333,3
+GMM,held-out,0.132,20.333,0.303,3
+AE,calibration,0.009,10.667,0.788,3
+AE,in-sample,0.016,18.0,0.727,3
+AE,held-out,0.014,15.333,0.727,3
+WinAE,calibration,0.002,2.667,0.909,3
+WinAE,in-sample,0.032,13.667,0.818,3
+WinAE,held-out,0.038,14.333,0.788,3
+LSTM-AE,calibration,0.009,8.0,0.909,1
+LSTM-AE,in-sample,0.084,17.0,0.727,1
+LSTM-AE,held-out,0.083,17.0,0.727,1

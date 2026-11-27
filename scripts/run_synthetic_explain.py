@@ -10,10 +10,11 @@ explained, and the explanation is checked against what was injected:
 * pattern_ok          the retrieved generic pattern (03_attack_and_fault_patterns) fits the type
 * confidence          calibrated vs raw confidence against correctness
 
-    python scripts/run_synthetic_explain.py [train_sets] [noAIT|all] [models, comma separated]
+    python scripts/run_synthetic_explain.py [train_sets] [noAIT|all] [models, comma separated] [--stuck-rule SECONDS]
+
+``--stuck-rule 120`` enables the optional frozen-sensor rule; results then go to outputs/synthetic_explain_stuck/.
 """
 import json
-import pickle
 import sys
 from pathlib import Path
 
@@ -26,12 +27,19 @@ from swatad import config as C  # noqa: E402
 from swatad.events import EventExporter  # noqa: E402
 from swatad.features import tag_kind  # noqa: E402
 from swatad.inject import inject  # noqa: E402
+from swatad.persist import save_run_state  # noqa: E402
 from swatad.pipeline import fit_and_calibrate, score_with, valid_mask  # noqa: E402
 from swatad.rag.explainer import Explainer  # noqa: E402
 
-train_sets = sys.argv[1] if len(sys.argv) > 1 else "A11+A10"
-drop_ait = (sys.argv[2] if len(sys.argv) > 2 else "noAIT") == "noAIT"
-MODELS = tuple((sys.argv[3] if len(sys.argv) > 3 else "AE,WinAE").split(","))
+args = sys.argv[1:]
+stuck_s = None
+if "--stuck-rule" in args:
+    i = args.index("--stuck-rule")
+    stuck_s = int(args[i + 1])
+    del args[i:i + 2]
+train_sets = args[0] if len(args) > 0 else "A11+A10"
+drop_ait = (args[1] if len(args) > 1 else "noAIT") == "noAIT"
+MODELS = tuple((args[2] if len(args) > 2 else "AE,WinAE").split(","))
 REALISATIONS = (0, 1, 2, 3, 4)
 TOL = pd.Timedelta(seconds=120)
 
@@ -41,7 +49,7 @@ ACCEPT = {
     "bias": {"out_of_range_excursion", "spoof_out_of_range", "drift_or_inrange"},
     "drift": {"drift_or_inrange", "out_of_range_excursion"},
     "noise": {"oscillation", "drift_or_inrange"},
-    "stuck": {"spoof_out_of_range", "drift_or_inrange", "multivariate"},
+    "stuck": {"frozen_sensor", "spoof_out_of_range", "drift_or_inrange", "multivariate"},
     "replay": {"multivariate", "drift_or_inrange"},
     "actuator_flip": {"actuator_manipulation", "standby_activation"},
 }
@@ -53,9 +61,10 @@ PATTERN = {
 }
 
 C.ensure_dirs()
-out = C.OUT_DIR / "synthetic_explain"
+out = C.OUT_DIR / ("synthetic_explain_stuck" if stuck_s else "synthetic_explain")
 out.mkdir(exist_ok=True)
-F = fit_and_calibrate("a12", train_sets, drop_ait, models=MODELS)
+F = fit_and_calibrate("a12", train_sets, drop_ait, models=MODELS,
+                      rule_kwargs={"stuck_s": stuck_s} if stuck_s else None)
 S, fs, rules = F["setup"], F["fs"], F["rules"]
 base = S.test[S.test.index.strftime("%H:%M:%S") < "13:20:00"].copy()
 train_v = S.train[valid_mask(S.train)]
@@ -82,7 +91,7 @@ for r in REALISATIONS:
         np.save(run / f"contrib_{n}.npy", np.clip(c, 0, 6e4).astype("float16"))
     json.dump({"setup": f"synthetic_r{r}", "thresholds": {n: {"calib": float(v[2])} for n, v in scored.items()}},
               open(run / "meta.json", "w"))
-    pickle.dump({"fs": fs, "rules": rules}, open(run / "feature_space.pkl", "wb"))
+    save_run_state(run, fs, rules)
     gt = pd.DataFrame([{"event_id": j["inj_id"], "name": j["description"], "targets": j["tag"],
                         "start": j["start"], "end": j["end"], "type": j["type"], "tag": j["tag"]} for j in inj])
     exp = EventExporter(run, df, train_v, gt)

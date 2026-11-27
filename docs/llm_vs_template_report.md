@@ -164,3 +164,8 @@ Result on the 10 events (LLM run, template run):
 Caveats:
 - The marginal-exceedance rule was added after seeing event 5, so it is not independent of the data. Its principle is simple (a spoofed value should not be 2% beyond the limit), but it should be checked on another dataset.
 - With 10 events, the thresholds are a reasonable default, not a fitted calibration. The calibrated LLM is now conservative: it says "medium" even in events 3, 4 and 9 where it was right.
+
+## 10. Note: the default catalog no longer contains attack times
+
+The control run of section 7 used a copy of the knowledge base without the clock times. Since then the default A12 catalog (`knowledge_base/04_a12_attack_catalog.md`)
+gives durations only; the times are in `labels/A12_attack_list.csv`, which the explainer does not read. The template results do not change.

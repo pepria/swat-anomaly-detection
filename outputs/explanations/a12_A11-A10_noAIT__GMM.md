@@ -144,14 +144,14 @@ Between 15:25:19 and 15:30:02 (284 s) the GMM detector and the rule layer flagge
 
 **Relevant physical rules**
 - When P101 is ON/open (2), FIT201 is normally between 2.34 and 2.39; when P101 is OFF/closed (1), FIT201 is between 0 and 0 (effect size 12.9).
-- When P203 is ON/open (2), FIT201 is normally between 2.34 and 2.39; when P203 is OFF/closed (1), FIT201 is between 0 and 0 (effect size 20.6).
+- When P201 is ON/open (2), FIT201 is normally between 2.34 and 2.39; when P201 is OFF/closed (1), FIT201 is between 0 and 0 (effect size 20.6).
 
 **Recommended checks**
 - Check the HMI/PLC command log for who switched the equipment and whether maintenance was scheduled.
 - Verify physically that the standby unit is running.
 - If it is a dosing pump, check chemical concentrations immediately (AIT201-203).
 
-Confidence: medium. Sources: 02_tag_dictionary#8, 02_tag_dictionary#39, 02_tag_dictionary#29, 02_tag_dictionary#6, 03_attack_and_fault_patterns#5, 04_a12_attack_catalog#7, 04_a12_attack_catalog#2, 04_swat2015_attack_catalog#12, 05_mined_invariants#7, 05_mined_invariants#3, 01_process_overview#2
+Confidence: medium. Sources: 02_tag_dictionary#8, 02_tag_dictionary#39, 02_tag_dictionary#29, 02_tag_dictionary#6, 03_attack_and_fault_patterns#5, 04_a12_attack_catalog#7, 04_a12_attack_catalog#2, 04_swat2015_attack_catalog#12, 05_mined_invariants#7, 05_mined_invariants#4, 01_process_overview#2
 _Ground truth (evaluation only, not given to the explainer): #6 Tank overflow via LIT101 spoofing (Schneider demo attack 01); #7 Stage 2 parallel pump override: MV201 open, P101 & P102 run_
 
 ### a12-GMM-007  (15:45:01 - 15:53:25)
