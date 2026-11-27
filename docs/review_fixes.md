@@ -90,6 +90,22 @@ is not (0.72), and on SWaT 2015 the WinAE "high" confidence (1 attack among 7 ev
   the README were regenerated after these fixes (all A12 configurations and the SWaT 2015 setup with 3 seeds, the synthetic injections
   and the explanations of the main configuration).
 
+## Third review: security and the second pull request
+
+| Point | Verdict | What was done |
+|---|---|---|
+| `pickle.load` of the run state (`events.py`) can execute arbitrary code | correct | the state is JSON (`swatad/persist.py`, `feature_space.json`); no pickle is loaded any more, the tracked pickles were converted (the JSON content equals the pickled content) and removed; `scripts/convert_run_state.py` converts your own old pickles |
+| the LLM output is parsed without validation and put into markdown | correct | `sanitize_llm_output`: fixed fields, types and lengths, HTML escaped, markdown links and images broken, category and sources never taken from the model; `docs/explanation.schema.json`; tests |
+| good design that should be stressed in the report | correct | `docs/threat_model.md` section 1 and RESULTS section 5 |
+| data leaves the plant through the Claude back-end | correct | `auto` no longer uses Claude just because an API key is set: it needs `SWAT_ALLOW_EXTERNAL_LLM=1`; a notice is printed; documented |
+| the sentinel values `-1e300 - arange(n)` are not distinct in float64 (1 of 5 values), the comment is wrong | correct; the result was right only because of `& ~g` | replaced by a cleaner implementation |
+| resetting the count at a gap lets a frozen sensor escape with short repeated dropouts | **correct, reproduced** (15 min frozen, 3 s dropout every 100 s: 0 flagged rows) | the count now pauses over gap rows (0 -> 484 flagged rows); test added; a "too many gaps" alarm is still open (`docs/threat_model.md`) |
+| the durations of the attacks identify #6, #7, #11 | correct, small | documented as a limitation |
+| the held-out blocks come only from A10 | correct | documented; the conclusion is unchanged |
+| training-data sensitivity (GMM recall 0.64 -> 0.42) | the effect is real, but **0.64 is the old value**: the regenerated RESULTS (since PR #5) has 0.73 for the GMM and 6.7 (not 3.3) false-alarm events for the AE, so the correct figures are 0.73 -> 0.42 and 6.7 -> 10.7 | moved to the limitations of README and RESULTS |
+| the PR title is duplicated | correct | edited |
+| three blind spots of the rule layer (latch, poisoned calibration window, silent gaps) and a threat model | correct (checked in `rules.py`) | `docs/threat_model.md`; no code change, no published number changes |
+
 ## Second review: three further points
 
 | Point | Verdict | What was done |

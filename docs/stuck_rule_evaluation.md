@@ -8,7 +8,9 @@ The optional rule `RuleMonitor(stuck_s=...)` (off by default) flags a continuous
 
 1. **False alarms during communication gaps.** The loader forward-fills the values of a communication gap, so the sensor looks frozen, but the
    training data (which excludes gap rows) never contained such a run. A simulated 300 s outage was flagged in 181 rows. Rows with `_gap == 1`
-   now break a run and are never reported; a real frozen sensor is still detected (tests in `tests/test_review_fixes.py`).
+   are now ignored: the run count *pauses* over them (they neither add to a run nor end it) and they are never reported. A first version reset
+   the count at a gap; a reviewer showed that this lets a frozen sensor escape: frozen for 15 minutes with a 3 s dropout every 100 s gave 0 flagged rows
+   (now 484). A real frozen sensor is still detected, a plain outage is not (tests in `tests/test_review_fixes.py`).
 2. **The explainer crashed on a stuck hit** (`KeyError: 'normal_range'`, the hit has `frozen_value` and `limit_s` instead). There is now a
    category `frozen_sensor`, an evidence line ("stayed at exactly X for longer than N s"), recommended checks, and a test.
 

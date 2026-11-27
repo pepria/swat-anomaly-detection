@@ -146,7 +146,9 @@ and fills a template. Attacks of the dataset being explained are retrieved first
 entry of the other attack catalog (A12 and SWaT 2015), with a boost for the attacked tags. The
 confidence of an explanation is capped by an evidence score (`calibrate_confidence`).
 `Explainer(backend="claude")` sends the same evidence to Claude (`claude-opus-5-5`) instead; it needs
-`pip install anthropic` and an API key. It was run on the A12 events; the outputs are in
+`pip install anthropic` and an API key, and it **sends the event data to an external API** (`python scripts/export_and_explain.py <run> <model> claude`;
+`auto` uses Claude only if `SWAT_ALLOW_EXTERNAL_LLM=1` is set as well). The reply is validated against `docs/explanation.schema.json` and escaped; the
+category and the sources come from the rules, never from the model (see [docs/threat_model.md](docs/threat_model.md)). It was run on the A12 events; the outputs are in
 `outputs/explanations/llm/` and the two back-ends are compared event by event in
 [docs/llm_vs_template_report.md](docs/llm_vs_template_report.md)
 (Chinese: [llm_vs_template_report_zh.md](docs/llm_vs_template_report_zh.md)). The explanation
@@ -167,5 +169,10 @@ their effect on the results are in [docs/review_fixes.md](docs/review_fixes.md).
   "known attack" matching on A12 is optimistic; a leave-one-out variant is reported too (0.3-0.5,
   the more honest number for the explanation layer). On SWaT 2015 the explanations are much weaker
   than on A12, because the detectors find only about half of the attacks there.
+- The training data matters: without 16 hours of A10 in the training the GMM event recall falls from 0.73 to 0.42 and the AE has 10.7 instead of 6.7 false-alarm events
+  (window AE unchanged); the held-out blocks of that experiment are all from A10. The attack catalogs give durations but no clock times; three A12 attacks have a
+  unique duration. The rule layer has known blind spots (alarm latch, poisoned calibration window, communication gaps), listed in
+  [docs/threat_model.md](docs/threat_model.md).
+- The run state (`feature_space.json`) is JSON, no pickle is ever loaded.
 - The knowledge base is built from public SWaT knowledge; official iTrust tag documentation,
   set points and P&ID would improve it.

@@ -181,7 +181,17 @@ biased test of the evidence the explainer receives: there the injected tag is in
 explanation is capped by an evidence score (`calibrate_confidence`); it is reliable for the window AE on the synthetic data
 but not on SWaT 2015.
 
-## 5. What to do next
+## 5. Limitations and threat model
+
+- **Training data.** The results depend on it: with 16 hours of A10 left out of the training, the GMM event recall (calibration hour) falls from 0.73 to 0.42 and
+  the AE false-alarm events rise from 6.7 to 10.7; the window AE stays at 0.91 ([docs/review_fixes.md](docs/review_fixes.md)). The blocks held out in that experiment are all from A10, none from A11.
+- **Selection on the test day.** The configuration and the hyper-parameters were chosen on A12, the signature classifier was written knowing its attacks (see the status note at the top).
+- **Leaks.** The attack catalogs contain durations but no clock times; three A12 attacks have a unique duration (#6 161 s, #7 331 s, #11 70 s).
+- **Security.** The LLM cannot change the detection, the category or the confidence, its text is validated and escaped, nothing is sent to an external API unless
+  switched on, and the run state is JSON (no pickle). The rule layer has blind spots that an attacker could use: the 10-minute alarm latch, a calibration hour that is
+  assumed to be normal, and communication gaps that raise no alarm. All of this is in [docs/threat_model.md](docs/threat_model.md).
+
+## 6. What to do next
 
 1. ~~Run the LLM back-end and compare it with the template.~~ Done: see
    [docs/llm_vs_template_report.md](docs/llm_vs_template_report.md) (LLM better on 9 of 10
