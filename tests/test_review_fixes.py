@@ -117,3 +117,68 @@ def test_explainer_handles_a_stuck_sensor_hit():
     ex = Explainer(backend="template").explain(ev)
     assert any("stayed at exactly 812.5" in e for e in ex["evidence"])
     assert ex["confidence"] in ("low", "medium", "high")
+
+
+def test_stuck_rule_is_not_evaded_by_short_repeated_dropouts_of_the_link():
+    import pandas as pd
+    from swatad.rules import RuleMonitor
+    rng = np.random.default_rng(1)
+    idx = pd.date_range("2026-03-11 09:00:00", periods=4000, freq="s")
+
+    def frame(frozen=False):
+        df = pd.DataFrame({"LIT101.Pv": np.round(rng.normal(500, 5, len(idx)), 1)}, index=idx)
+        df["_gap"] = 0
+        if frozen:       # frozen for 15 minutes; every 100 s a 3 s dropout, flagged +-15 s like the loader does
+            df.iloc[1000:1900, 0] = df.iloc[999, 0]
+            for t in range(1050, 1900, 100):
+                df.iloc[t:t + 3, 0] = df.iloc[t - 1, 0]
+                df.iloc[t - 15:t + 18, df.columns.get_loc("_gap")] = 1
+        return df
+    rm = RuleMonitor(stuck_s=120).fit(frame())
+    _, h = rm.alarm(frame(frozen=True))
+    assert h.values[1500:1890].sum() > 100            # still detected: the count pauses at a gap, it is not reset
+
+
+def test_run_state_round_trips_through_json(tmp_path):
+    from swatad.features import FeatureSpace
+    from swatad.persist import load_run_state, save_run_state
+    from swatad.rules import RuleMonitor
+    import pandas as pd
+    rng = np.random.default_rng(0)
+    df = pd.DataFrame({"LIT101.Pv": rng.normal(500, 5, 500), "FIT101.Pv": rng.normal(2, 0.1, 500),
+                       "P101.Status": rng.choice([1.0, 2.0], 500)})
+    fs, rm = FeatureSpace().fit(df), RuleMonitor(stuck_s=60).fit(df)
+    save_run_state(tmp_path, fs, rm)
+    fs2, rm2 = load_run_state(tmp_path)
+    assert fs2.cols == fs.cols and np.allclose(fs2.transform(df), fs.transform(df))
+    assert rm2.seen == rm.seen and rm2.lo == rm.lo and rm2.stuck_limit == rm.stuck_limit
+    assert (rm2.hits(df).values == rm.hits(df).values).all()
+
+
+def test_a_pickle_is_never_loaded(tmp_path):
+    import pickle
+    import pytest
+    from swatad.persist import load_run_state
+    (tmp_path / "feature_space.pkl").write_bytes(pickle.dumps({"fs": 1}))
+    with pytest.raises(FileNotFoundError, match="not loaded"):
+        load_run_state(tmp_path)
+
+
+def test_llm_output_is_validated_and_neutralised():
+    from swatad.rag.explainer import sanitize_llm_output
+    out = sanitize_llm_output({"summary": "<script>x</script> [a](http://evil) ![i](http://e/p.png)",
+                               "evidence": ["a\nb", 3, None, "x" * 5000], "confidence": "HIGH!",
+                               "category": "hacked", "sources": ["x"], "extra": "dropped"})
+    assert set(out) == {"summary", "evidence", "confidence"}          # unknown fields and category/sources dropped
+    assert "<" not in out["summary"] and "](" not in out["summary"] and "![" not in out["summary"]
+    assert out["confidence"] == "low"                                   # not one of low/medium/high
+    assert out["evidence"][0] == "a b" and len(out["evidence"][-1]) <= 800
+    assert sanitize_llm_output("not a dict", "plain text")["summary"] == "plain text"
+    assert sanitize_llm_output({"summary": "ok", "confidence": "Medium"})["confidence"] == "medium"
+
+
+def test_auto_backend_does_not_send_data_out_without_explicit_opt_in(monkeypatch):
+    from swatad.rag.explainer import Explainer
+    monkeypatch.setenv("ANTHROPIC_API_KEY", "sk-test")
+    monkeypatch.delenv("SWAT_ALLOW_EXTERNAL_LLM", raising=False)
+    assert Explainer(backend="auto").backend.name == "template"
